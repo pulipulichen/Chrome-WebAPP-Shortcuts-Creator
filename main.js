@@ -4,8 +4,11 @@ var fs = require('fs')
   , URL = require('url-parse')
   , cheerio = require('cheerio')
   , request = require('request')
-  , faviconUrl = require('favicon-url')
-  , iconv = require('iconv-lite');
+  //, faviconUrl = require('favicon-url')
+  , parseFavicon = require('parse-favicon').parseFavicon
+  , http = require('http')
+  //, gm = require('gm')
+  , { exec } = require('child_process');
 
 var config = ini.parse(fs.readFileSync('./config.ini', 'utf-8'));
 var chromeLocation = config.global.googleChromeLocation;
@@ -15,7 +18,7 @@ var url = "http://blog.pulipuli.info";
 //chromeLocation = chromeLocation + " --ignore-certificate-errors --app=" + url;
 
 const urlObject = new URL(url);
-var linkName = urlObject.host;
+var host = urlObject.host;
 
 request(url, function (error, response, body)
 {
@@ -23,30 +26,57 @@ request(url, function (error, response, body)
     {
         var $ = cheerio.load(body);
         var title = $("title").text().trim();
-        //title = iconv.encode(title, 'big5');
-        
-        faviconUrl(url, {timeout: 2000, minBufferLength: 400, securedOnly: true}, (favicon, dataBufferLength) => {
-            // Only favicons served over https.
-             console.log(favicon)
-            // console.log(dataBufferLength)
-            
-        })
-        
-        //title = iconv.decode(new Buffer(title), "utf8");
-        //console.log(title);
         if ('' === title.trim()) {
-            const urlObject = new URL(url);
-            title = urlObject.host;
+            title = host;
         }
 
         var linkPath = "D:/Desktop/" + title + ".lnk";
-        //linkPath = iconv.decode(new Buffer(linkPath), "big5");
-        //console.log(linkPath);
-        ws.create(linkPath, {
-            target: chromeLocation,
-            args: " --ignore-certificate-errors --app=" + url,
-            //icon: '%windir%\\system32\\wucltux.dll',
+        //title = iconv.encode(title, 'big5');
+        
+        parseFavicon(body, { 
+            baseURI: 'https://github.com', 
+            allowUseNetwork: true, 
+            allowParseImage: true 
+        }).then(function (icons) {
+            var largestSize = 0;
+            var largestPath;
+            
+            for (var i = 0; i < icons.length; i++) {
+                var size  = parseInt(icons[i].size.split('x')[0], 10);
+                if (size > largestSize) {
+                    largestPath = icons[i].path;
+                    largestSize = size;
+                }
+            }
+
+            console.log(largestPath);
+
+            var ext = largestPath.substring(largestPath.lastIndexOf('.') + 1, largestPath.length);
+            var localFilePath = __dirname + '\\ico_tmp\\' + host + '.' + ext;
+            var localIconPath = __dirname + '\\ico_tmp\\' + host + '.ico';
+            var file = fs.createWriteStream(localFilePath);
+            if (largestPath.startsWith("http") === false) {
+                largestPath = "http:" + largestPath;
+            }
+
+            var request = http.get(largestPath, function (response) {
+                response.pipe(file);
+
+                // 接下來要把檔案轉換成icon
+                console.log(localFilePath);
+                exec('convert.exe "' + localFilePath + '" "' + localIconPath + '"', (err, stdout, stderr) => {
+                    ws.create(linkPath, {
+                        target: chromeLocation,
+                        args: ' --ignore-certificate-errors --app=' + url,
+                        icon: localIconPath,
+                        //icon: 'D:/Desktop/Box Sync/[SOFTWARE]/[SavedIcons]/[ico]/Apps-Google-Drive-Slides-icon.ico',
+                    });
+                });
+            });
+
         });
+        
+            
             
     }
 });
