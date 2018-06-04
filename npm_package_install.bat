@@ -5,3 +5,4 @@ npm i url-parse
 npm i cheerio
 npm i request
 npm i parse-favicon
+npm i follow-redirects

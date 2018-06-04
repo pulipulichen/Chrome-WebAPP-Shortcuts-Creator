@@ -12,5 +12,5 @@ EndIf
 ; Display an open dialog to select a list of file(s).
 Local $sFileOpenDialog = FileOpenDialog($sMessage, @DesktopDir & "\" , "Shortcut (*.lnk)", 0, $filename)
 ;MsgBox($MB_SYSTEMMODAL, "", "You chose the following files:" & @CRLF & $sFileOpenDialog)
-ConsoleWrite($sFileOpenDialog & @CRLF)
+ConsoleWrite($sFileOpenDialog)
 Exit ($sFileOpenDialog)
