@@ -9,11 +9,13 @@ var fs = require('fs')
         , http = require('follow-redirects').http
         , https = require('follow-redirects').https
         , iconv = require('iconv-lite')
-    //, gm = require('gm')
-    , {exec} = require('child_process');
+        //, gm = require('gm')
+        , {exec} = require('child_process')
+        , process = require('process');
 
 var config = ini.parse(fs.readFileSync('./config.ini', 'utf-8'));
 var chromeLocation = config.global.googleChromeLocation;
+process.chdir(__dirname);
 //console.log(config);
 
 var url = "http://blog.pulipuli.info";
@@ -22,6 +24,7 @@ var url = "http://blog.pulipuli.info";
 //var url = "https://github.com/xhawk18/node-autoit";
 //var url = "https://docs.google.com/document/d/1gJWmlbei0hy2qQa_w8MxysZ7WKk17KjnZGsPpLdMagQ/edit?usp=sharing";
 //var url = "https://nodejs.org/api/url.html#url_url_hash";
+//url = "https://www.youtube.com/watch?v=pRWYi9hEKLY";
 
 //chromeLocation = chromeLocation + " --ignore-certificate-errors --app=" + url;
 
@@ -59,9 +62,14 @@ exec('input-box.exe "' + url + '"', { encoding: 'Big5', }, (err, stdout, stderr)
             // ღ Kawaii Radio | Happy Music to Study/Relax「24/7」| Kawaii Music LiveStream ☆*:o( ≧o≦ )o:*☆ - YouTube
             title = title.split("✿").join("");
             title = title.split("◕").join("");
+            title = title.split("➨").join("");
+            title = title.split("♥").join("");
+            title = title.split("♫").join("");
+            
             // My Top 10 Most Kawaii Songs(✿ ◕‿◕)(♪♫)Anime Moe!~♫| Kawaii Music Mix♫ - YouTube
             if (title.length > 30) {
-                title = title.substr(0, 30) + "...";
+                //title = title.substr(0, 30) + "...";
+                title = title.substr(0, 30);
             }
             //console.log(title);
 
@@ -112,12 +120,19 @@ exec('input-box.exe "' + url + '"', { encoding: 'Big5', }, (err, stdout, stderr)
                         largestPath = protocol + "//" + host + pathdir + largestPath;
                     }
                     
+                    // 如果是YouTube，則使用預設的縮圖
+                    //console.log(url);
+                    if (url.startsWith("https://www.youtube.com/") || url.startsWith("https://youtu.be/")) {
+                        largestPath = parseYouTubeThumbnail(url);
+                        //console.log(largestPath);
+                    }
+                    
                     //console.log(largestPath);
                     
-
                     var ext = largestPath.substring(largestPath.lastIndexOf('.') + 1, largestPath.length);
-                    localFilePath = __dirname + '\\ico_tmp\\' + title + '.' + ext;
-                    localIconPath = __dirname + '\\ico_tmp\\' + title + '.ico';
+                    var icon_title = title;
+                    localFilePath = __dirname + '\\ico_tmp\\' + icon_title + '.' + ext;
+                    localIconPath = __dirname + '\\ico_tmp\\' + icon_title + '.ico';
                     var file = fs.createWriteStream(localFilePath);
                     
                     var getHandler;
@@ -130,11 +145,12 @@ exec('input-box.exe "' + url + '"', { encoding: 'Big5', }, (err, stdout, stderr)
                     
                     var request = getHandler.get(largestPath, function (response) {
                         response.pipe(file);
-                        //return;
+                        
                         // 接下來要把檔案轉換成icon
                         //console.log(localFilePath);
                         if (ext !== "ico") {
-                            exec('convert.exe "' + localFilePath + '" "' + localIconPath + '"', (err, stdout, stderr) => {
+                            //console.log('convert.exe "' + localFilePath + '" "' + localIconPath + '"');
+                            exec('convert.exe -background none -gravity center -geometry 256x -extent 256x256 "' + localFilePath + '" "' + localIconPath + '"', (err, stdout, stderr) => {
                                 /*
                                 console.log(linkPath);
                                 console.log({
@@ -173,3 +189,81 @@ var wsCreate = function () {
     });
 
 };
+
+var parseYouTubeThumbnail = function (_url) {
+    // https://www.youtube.com/watch?v=pRWYi9hEKLY
+    // https://img.youtube.com/vi/pRWYi9hEKLY/hqdefault.jpg
+    // https://youtu.be/pRWYi9hEKLY
+    
+    if (_url.startsWith("https://www.youtube.com/")) {
+        
+        var _v = getAllUrlParams(_url).v;
+        return "https://img.youtube.com/vi/" + _v + "/default.jpg";
+    }
+    else {
+        var _v = _url.substring(_url.lastIndexOf("/")+1, _url.length);
+        return "https://img.youtube.com/vi/" + _v + "/default.jpg";
+    }
+};
+
+function getAllUrlParams(url) {
+
+  // get query string from url (optional) or window
+  var queryString = url ? url.split('?')[1] : window.location.search.slice(1);
+
+  // we'll store the parameters here
+  var obj = {};
+
+  // if query string exists
+  if (queryString) {
+
+    // stuff after # is not part of query string, so get rid of it
+    queryString = queryString.split('#')[0];
+
+    // split our query string into its component parts
+    var arr = queryString.split('&');
+
+    for (var i=0; i<arr.length; i++) {
+      // separate the keys and the values
+      var a = arr[i].split('=');
+
+      // in case params look like: list[]=thing1&list[]=thing2
+      var paramNum = undefined;
+      var paramName = a[0].replace(/\[\d*\]/, function(v) {
+        paramNum = v.slice(1,-1);
+        return '';
+      });
+
+      // set parameter value (use 'true' if empty)
+      var paramValue = typeof(a[1])==='undefined' ? true : a[1];
+
+      // (optional) keep case consistent
+      //paramName = paramName.toLowerCase();
+      //paramValue = paramValue.toLowerCase();
+
+      // if parameter name already exists
+      if (obj[paramName]) {
+        // convert value to array (if still string)
+        if (typeof obj[paramName] === 'string') {
+          obj[paramName] = [obj[paramName]];
+        }
+        // if no array index number specified...
+        if (typeof paramNum === 'undefined') {
+          // put the value on the end of the array
+          obj[paramName].push(paramValue);
+        }
+        // if array index number specified...
+        else {
+          // put the value at that index number
+          obj[paramName][paramNum] = paramValue;
+        }
+      }
+      // if param name doesn't exist yet, set it
+      else {
+        obj[paramName] = paramValue;
+      }
+    }
+  }
+
+  return obj;
+}
