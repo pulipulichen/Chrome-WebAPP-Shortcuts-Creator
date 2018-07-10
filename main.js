@@ -25,6 +25,7 @@ var url = "http://blog.pulipuli.info";
 //var url = "https://docs.google.com/document/d/1gJWmlbei0hy2qQa_w8MxysZ7WKk17KjnZGsPpLdMagQ/edit?usp=sharing";
 //var url = "https://nodejs.org/api/url.html#url_url_hash";
 //url = "https://www.youtube.com/watch?v=pRWYi9hEKLY";
+//url = "http://www.iconninja.com/";
 
 //chromeLocation = chromeLocation + " --ignore-certificate-errors --app=" + url;
 
@@ -135,19 +136,25 @@ exec('input-box.exe "' + url + '"', { encoding: 'Big5', }, (err, stdout, stderr)
                     localIconPath = __dirname + '\\ico_tmp\\' + icon_title + '.ico';
                     var file = fs.createWriteStream(localFilePath);
                     
-                    var getHandler;
-                    if (protocol === "http") {
-                        getHandler = http;
+                    const urlObjectIcon = new URL(largestPath);
+                    var protocolIcon = urlObjectIcon.protocol;
+                    
+                    //console.log(protocolIcon);
+                    
+                    var getHandlerIcon;
+                    if (protocolIcon === "http:") {
+                        getHandlerIcon = http;
                     }
                     else {
-                        getHandler = https;
+                        getHandlerIcon = https;
                     }
                     
-                    var request = getHandler.get(largestPath, function (response) {
+                    var request = getHandlerIcon.get(largestPath, function (response) {
                         response.pipe(file);
                         
                         // 接下來要把檔案轉換成icon
                         //console.log(localFilePath);
+                        
                         if (ext !== "ico") {
                             //console.log('convert.exe "' + localFilePath + '" "' + localIconPath + '"');
                             exec('convert.exe -background none -gravity center -geometry 256x -extent 256x256 "' + localFilePath + '" "' + localIconPath + '"', (err, stdout, stderr) => {
