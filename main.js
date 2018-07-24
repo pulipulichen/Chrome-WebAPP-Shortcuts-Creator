@@ -66,6 +66,7 @@ exec('input-box.exe "' + url + '"', { encoding: 'Big5', }, (err, stdout, stderr)
             title = title.split("➨").join("");
             title = title.split("♥").join("");
             title = title.split("♫").join("");
+            title = title.split("△").join("");
             
             // My Top 10 Most Kawaii Songs(✿ ◕‿◕)(♪♫)Anime Moe!~♫| Kawaii Music Mix♫ - YouTube
             if (title.length > 30) {
