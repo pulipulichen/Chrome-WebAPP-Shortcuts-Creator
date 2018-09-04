@@ -11,7 +11,8 @@ var fs = require('fs')
         , iconv = require('iconv-lite')
         //, gm = require('gm')
         , {exec} = require('child_process')
-        , process = require('process');
+        , process = require('process')
+		, md5 = require('md5');
 
 var config = ini.parse(fs.readFileSync('./config.ini', 'utf-8'));
 var chromeLocation = config.global.googleChromeLocation;
@@ -26,6 +27,7 @@ var url = "http://blog.pulipuli.info";
 //var url = "https://nodejs.org/api/url.html#url_url_hash";
 //url = "https://www.youtube.com/watch?v=pRWYi9hEKLY";
 //url = "http://www.iconninja.com/";
+url = "https://news.google.com/?hl=zh-TW&gl=TW&ceid=TW:zh-Hant";
 
 //chromeLocation = chromeLocation + " --ignore-certificate-errors --app=" + url;
 
@@ -131,10 +133,22 @@ exec('input-box.exe "' + url + '"', { encoding: 'Big5', }, (err, stdout, stderr)
                     
                     //console.log(largestPath);
                     
-                    var ext = largestPath.substring(largestPath.lastIndexOf('.') + 1, largestPath.length);
-                    var icon_title = title;
+                    var ext = "png";
+					
+					var largestPathParts = largestPath.split("/");
+					var largestPathFile = largestPathParts[(largestPathParts.length)-1];
+					if (largestPathFile.lastIndexOf('.') > -1) {
+						ext = largestPathFile.substring(largestPathFile.lastIndexOf('.') + 1, largestPathFile.length);
+					}
+					
+                    var icon_title = md5(title).split("\\").join("");
                     localFilePath = __dirname + '\\ico_tmp\\' + icon_title + '.' + ext;
                     localIconPath = __dirname + '\\ico_tmp\\' + icon_title + '.ico';
+					
+					//console.log(icon_title);
+					//console.log(localFilePath);
+					//console.log(localIconPath);
+					
                     var file = fs.createWriteStream(localFilePath);
                     
                     const urlObjectIcon = new URL(largestPath);
