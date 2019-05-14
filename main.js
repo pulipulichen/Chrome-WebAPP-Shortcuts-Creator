@@ -73,7 +73,7 @@ exec('input-box.exe "' + url + '"', { encoding: 'Big5', }, (err, stdout, stderr)
             // My Top 10 Most Kawaii Songs(✿ ◕‿◕)(♪♫)Anime Moe!~♫| Kawaii Music Mix♫ - YouTube
             if (title.length > 30) {
                 //title = title.substr(0, 30) + "...";
-                title = title.substr(0, 30);
+                title = title.substr(0, 30).trim();
             }
             //console.log(title);
 
