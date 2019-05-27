@@ -31,7 +31,8 @@ var app = new Vue({
   data: {
     url: 'http://blog.pulipuli.info',
     chromeFilePath: ChromeHelper.detectFilePath(),
-    persistAttrs: ['url', 'chromeFilePath']
+    iconFilePath: '../icon.ico',
+    persistAttrs: ['url', 'chromeFilePath', 'iconFilePath']
   },
   mounted() {
     ElectronHelper.mount(this, this.persistAttrs)
