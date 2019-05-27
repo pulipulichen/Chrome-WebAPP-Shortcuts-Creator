@@ -10,9 +10,9 @@ const url = require('url')
 
 app.on('ready', createWindow)
 
-let mode = 'development'
-if (process.argv.indexOf('--mode') - process.argv.indexOf('production') === -1) {
-  mode = "production"
+let mode = 'production'
+if (process.argv.indexOf('--mode') - process.argv.indexOf('development') === -1) {
+  mode = "development"
 }
 
 app.on('window-all-closed', () => {

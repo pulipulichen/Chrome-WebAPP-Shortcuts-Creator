@@ -1,26 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Chrome WebAPP Shortcuts Creator</title>
     <link rel="shortcut icon" href="../icon.ico" type="image/x-icon" />
-</head>
 
-<body>
-    <h1>Hello Electron</h1>
-    <p>Node Version:
-        <script>document.write(process.versions.node)</script>
-    </p>
-    <p>Chrome Version:
-        <script>document.write(process.versions.chrome)</script>
-    </p>
-    <p>Electron Version:
-        <script>document.write(process.versions.electron)</script>
-    </p>
+
+    <!-- Vendors -->
+    <script src="helpers/ElectronJQueryHelper.js"></script>
+    <link rel="stylesheet" type="text/css" href="vendors/semantic-ui/semantic.min.css">
+    <script src="vendors/semantic-ui/semantic.min.js"></script>
+
+    <script src="vendors/vue/vue.js"></script>
+    
+    <!-- Style --->
+    
+    <link rel="stylesheet/less" type="text/css" href="styles.less" />
+    <script>
+      less = {
+        logLevel: 0,
+      }
+    </script>
+    <script src="vendors/less/less.min.js" ></script>
+    
+    <!-- Helpers -->
+    <script src="helpers/URLHelper.js" ></script>
+    
+  </head>
+
+  <body>
+    <div class="ui" id="app"
+         ref="modal">
+      <form class="ui container form">
+        <div class="field"
+             @click="selectChromeFilePath">
+          <label for="chromeFilePath">
+            Google Chrome File Path
+          </label>
+          
+          <div class="ui right labeled input">
+            <input type="text" v-model="chromeFilePath" class="disabled" disabled="disabled" />
+            <button type="button"
+              class="ui icon button label">
+              <i class="folder open icon"></i>
+            </button>
+          </div>
+        </div>
+        
+        <div class="field">
+          <label for="url">
+            URL
+          </label>
+          <input id="url" type="url" v-model="url" />
+        </div>
+        
+        <div class="field">
+          <button type="button" 
+                  class="ui fluid button"
+                  v-bind:class="{ positive: isReady }">
+            CREATE
+          </button>
+        </div>
+      </form>
+    </div>
     <script src="scripts.js"></script>
-</body>
+  </body>
 
 </html>
