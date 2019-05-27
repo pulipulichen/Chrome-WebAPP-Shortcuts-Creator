@@ -55,35 +55,61 @@
           <label for="url">
             URL
           </label>
-          <input id="url" type="url" v-model="url" @change="persist" />
+          <div class="ui right labeled input">
+            <input id="url" type="url" v-model="url" @change="persist" />
+            <button type="button"
+                  class="ui icon button label"
+                  v-bind:class="{ disabled: isNotReady }"
+                  @click="loadFromURL">
+              <i class="search icon"></i>
+            </button>
+          </div>
+        </div>
+        
+        <div class="field">
+          <label for="title">
+            Title
+          </label>
+          <div class="ui input">
+            <input id="input" type="text" v-model="title" maxlength="10" />
+          </div>
+        </div>
+        
+        <div class="field">
+          <label for="description">
+            Description
+          </label>
+          <div class="ui input">
+            <textarea id="description" type="text" v-model="description" maxlength="30"></textarea>
+          </div>
         </div>
         
         <div class="fields">
+          <div class="field">
+            <label for="url">
+              Icon
+            </label>
+            <img :src="imgSrcIconFilePath" class="icon" />
+          </div>
           <div class="icon field">
             <label for="url">
-              ICON
+              &nbsp;
             </label>
-            <button type="button" class="load ui button">
-              LOAD FROM URL
-            </button>
             <button type="button" 
-                    class="select ui button"
+                    class="ui fluid button"
                     @click="selectIconFile">
               SELECT
             </button>
           </div>
-          <div class="field">
-            <label>&nbsp;</label>
-            <img :src="iconFilePath" class="icon" />
-          </div>
         </div>
           
         
-        <div class="field">
+        <div class="field" >
           <button type="button" 
-                  class="ui fluid button"
-                  v-bind:class="{ positive: isReady }">
-            CREATE
+                  class="ui fluid button create-shortcut"
+                  v-bind:class="{ positive: isReady, disabled: isNotReady }"
+                  @click="createShortcut">
+            CREATE SHORTCUT
           </button>
         </div>
       </form>

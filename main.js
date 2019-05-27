@@ -32,7 +32,7 @@ function createWindow() {
   // Create the browser window.
   let optionBrowserWindow = {
     width: 400,
-    height: 340,
+    height: 520,
     maximizable: false,
     icon: './icon.ico',
     webPreferences: {
