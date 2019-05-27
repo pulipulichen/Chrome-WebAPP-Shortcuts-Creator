@@ -28,7 +28,8 @@
     
     <!-- Helpers -->
     <script src="helpers/URLHelper.js" ></script>
-    
+    <script src="helpers/ChromeHelper.js" ></script>
+    <script src="helpers/ElectronHelper.js" ></script>
   </head>
 
   <body>
@@ -54,8 +55,29 @@
           <label for="url">
             URL
           </label>
-          <input id="url" type="url" v-model="url" />
+          <input id="url" type="url" v-model="url" @change="persist" />
         </div>
+        
+        <div class="fields">
+          <div class="icon field">
+            <label for="url">
+              ICON
+            </label>
+            <button type="button" class="ui button">
+              DOWNLOAD
+            </button>
+            <button type="button" 
+                    class="ui button"
+                    @click="selectIconFile">
+              SELECT
+            </button>
+          </div>
+          <div class="field">
+            <label>&nbsp;</label>
+            <img src="../icon.ico" class="icon" />
+          </div>
+        </div>
+          
         
         <div class="field">
           <button type="button" 

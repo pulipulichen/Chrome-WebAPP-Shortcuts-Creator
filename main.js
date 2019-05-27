@@ -65,3 +65,5 @@ function createWindow() {
   })
 
 }
+
+require('./ipc')
