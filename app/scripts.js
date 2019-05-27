@@ -35,10 +35,10 @@ var app = new Vue({
     title: '',
     description: '',
     chromeFilePath: ChromeHelper.detectFilePath(),
-    iconFilePath: 'icon.ico',
+    icon: 'icon.ico',
     iconBase64: null,
     $body: null,
-    persistAttrs: ['url', 'title', 'description', 'chromeFilePath', 'iconFilePath']
+    persistAttrs: ['url', 'title', 'description', 'chromeFilePath', 'icon']
   },
   mounted() {
     ElectronHelper.mount(this, this.persistAttrs)
@@ -52,7 +52,7 @@ var app = new Vue({
     },
     imgSrcIconFilePath: function () {
       if (this.iconBase64 === null) {
-        return '../tmp/' + this.iconFilePath
+        return '../tmp/' + this.icon
       }
       else {
         return this.iconBase64
@@ -96,9 +96,9 @@ var app = new Vue({
     },
     selectIconFile: function () {
       //console.log('@TODO selectIconFile')
-      let dir = path.resolve('../tmp', this.iconFilePath)
+      let dir = path.resolve('../tmp', this.icon)
       if (fs.existsSync(dir) === false) {
-        dir = path.resolve('./tmp', this.iconFilePath)
+        dir = path.resolve('./tmp', this.icon)
       }
       ipc.send('open-file-dialog-icon', dir)
     },
@@ -128,15 +128,30 @@ var app = new Vue({
       
       //console.log(filePath)
       filePath = path.basename(filePath)
-      this.iconFilePath = filePath
-      IconManager.getIconBase64(filePath, (base64) => {
+      this._changeIcon(filePath)
+      this.persist()
+    },
+    _changeIcon: function (icon) {
+      this.icon = icon
+      IconManager.getIconBase64(icon, (base64) => {
         this.iconBase64 = base64
       })
-      this.persist()
     },
     loadFromURL: function () {
       let url = this.url
-      alert('@TODO loadFromURL')
+      console.log(url)
+      CrawlerManager.loadFromURL(url, (data) => {
+        ['title', 'description', 'icon'].forEach(field => {
+          if (typeof(data[field]) === 'string') {
+            if (field !== 'icon') {
+              this[field] = data[field]
+            }
+            else {
+              this._changeIcon(data[field])
+            }
+          }
+        })
+      })
     },
     createShortcut: function () {
       let title = PathHelper.safeFilterTitle(this.title)
@@ -148,7 +163,7 @@ var app = new Vue({
         target: this.chromeFilePath,
         args: '--ignore-certificate-errors --app=' + this.url,
         //args: '--app=' + this.url,
-        icon: this.iconFilePath,
+        icon: this.icon,
         desc: this.description
         //icon: 'D:/Desktop/Box Sync/[SOFTWARE]/[SavedIcons]/[ico]/Apps-Google-Drive-Slides-icon.ico',
       }
