@@ -36,6 +36,7 @@ var app = new Vue({
     description: '',
     chromeFilePath: ChromeHelper.detectFilePath(),
     iconFilePath: 'icon.ico',
+    $body: null,
     persistAttrs: ['url', 'title', 'description', 'chromeFilePath', 'iconFilePath']
   },
   mounted() {
@@ -53,23 +54,52 @@ var app = new Vue({
     }
   },
   created: function () {
-    ipc.on('selected-file', (event, path) => {
+    ipc.on('selected-file-chrome', (event, path) => {
       this._selectChromeFilePathCallback(event, path)
     });
+    ipc.on('selected-file-icon', (event, path) => {
+      this._selectIconFileCallback(event, path)
+    });
+    
+    this.$body = $('body')
   },
   methods: {
+    _showLoadingLayer: function () {
+      this.$body.addClass('loading')
+    },
+    _hideLoadingLayer: function () {
+      this.$body.removeClass('loading')
+    },
     selectChromeFilePath: function () {
-      ipc.send('open-file-dialog-chrome-filepath', this.chromeFilePath)
+      ipc.send('open-file-dialog-chrome', this.chromeFilePath)
     },
     _selectChromeFilePathCallback: function (event, path) {
       //alert(path)
+      this.chromeFilePath = path
       this.persist()
     },
     persist: function () {
       ElectronHelper.persist(this, this.persistAttrs)
     },
     selectIconFile: function () {
-      console.log('@TODO selectIconFile')
+      //console.log('@TODO selectIconFile')
+      let dir = path.resolve('../tmp', this.iconFilePath)
+      if (fs.existsSync(dir) === false) {
+        dir = path.resolve('./tmp', this.iconFilePath)
+      }
+      ipc.send('open-file-dialog-icon', dir)
+    },
+    _selectIconFileCallback: function (event, path) {
+      //alert(path)
+      if (process.platform === 'win32' 
+              && path.endsWith('.ico') === false) {
+        this._showLoadingLayer()
+        
+        this._hideLoadingLayer()
+      }
+      
+      this.iconFilePath = path
+      this.persist()
     },
     loadFromURL: function () {
       let url = this.url
@@ -97,7 +127,7 @@ var app = new Vue({
           //icon: 'D:/Desktop/Box Sync/[SOFTWARE]/[SavedIcons]/[ico]/Apps-Google-Drive-Slides-icon.ico',
         }
         
-        let title = this.title
+        let title = PathHelper.safeFilterTitle(this.title)
         let shortcutFilePath = path.resolve(ElectronHelper.getBasePath(), title + '.lnk').split("/").join("\\\\")
         console.log(shortcutFilePath)
         console.log(options)
@@ -114,6 +144,7 @@ var app = new Vue({
       }
     }
   },
+  
 })
 
 $(() => {

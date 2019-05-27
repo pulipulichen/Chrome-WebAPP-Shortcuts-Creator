@@ -2,11 +2,11 @@
 const ipc = require('electron').ipcMain
 const dialog = require('electron').dialog
 
-ipc.on('open-file-dialog-chrome-filepath', function (event, dir) {
-  console.log(process.platform)
+ipc.on('open-file-dialog-chrome', function (event, dir) {
+  //console.log(process.platform)
   
   let options = {
-    title: 'Please select Google Chrome location',
+    title: 'Please select Google Chrome',
     properties: ['openFile']
   }
   
@@ -23,11 +23,39 @@ ipc.on('open-file-dialog-chrome-filepath', function (event, dir) {
     ]
   }
   
-  console.log(options)
+  //console.log(options)
   
   dialog.showOpenDialog(options, function (files) {
     if (files) {
-      event.sender.send('selected-file', files)
+      event.sender.send('selected-file-chrome', files)
+    }
+  })
+})
+
+ipc.on('open-file-dialog-icon', function (event, dir) {
+  let options = {
+    title: 'Please select a icon image',
+    properties: ['openFile']
+  }
+  
+  if (dir !== '') {
+    if (process.platform === 'win32') {
+      dir = dir.split('/').join('\\')
+    }
+    options.defaultPath = dir
+  }
+  
+  if (process.platform === 'win32') {
+    options.filters = [
+      { name: 'Images', extensions: ['ico', 'png', 'jpg', 'jpeg', 'gif'] }
+    ]
+  }
+  
+  //console.log(options)
+  
+  dialog.showOpenDialog(options, function (files) {
+    if (files) {
+      event.sender.send('selected-file-icon', files)
     }
   })
 })

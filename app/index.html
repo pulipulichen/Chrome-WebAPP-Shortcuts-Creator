@@ -30,6 +30,7 @@
     <script src="helpers/URLHelper.js" ></script>
     <script src="helpers/ChromeHelper.js" ></script>
     <script src="helpers/ElectronHelper.js" ></script>
+    <script src="helpers/PathHelper.js" ></script>
   </head>
 
   <body>
@@ -71,7 +72,7 @@
             Title
           </label>
           <div class="ui input">
-            <input id="input" type="text" v-model="title" maxlength="10" />
+            <input id="input" type="text" v-model="title" maxlength="20" @change="persist" />
           </div>
         </div>
         
@@ -80,7 +81,7 @@
             Description
           </label>
           <div class="ui input">
-            <textarea id="description" type="text" v-model="description" maxlength="30"></textarea>
+            <textarea id="description" type="text" v-model="description" maxlength="30" @change="persist"></textarea>
           </div>
         </div>
         
@@ -115,6 +116,8 @@
       </form>
     </div>
     <script src="scripts.js"></script>
+    
+    <div class="loading-layer"></div>
   </body>
 
 </html>
