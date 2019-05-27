@@ -65,7 +65,7 @@
             <input id="url" type="url" v-model="url" @change="persist" />
             <button type="button"
                   class="ui icon button label"
-                  v-bind:class="{ disabled: isNotReady }"
+                  v-bind:class="{ disabled: isURLNotReady, positive: isNeedLoad }"
                   @click="loadFromURL">
               <i class="search icon"></i>
             </button>

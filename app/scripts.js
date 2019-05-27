@@ -44,8 +44,17 @@ var app = new Vue({
     ElectronHelper.mount(this, this.persistAttrs)
   },
   computed: {
-    isReady: function () {
+    isNeedLoad: function () {
+      return (this.isURLReady === true && this.title.trim() === '')
+    },
+    isURLReady: function () {
       return URLHelper.isURL(this.url)
+    },
+    isURLNotReady: function () {
+      return (this.isURLReady === false)
+    },
+    isReady: function () {
+      return (this.isURLReady === true && this.title.trim() !== '')
     },
     isNotReady: function () {
       return (this.isReady === false)
@@ -92,7 +101,7 @@ var app = new Vue({
       this.persist()
     },
     persist: function () {
-      ElectronHelper.persist(this, this.persistAttrs)
+      //ElectronHelper.persist(this, this.persistAttrs)
     },
     selectIconFile: function () {
       //console.log('@TODO selectIconFile')
@@ -151,6 +160,7 @@ var app = new Vue({
             }
           }
         })
+        this.persist()
       })
     },
     createShortcut: function () {
