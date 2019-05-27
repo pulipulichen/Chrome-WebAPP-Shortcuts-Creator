@@ -2,3 +2,7 @@
 /node_modules/
 /ico_tmp/
 /nbproject/private/
+/config.ini
+/tmp
+/dist/
+/[[]document]/

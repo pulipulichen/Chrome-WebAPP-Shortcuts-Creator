@@ -1,16 +1,16 @@
 {
-  "name": "windows-webapp-shortcuts-creator",
+  "name": "chrome-webapp-shortcuts-creator",
   "version": "1.0.0",
   "description": "- 要讓人自由決定選擇icon，還是從網路上下載favicon\r - 要提供能夠改變favicon的JavaScript，favicon用base64編碼取代",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "run": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
   },
-  "directories": {},
   "dependencies": {
     "appjs": "^0.0.20",
     "cheerio": "^1.0.0-rc.2",
-    "electron": "^5.0.2",
     "favicon-url": "^0.0.5",
     "follow-redirects": "^1.5.0",
     "gm": "^1.23.1",
@@ -29,15 +29,24 @@
     "url-parse": "^1.4.0",
     "windows-shortcuts": "^0.1.6"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "electron": "^5.0.2"
+  },
   "repository": {
     "type": "git",
-    "url": "git+https://pulipuli.chen@gmail.com@github.com/pulipulichen/Windows-WebAPP-Shortcuts-Creator.git"
+    "url": "git+https://pulipuli.chen@gmail.com@github.com/pulipulichen/Chrome-WebAPP-Shortcuts-Creator.git"
   },
   "author": "Pulipuli Chen",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/pulipulichen/Windows-WebAPP-Shortcuts-Creator/issues"
+    "url": "https://github.com/pulipulichen/Chrome-WebAPP-Shortcuts-Creator/issues"
   },
-  "homepage": "https://github.com/pulipulichen/Windows-WebAPP-Shortcuts-Creator#readme"
+  "homepage": "https://github.com/pulipulichen/Chrome-WebAPP-Shortcuts-Creator#readme",
+  "build": {
+    "appId": "chrome.webapp.shortcuts.creator",
+    "compression": "maximum",
+    "mac": {
+      "category": "chrome.webapp.shortcuts.creator"
+    }
+  }
 }
