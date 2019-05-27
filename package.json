@@ -1,0 +1,43 @@
+{
+  "name": "windows-webapp-shortcuts-creator",
+  "version": "1.0.0",
+  "description": "- 要讓人自由決定選擇icon，還是從網路上下載favicon\r - 要提供能夠改變favicon的JavaScript，favicon用base64編碼取代",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "directories": {},
+  "dependencies": {
+    "appjs": "^0.0.20",
+    "cheerio": "^1.0.0-rc.2",
+    "electron": "^5.0.2",
+    "favicon-url": "^0.0.5",
+    "follow-redirects": "^1.5.0",
+    "gm": "^1.23.1",
+    "iconv-lite": "^0.4.23",
+    "image-to-icon-converter": "^1.0.1",
+    "imagemagick": "^0.1.3",
+    "ini": "^1.3.5",
+    "md5": "^2.2.1",
+    "nw-dialog": "^1.0.7",
+    "parse-domain": "^2.1.1",
+    "parse-favicon": "^2.0.0",
+    "png-to-ico": "^2.0.0",
+    "request": "^2.87.0",
+    "to-ico": "^1.1.5",
+    "url": "^0.11.0",
+    "url-parse": "^1.4.0",
+    "windows-shortcuts": "^0.1.6"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://pulipuli.chen@gmail.com@github.com/pulipulichen/Windows-WebAPP-Shortcuts-Creator.git"
+  },
+  "author": "Pulipuli Chen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pulipulichen/Windows-WebAPP-Shortcuts-Creator/issues"
+  },
+  "homepage": "https://github.com/pulipulichen/Windows-WebAPP-Shortcuts-Creator#readme"
+}
