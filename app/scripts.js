@@ -70,6 +70,9 @@ var app = new Vue({
     ipc.on('selected-file-icon', (event, path) => {
       this._selectIconFileCallback(event, path)
     });
+    ipc.on('selected-file-create', (event, path) => {
+      this._createShortcutCallback(event, path)
+    });
     
     this.$body = $('body')
   },
@@ -136,42 +139,20 @@ var app = new Vue({
       alert('@TODO loadFromURL')
     },
     createShortcut: function () {
-      console.log('@TODO createShortcut')
-      if (process.platform === 'win32') {
-        if (ws === null) {
-          ws = require('windows-shortcuts')
-        }
-        
-        let chromeFilePath = this.chromeFilePath.split("/").join("\\\\")
-        //chromeFilePath = chromeFilePath.split("/").join("\\")
-        let iconFilePath = this.iconFilePath
-        iconFilePath = path.resolve(ElectronHelper.getBasePath(), 'tmp', iconFilePath).split("/").join("\\\\")
-        let description = this.description
-        
-        let options = {
-          target: chromeFilePath,
-          args: '--ignore-certificate-errors --app=' + this.url,
-          //args: '--app=' + this.url,
-          icon: iconFilePath,
-          desc: description
-          //icon: 'D:/Desktop/Box Sync/[SOFTWARE]/[SavedIcons]/[ico]/Apps-Google-Drive-Slides-icon.ico',
-        }
-        
-        let title = PathHelper.safeFilterTitle(this.title)
-        let shortcutFilePath = path.resolve(ElectronHelper.getBasePath(), title + '.lnk').split("/").join("\\\\")
-        console.log(shortcutFilePath)
-        console.log(options)
-        ws.create(shortcutFilePath, options, (err) => {
-          if (err) {
-            alert(err)
-            throw Error(err)
-          }
-          //console.log(e)
-        });
+      let title = PathHelper.safeFilterTitle(this.title)
+      let shortcutFilePath = path.resolve(ElectronHelper.getBasePath(), title + '.lnk').split("/").join("\\\\")
+      ipc.send('open-file-dialog-create', shortcutFilePath)
+    },
+    _createShortcutCallback: function (event, saveToPath) {
+      let options = {
+        target: this.chromeFilePath,
+        args: '--ignore-certificate-errors --app=' + this.url,
+        //args: '--app=' + this.url,
+        icon: this.iconFilePath,
+        desc: this.description
+        //icon: 'D:/Desktop/Box Sync/[SOFTWARE]/[SavedIcons]/[ico]/Apps-Google-Drive-Slides-icon.ico',
       }
-      else {
-        alert('@TODO createShortcut')
-      }
+      ShortcutManager.create(saveToPath, options)
     }
   },
   

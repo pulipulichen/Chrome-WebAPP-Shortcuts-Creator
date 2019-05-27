@@ -59,3 +59,22 @@ ipc.on('open-file-dialog-icon', function (event, dir) {
     }
   })
 })
+
+ipc.on('open-file-dialog-create', function (event, filePath) {
+  let options = {
+    title: 'Save shortcut to...',
+  }
+  
+  if (filePath !== '') {
+    if (process.platform === 'win32') {
+      filePath = filePath.split('/').join('\\')
+    }
+    options.defaultPath = filePath
+  }
+  
+  dialog.showSaveDialog(null, options, function (file) {
+    if (file) {
+      event.sender.send('selected-file-create', file)
+    }
+  })
+})
