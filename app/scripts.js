@@ -43,7 +43,9 @@ var app = new Vue({
     }
   },
   created: function () {
-    ipc.on('selected-file', this._selectChromeFilePathCallback);
+    ipc.on('selected-file', (event, path) => {
+      this._selectChromeFilePathCallback(event, path)
+    });
   },
   methods: {
     selectChromeFilePath: function () {

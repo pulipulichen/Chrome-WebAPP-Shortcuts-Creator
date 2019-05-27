@@ -14,6 +14,12 @@ img.icon {
   margin-bottom: 1rem !important;
 }
 
-.icon.field > button {
-  width: calc(50% - 0.5rem);
-}
+.icon.field {
+  &> button.load {
+    width: calc(60% - 0.5rem);
+  }
+  
+  &> button.select {
+    width: calc(40% - 0.5rem);
+  }
+} 
