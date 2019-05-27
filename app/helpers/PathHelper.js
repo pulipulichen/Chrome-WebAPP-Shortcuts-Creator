@@ -1,7 +1,16 @@
 PathHelper = {
-  hyperCharacters: [':', '/', '|'],
-  removeCharacters: ["ღ", '✿', '◕', '➨', '♥', '♫', '△'],
+  hyperCharacters: [':', '/', '|', '▬'],
+  removeCharacters: ["ღ", '✿', '◕', '➨', '♥', '♫', '△', '❤'],
   safeFilterTitle: function (title) {
+    title = this.safeFilter(title)
+    
+    if (title.length > 30) {
+      title = title.slice(0, 30)
+    }
+    
+    return title
+  },
+  safeFilter: function (title) {
     this.hyperCharacters.forEach(char => {
       title = title.split(char).join('-')
     })
@@ -9,11 +18,6 @@ PathHelper = {
     this.removeCharacters.forEach(char => {
       title = title.split(char).join('')
     })
-    
-    if (title.length > 20) {
-      title = title.slice(0, 20)
-    }
-    
     return title
   }
 }

@@ -1,6 +1,6 @@
 let ShortcutManager = {
   create: function (saveToPath, options) {
-    console.log('@TODO createShortcut')
+    //console.log('@TODO createShortcut')
     if (process.platform === 'win32') {
       this.createWin32(saveToPath, options)
     }

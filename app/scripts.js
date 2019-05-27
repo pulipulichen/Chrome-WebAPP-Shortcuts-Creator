@@ -148,7 +148,7 @@ var app = new Vue({
     },
     loadFromURL: function () {
       let url = this.url
-      console.log(url)
+      //console.log(url)
       CrawlerManager.loadFromURL(url, (data) => {
         ['title', 'description', 'icon'].forEach(field => {
           if (typeof(data[field]) === 'string') {
