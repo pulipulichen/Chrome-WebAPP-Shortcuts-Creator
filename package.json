@@ -52,8 +52,8 @@
       "category": "chrome.webapp.shortcuts.creator"
     },
     "win": {
-        "icon": "icon.ico",
-        "target": "portable"
+      "icon": "icon.ico",
+      "target": "portable"
     },
     "portable": {
       "artifactName": "chrome-webapp-shortcuts-creator.exe"

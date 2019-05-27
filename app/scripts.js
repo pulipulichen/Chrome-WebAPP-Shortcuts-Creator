@@ -7,7 +7,7 @@ const settings = require('electron').remote.require('electron-settings');
 const mode = settings.get('mode')
 
 let ws = null // for module "windows-shortcut"
-
+let exec = null
 /*
 let basepath = './'
 if (typeof(process.env.PORTABLE_EXECUTABLE_DIR) === 'string') {
@@ -36,6 +36,7 @@ var app = new Vue({
     description: '',
     chromeFilePath: ChromeHelper.detectFilePath(),
     iconFilePath: 'icon.ico',
+    iconBase64: null,
     $body: null,
     persistAttrs: ['url', 'title', 'description', 'chromeFilePath', 'iconFilePath']
   },
@@ -50,7 +51,16 @@ var app = new Vue({
       return (this.isReady === false)
     },
     imgSrcIconFilePath: function () {
-      return '../' + this.iconFilePath
+      if (this.iconBase64 === null) {
+        return '../tmp/' + this.iconFilePath
+      }
+      else {
+        return this.iconBase64
+      }
+      
+      //let filePath = 'tmp/' + this.iconFilePath
+      //let data = fs.readFileSync(filePath);
+      //return data.toString('base64')
     }
   },
   created: function () {
@@ -73,9 +83,9 @@ var app = new Vue({
     selectChromeFilePath: function () {
       ipc.send('open-file-dialog-chrome', this.chromeFilePath)
     },
-    _selectChromeFilePathCallback: function (event, path) {
+    _selectChromeFilePathCallback: function (event, filePath) {
       //alert(path)
-      this.chromeFilePath = path
+      this.chromeFilePath = filePath
       this.persist()
     },
     persist: function () {
@@ -89,16 +99,36 @@ var app = new Vue({
       }
       ipc.send('open-file-dialog-icon', dir)
     },
-    _selectIconFileCallback: function (event, path) {
-      //alert(path)
+    _selectIconFileCallback: function (event, filePath) {
+      //console.log(path)
       if (process.platform === 'win32' 
-              && path.endsWith('.ico') === false) {
+              && filePath.endsWith('.ico') === false) {
         this._showLoadingLayer()
-        
-        this._hideLoadingLayer()
+        IconManager.convertToIco(filePath, (targetIconPath) => {
+          this._hideLoadingLayer()
+          this._selectIconFileCallback(event, targetIconPath)
+        })
+        return
       }
       
-      this.iconFilePath = path
+      // 如果不在tmp資料夾中，則把它搬到tmp中
+      //console.log(filePath)
+      
+      
+      //console.log(tmpDir)
+      if (IconManager.isInTmpFolder(filePath)) {
+        IconManager.copyToTmpFolder(filePath, (targetPath) => {
+          this._selectIconFileCallback(event, targetPath)
+        })
+        return
+      }
+      
+      //console.log(filePath)
+      filePath = path.basename(filePath)
+      this.iconFilePath = filePath
+      IconManager.getIconBase64(filePath, (base64) => {
+        this.iconBase64 = base64
+      })
       this.persist()
     },
     loadFromURL: function () {

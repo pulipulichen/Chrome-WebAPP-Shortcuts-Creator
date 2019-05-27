@@ -27,7 +27,7 @@ ipc.on('open-file-dialog-chrome', function (event, dir) {
   
   dialog.showOpenDialog(options, function (files) {
     if (files) {
-      event.sender.send('selected-file-chrome', files)
+      event.sender.send('selected-file-chrome', files[0])
     }
   })
 })
@@ -55,7 +55,7 @@ ipc.on('open-file-dialog-icon', function (event, dir) {
   
   dialog.showOpenDialog(options, function (files) {
     if (files) {
-      event.sender.send('selected-file-icon', files)
+      event.sender.send('selected-file-icon', files[0])
     }
   })
 })
