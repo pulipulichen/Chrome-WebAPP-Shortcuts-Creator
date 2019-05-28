@@ -20,18 +20,10 @@ let IconManager = {
     
     // ---------------------------------
 
-    let convertExe = path.resolve('convert.exe')
-    if (fs.existsSync(convertExe) === false) {
-      convertExe = path.resolve('app/convert.exe')
-    }
-    if (fs.existsSync(convertExe) === false) {
-      let errorMessage = 'convert.exe is not found'
-      alert(errorMessage)
-      throw Error(errorMessage)
-      return 
-    }
+    let convertExe = this._getConvertExePath()
     
     let command = convertExe + ' -background none -gravity center -geometry 256x -extent 256x256 "' + inputFile + '" "' + targetIconPath + '"'
+    
     //let command = [path.join(path), path.join(targetIconPath)]
     //console.log(command)
 
@@ -44,6 +36,33 @@ let IconManager = {
         callback(targetIconPath)
       }
     })
+  },
+  _getConvertExePath: function () {
+    //let convertExe = path.resolve('convert.exe')
+    let convertExe = ElectronHelper.getTmpDirPath('convert.exe')
+    if (fs.existsSync(convertExe) === false) {
+      // 試著複製檔案過去
+      let originalExe = ElectronHelper.resolveAppPath('convert.exe')
+      //console.log([originalExe, convertExe])
+      if (fs.existsSync(originalExe) === false) {
+        let errorMessage = 'convert.exe is not found'
+        alert(errorMessage)
+        throw Error(errorMessage)
+        return 
+      }
+      fs.copyFileSync(originalExe, convertExe)
+      
+      //convertExe = path.resolve('app/convert.exe')
+    }
+    /*
+    if (fs.existsSync(convertExe) === false) {
+      let errorMessage = 'convert.exe is not found'
+      alert(errorMessage)
+      throw Error(errorMessage)
+      return 
+    }
+    */
+    return convertExe
   },
   isInTmpFolder: function (filePath) {
     let tmpDir = ElectronHelper.getTmpDirPath()
@@ -90,7 +109,7 @@ let IconManager = {
       return
     }
     
-    console.log(iconPath)
+    //console.log(iconPath)
     fs.readFile(iconPath, (err, data) => {
       let base64 = 'data:image/x-icon;base64,' + data.toString('base64')
       //console.log(base64)

@@ -4,7 +4,8 @@
   "description": "- 要讓人自由決定選擇icon，還是從網路上下載favicon\r - 要提供能夠改變favicon的JavaScript，favicon用base64編碼取代",
   "main": "main.js",
   "scripts": {
-    "0.run": "electron . --mode development",
+    "0.run-development": "electron . --mode development",
+    "1.run-production": "electron .",
     "pack": "electron-builder --dir",
     "8.dist": "electron-builder && node open-dist.js",
     "9.open-dist": "node open-dist.js"
@@ -58,9 +59,6 @@
     },
     "portable": {
       "artifactName": "chrome-webapp-shortcuts-creator.exe"
-    },
-    "files": [
-      "app/convert.exe"
-    ]
+    }
   }
 }

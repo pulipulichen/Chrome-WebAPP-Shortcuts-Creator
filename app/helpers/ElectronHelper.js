@@ -83,7 +83,8 @@ ElectronHelper = {
       //console.log(FileSet)
       //alert(['error', filePath ])
       //throw Error('resolveAppPath')
-      console.log(filePath)
+      //console.log(filePath)
+      filePath = path.join('./resources/app.asar/app/', filePath)
       return filePath
     }
     else {

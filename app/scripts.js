@@ -111,7 +111,7 @@ let app = new Vue({
       this.persist()
     },
     persist: function () {
-      //ElectronHelper.persist(this, this.persistAttrs)
+      ElectronHelper.persist(this, this.persistAttrs)
     },
     selectIconFile: function () {
       //let dir = path.resolve('../tmp', this.icon)
@@ -192,11 +192,9 @@ let app = new Vue({
   
 })
 
+/*
 setTimeout(() => {
   //$('.create-shortcut').click()
   //$('.load-from-url').click()
-  ipc.on('check-file-callback', (event, result) => {
-    console.log(result)
-  });
-  ipc.send('check-file', './app/convert.exe')
 }, 1000)
+*/

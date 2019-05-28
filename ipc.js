@@ -80,10 +80,3 @@ ipc.on('open-file-dialog-create', function (event, filePath) {
     }
   })
 })
-
-ipc.on('check-file', (event, filePath) => {
-  let result = fs.existsSync(filePath)
-  console.log(result)
-  let basepath = path.resolve('./')
-  event.sender.send('check-file-callback', result + '|' + basepath)
-})

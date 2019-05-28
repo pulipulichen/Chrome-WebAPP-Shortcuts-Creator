@@ -15,6 +15,7 @@ if (process.argv.indexOf('--mode') - process.argv.indexOf('development') === -1)
   mode = "development"
 }
 mode = "development"
+//mode = 'production'
 
 app.on('window-all-closed', () => {
   // darwin = MacOS
@@ -31,9 +32,14 @@ app.on('activate', () => {
 
 function createWindow() {
   // Create the browser window.
+  let height = 500
+  if (mode === 'development') {
+    height = 520
+  }
+  
   let optionBrowserWindow = {
     width: 400,
-    height: 520,
+    height: height,
     maximizable: false,
     icon: './icon.ico',
     webPreferences: {
@@ -43,6 +49,10 @@ function createWindow() {
   
   
   win = new BrowserWindow(optionBrowserWindow)
+  
+  if (mode === 'production') {
+    win.setMenu(null);
+  }
   
   win.loadURL(url.format({
     pathname: path.join(__dirname, 'app', 'index.html'),
