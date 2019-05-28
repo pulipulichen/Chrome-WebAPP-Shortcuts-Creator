@@ -150,6 +150,12 @@ var app = new Vue({
       this.icon = filePath
       this.persist()
     },
+    onURLChange: function () {
+      if (URLHelper.isURL(this.url)) {
+        $(this.$refs.loadFromURL).focus()
+        this.persist()
+      }
+    },
     loadFromURL: function () {
       let url = this.url
       //console.log(url)
@@ -162,6 +168,7 @@ var app = new Vue({
         })
         this.persist()
         this._hideLoadingLayer()
+        $(this.$refs.createShortcut).focus()
       })
     },
     createShortcut: function () {

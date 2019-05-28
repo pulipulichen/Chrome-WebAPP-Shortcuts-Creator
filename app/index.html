@@ -40,7 +40,7 @@
 
   <body>
     <div class="ui" id="app"
-         ref="modal">
+         ref="ui">
       <form class="ui container form">
         <div class="field"
              @click="selectChromeFilePath">
@@ -62,11 +62,12 @@
             URL
           </label>
           <div class="ui right labeled input">
-            <input id="url" type="url" v-model="url" @change="persist" />
+            <input id="url" type="url" v-model="url" @change="onURLChange" />
             <button type="button"
                   class="ui icon button label load-from-url"
                   v-bind:class="{ disabled: isURLNotReady, positive: isNeedLoad }"
-                  @click="loadFromURL">
+                  @click="loadFromURL"
+                  ref="loadFromURL">
               <i class="search icon"></i>
             </button>
           </div>
@@ -114,7 +115,8 @@
           <button type="button" 
                   class="ui fluid button create-shortcut"
                   v-bind:class="{ positive: isReady, disabled: isNotReady }"
-                  @click="createShortcut">
+                  @click="createShortcut"
+                  ref="createShortcut">
             CREATE SHORTCUT
           </button>
         </div>
