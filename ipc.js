@@ -1,6 +1,8 @@
 //listen to an open-file-dialog command and sending back selected information
 const ipc = require('electron').ipcMain
 const dialog = require('electron').dialog
+const fs = require('fs')
+const path = require('path')
 
 ipc.on('open-file-dialog-chrome', function (event, dir) {
   //console.log(process.platform)
@@ -77,4 +79,11 @@ ipc.on('open-file-dialog-create', function (event, filePath) {
       event.sender.send('selected-file-create', file)
     }
   })
+})
+
+ipc.on('check-file', (event, filePath) => {
+  let result = fs.existsSync(filePath)
+  console.log(result)
+  let basepath = path.resolve('./')
+  event.sender.send('check-file-callback', result + '|' + basepath)
 })

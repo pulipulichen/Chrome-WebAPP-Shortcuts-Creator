@@ -10,6 +10,7 @@ const mode = settings.get('mode')
 
 let ws = null // for module "windows-shortcut"
 let exec = null
+
 /*
 let basepath = './'
 if (typeof(process.env.PORTABLE_EXECUTABLE_DIR) === 'string') {
@@ -30,7 +31,7 @@ fs.writeFile(path.join(basepath, 'test.txt'), 'Hello content!', function (err) {
 
 //console.log(mode)
 
-var app = new Vue({
+let app = new Vue({
   el: '#app',
   data: {
     url: 'http://blog.pulipuli.info',
@@ -194,4 +195,8 @@ var app = new Vue({
 setTimeout(() => {
   //$('.create-shortcut').click()
   //$('.load-from-url').click()
+  ipc.on('check-file-callback', (event, result) => {
+    console.log(result)
+  });
+  ipc.send('check-file', './app/convert.exe')
 }, 1000)

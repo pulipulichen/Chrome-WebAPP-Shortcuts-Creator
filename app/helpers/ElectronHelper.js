@@ -77,6 +77,18 @@ ElectronHelper = {
     }
     
     return tmpDirPath
+  },
+  resolveAppPath: function (filePath) {
+    if (typeof(process.env.PORTABLE_EXECUTABLE_DIR) === 'string') {
+      //console.log(FileSet)
+      //alert(['error', filePath ])
+      //throw Error('resolveAppPath')
+      console.log(filePath)
+      return filePath
+    }
+    else {
+      return this.resolve('app/' + filePath)
+    }
   }
 }
 

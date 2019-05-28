@@ -58,6 +58,9 @@
     },
     "portable": {
       "artifactName": "chrome-webapp-shortcuts-creator.exe"
-    }
+    },
+    "files": [
+      "app/convert.exe"
+    ]
   }
 }

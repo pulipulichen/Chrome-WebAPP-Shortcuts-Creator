@@ -81,10 +81,20 @@ let IconManager = {
       }
     });
   },
-  getIconBase64: function (filePath, callback) {
-    fs.readFile(ElectronHelper.getTmpDirPath(filePath), (err, data) => {
+  getIconBase64: function (icon, callback) {
+    let iconPath = ElectronHelper.getTmpDirPath(icon)
+    
+    if (fs.existsSync(iconPath) === false) {
+      //iconPath = ElectronHelper.resolveAppPath('imgs/icon.ico')
+      $.get('imgs/icon.ico.base64.txt', callback)
+      return
+    }
+    
+    console.log(iconPath)
+    fs.readFile(iconPath, (err, data) => {
       let base64 = 'data:image/x-icon;base64,' + data.toString('base64')
       //console.log(base64)
+      //fs.writeFile(iconPath + '.base64.txt', base64, () => {})
       if (typeof(callback) === 'function') {
         callback(base64)
       }
