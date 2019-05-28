@@ -9,7 +9,15 @@ ElectronHelper = {
       attrs = [attrs]
     }
     
-    fs.readFile(path.join(this.getBasePath(), this._configFilePath), function (err, data) {
+    let configFilePath = path.join(this.getBasePath(), this._configFilePath)
+    if (fs.existsSync(configFilePath) === false) {
+      if (typeof(callback) === 'function') {
+        callback(data)
+      }
+      return
+    }
+    
+    fs.readFile(configFilePath, function (err, data) {
       if (err) throw err;
       
       data = data.toString().trim()

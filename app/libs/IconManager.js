@@ -19,8 +19,8 @@ let IconManager = {
       return
     }
     
-    inputFile = '.\\' + path.relative("./", inputFile)
-    targetIconPath = '.\\' + path.relative("./", targetIconPath)
+    //inputFile = '.\\' + path.relative("./", inputFile)
+    //targetIconPath = '.\\' + path.relative("./", targetIconPath)
     
     // ---------------------------------
 
@@ -66,7 +66,7 @@ let IconManager = {
       
       //convertExe = path.resolve('app/convert.exe')
     }
-    convertExe = '.\\' + path.relative("./", convertExe)
+    //convertExe = '.\\' + path.relative("./", convertExe)
     /*
     if (fs.existsSync(convertExe) === false) {
       let errorMessage = 'convert.exe is not found'
@@ -114,9 +114,14 @@ let IconManager = {
     });
   },
   getIconBase64: function (icon, callback) {
+    if (typeof(icon) === 'function' && callback === undefined) {
+      callback = icon
+      icon = undefined
+    }
+    
     let iconPath = ElectronHelper.getTmpDirPath(icon)
     
-    if (fs.existsSync(iconPath) === false) {
+    if (fs.existsSync(iconPath) === false || icon === undefined) {
       //iconPath = ElectronHelper.resolveAppPath('imgs/icon.ico')
       console.error(`Icon is not found: ${iconPath}`)
       $.get('imgs/icon.ico.base64.txt', callback)

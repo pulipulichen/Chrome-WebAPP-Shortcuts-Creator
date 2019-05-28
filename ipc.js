@@ -73,9 +73,11 @@ ipc.on('open-file-dialog-create', function (event, filePath) {
   if (filePath !== '') {
     if (process.platform === 'win32') {
       filePath = filePath.split('/').join('\\')
+      //filePath = filePath.split('\\').join('/')
     }
     options.defaultPath = filePath
   }
+  console.log(options)
   
   dialog.showSaveDialog(win, options, function (file) {
     if (file) {

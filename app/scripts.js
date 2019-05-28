@@ -14,6 +14,9 @@ const shell = remote.shell
 let ws = null // for module "windows-shortcut"
 let exec = null
 
+const getPath = require('platform-folders').default
+//console.log(getPath('desktop'));
+
 /*
 let basepath = './'
 if (typeof(process.env.PORTABLE_EXECUTABLE_DIR) === 'string') {
@@ -47,7 +50,7 @@ let app = new Vue({
     persistAttrs: ['url', 'title', 'description', 'chromeFilePath', 'icon'],
     _urlChanged: false,
     isNeedLoad: false,
-    _enablePersist: (mode === 'production')
+    _enablePersist: false
   },
   watch: {
     icon: function (icon) {
@@ -100,6 +103,12 @@ let app = new Vue({
     });
     
     this.$body = $('body')
+    IconManager.getIconBase64((base64) => {
+      //console.log(base64)
+      //this.iconBase64 = base64
+      this.iconBase64 = `url(${base64})`
+    })
+    this._enablePersist = (mode === 'production')
   },
   methods: {
     _showLoadingLayer: function () {
@@ -196,8 +205,12 @@ let app = new Vue({
       
       let title = PathHelper.safeFilterTitle(this.title)
       //let basepath = ElectronHelper.getBasePath()
-      let basepath = path.join(process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME'], 'Desktop')
+      //let basepath = path.join(process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME'], 'Desktop')
+      //let basepath = process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME']
+      //console.log(['createShortcut', basepath])
+      let basepath = getPath('desktop')
       let shortcutFilePath = path.resolve(basepath, title + '.lnk').split("/").join("\\\\")
+      //console.log(['createShortcut', shortcutFilePath])
       ipc.send('open-file-dialog-create', shortcutFilePath)
     },
     _createShortcutCallback: function (event, saveToPath) {
@@ -213,7 +226,7 @@ let app = new Vue({
     },
     test: function () {
       setTimeout(() => {
-        $('.create-shortcut').click()
+        //$('.create-shortcut').click()
         //$('.load-from-url').click()
         //console.log('aaa')
       }, 1000)

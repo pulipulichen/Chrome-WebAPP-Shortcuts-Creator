@@ -47,11 +47,13 @@ let ShortcutManager = {
       }
       
       exec(`"${saveToPath}"`)
-      shell.showItemInFolder(saveToPath);
-      //if (process.platform === 'win32') {
-        //let dirname = path.dirname(saveToPath)
-        //exec(`start "" "${dirname}"`)
-      //}
+      if (process.platform === 'win32') {
+        let dirname = path.dirname(saveToPath)
+        exec(`start "" "${dirname}"`)
+      }
+      else {
+        shell.showItemInFolder(saveToPath);
+      }
       //console.log(e)
     });
   }

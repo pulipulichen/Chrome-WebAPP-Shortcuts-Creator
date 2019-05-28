@@ -196,10 +196,17 @@ let CrawlerManager = {
     // http://lh5.ggpht.com/puddingchen.35/SIs83s5vWbI/AAAAAAAADY4/jIjWUjhcbEQ/0704_112314_thumb.jpg?imgmax=800
     // http://lh5.ggpht.com/puddingchen.35/SIs83s5vWbI/AAAAAAAADY4/jIjWUjhcbEQ/0704_112314_thumb.jpg?imgmax=256
     
+    // http://lh3.ggpht.com/puddingchen.35/SPHeS5SqyCI/AAAAAAAAE9E/Z950slGSW98/s1600-h/pudding%28500px%29%5B7%5D.gif
+    // http://lh3.ggpht.com/puddingchen.35/SPHeS5SqyCI/AAAAAAAAE9E/Z950slGSW98/s256/pudding%28500px%29%5B7%5D.gif
+    
     //console.log(url)
     if (url.indexOf('.bp.blogspot.com/') > -1 && url.indexOf('/s0/') > -1) {
       let pos = url.lastIndexOf('/s0/')
       url = url.slice(0, pos) + '/s256/' + url.slice(pos + 4)
+    }
+    else if (url.indexOf('.ggpht.com/') > -1 && url.indexOf('/s1600-h/') > -1) {
+      let pos = url.lastIndexOf('/s1600-h/')
+      url = url.slice(0, pos) + '/s256/' + url.slice(pos + 9)
     }
     else if (url.indexOf('.ggpht.com/') > -1 && url.endsWith('?imgmax=800')) {
       url = url.slice(0, url.lastIndexOf('=')) + '=256'
