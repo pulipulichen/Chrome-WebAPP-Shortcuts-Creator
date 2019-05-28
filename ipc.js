@@ -27,7 +27,7 @@ ipc.on('open-file-dialog-chrome', function (event, dir) {
   
   //console.log(options)
   
-  dialog.showOpenDialog(options, function (files) {
+  dialog.showOpenDialog(win, options, function (files) {
     if (files) {
       event.sender.send('selected-file-chrome', files[0])
     }
@@ -55,7 +55,7 @@ ipc.on('open-file-dialog-icon', function (event, dir) {
   
   //console.log(options)
   
-  dialog.showOpenDialog(options, function (files) {
+  dialog.showOpenDialog(win, options, function (files) {
     if (files) {
       event.sender.send('selected-file-icon', files[0])
     }
@@ -65,6 +65,9 @@ ipc.on('open-file-dialog-icon', function (event, dir) {
 ipc.on('open-file-dialog-create', function (event, filePath) {
   let options = {
     title: 'Save shortcut to...',
+    filters: [
+      { name: 'Shortcut', extensions: ['lnk'] }
+    ]
   }
   
   if (filePath !== '') {
@@ -74,7 +77,7 @@ ipc.on('open-file-dialog-create', function (event, filePath) {
     options.defaultPath = filePath
   }
   
-  dialog.showSaveDialog(null, options, function (file) {
+  dialog.showSaveDialog(win, options, function (file) {
     if (file) {
       event.sender.send('selected-file-create', file)
     }

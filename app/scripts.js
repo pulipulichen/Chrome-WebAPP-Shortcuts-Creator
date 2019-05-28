@@ -3,10 +3,13 @@
 const path = require ('path')
 const fs = require('fs');
 
-const electronApp = require('electron').remote.app;
+const remote = require('electron').remote;
+const electronApp = remote.app;
 const ipc = require('electron').ipcRenderer
-const settings = require('electron').remote.require('electron-settings');
+const settings = remote.require('electron-settings');
 const mode = settings.get('mode')
+const shell = remote.shell
+//const homedir = require('os').homedir()
 
 let ws = null // for module "windows-shortcut"
 let exec = null
@@ -42,14 +45,17 @@ let app = new Vue({
     iconBase64: null,
     $body: null,
     persistAttrs: ['url', 'title', 'description', 'chromeFilePath', 'icon'],
-    _enablePersist: false
+    _urlChanged: false,
+    isNeedLoad: false,
+    _enablePersist: (mode === 'production')
   },
   watch: {
     icon: function (icon) {
       //console.log(['watch', icon])
       IconManager.getIconBase64(icon, (base64) => {
         //console.log(base64)
-        this.iconBase64 = base64
+        //this.iconBase64 = base64
+        this.iconBase64 = `url(${base64})`
       })
     }
   },
@@ -57,9 +63,6 @@ let app = new Vue({
     ElectronHelper.mount(this, this.persistAttrs)
   },
   computed: {
-    isNeedLoad: function () {
-      return (this.isURLReady === true && this.title.trim() === '')
-    },
     isURLReady: function () {
       return URLHelper.isURL(this.url)
     },
@@ -67,7 +70,7 @@ let app = new Vue({
       return (this.isURLReady === false)
     },
     isReady: function () {
-      return (this.isURLReady === true && this.title.trim() !== '')
+      return (this.isURLReady === true)
     },
     isNotReady: function () {
       return (this.isReady === false)
@@ -158,11 +161,14 @@ let app = new Vue({
     },
     onURLChange: function () {
       if (URLHelper.isURL(this.url)) {
+        this._urlChanged = true
+        this.isNeedLoad = true
         $(this.$refs.loadFromURL).focus()
         this.persist()
       }
     },
-    loadFromURL: function () {
+    loadFromURL: function (callback) {
+      this._urlChanged = false
       let url = this.url
       //console.log(url)
       this._showLoadingLayer()
@@ -175,11 +181,23 @@ let app = new Vue({
         this.persist()
         this._hideLoadingLayer()
         $(this.$refs.createShortcut).focus()
+        
+        if (typeof(callback) === 'function') {
+          callback()
+        }
       })
     },
     createShortcut: function () {
+      if (this.title.trim() === '') {
+        return this.loadFromURL(() => {
+          this.createShortcut()
+        })
+      }
+      
       let title = PathHelper.safeFilterTitle(this.title)
-      let shortcutFilePath = path.resolve(ElectronHelper.getBasePath(), title + '.lnk').split("/").join("\\\\")
+      //let basepath = ElectronHelper.getBasePath()
+      let basepath = path.join(process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME'], 'Desktop')
+      let shortcutFilePath = path.resolve(basepath, title + '.lnk').split("/").join("\\\\")
       ipc.send('open-file-dialog-create', shortcutFilePath)
     },
     _createShortcutCallback: function (event, saveToPath) {
@@ -195,8 +213,8 @@ let app = new Vue({
     },
     test: function () {
       setTimeout(() => {
-        //$('.create-shortcut').click()
-        $('.load-from-url').click()
+        $('.create-shortcut').click()
+        //$('.load-from-url').click()
         //console.log('aaa')
       }, 1000)
 
@@ -205,4 +223,6 @@ let app = new Vue({
   
 })
 
-app.test()
+if (mode === 'development') {
+  app.test()
+}

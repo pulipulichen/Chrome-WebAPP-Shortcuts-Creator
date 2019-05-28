@@ -12,11 +12,15 @@ let IconManager = {
     // ---------------------------------
 
     if (fs.existsSync(targetIconPath)) {
+      console.log('Icon is existed: ' + targetIconPath)
       if (typeof(callback) === 'function') {
         callback(targetIconPath)
       }
       return
     }
+    
+    inputFile = '.\\' + path.relative("./", inputFile)
+    targetIconPath = '.\\' + path.relative("./", targetIconPath)
     
     // ---------------------------------
 
@@ -24,16 +28,24 @@ let IconManager = {
     
     let command = convertExe + ' -background none -gravity center -geometry 256x -extent 256x256 "' + inputFile + '" "' + targetIconPath + '"'
     
+    //command = iconv.encode(command, 'Big5').toString()
     //let command = [path.join(path), path.join(targetIconPath)]
-    //console.log(command)
+    //command = command.split("\\").join('/')
+    console.log(command)
 
     if (exec === null) {
       exec = require('child_process').exec
     }
 
     exec(command, (err, stdout, stderr) => {
+      console.log(err)
+      console.log(stdout)
+      console.log(stderr)
+      
       if (typeof(callback) === 'function') {
-        callback(targetIconPath)
+        setTimeout(() => {
+          callback(targetIconPath)
+        }, 1000)
       }
     })
   },
@@ -54,6 +66,7 @@ let IconManager = {
       
       //convertExe = path.resolve('app/convert.exe')
     }
+    convertExe = '.\\' + path.relative("./", convertExe)
     /*
     if (fs.existsSync(convertExe) === false) {
       let errorMessage = 'convert.exe is not found'

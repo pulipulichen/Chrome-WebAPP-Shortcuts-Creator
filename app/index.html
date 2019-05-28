@@ -96,7 +96,7 @@
             <label for="url">
               Icon
             </label>
-            <img :src="iconBase64" class="icon" />
+            <div class="icon-placeholder" :style="{ backgroundImage: iconBase64 }"></div>
           </div>
           <div class="icon field">
             <label for="url">
@@ -105,7 +105,7 @@
             <button type="button" 
                     class="ui fluid button"
                     @click="selectIconFile">
-              SELECT
+              CHANGE
             </button>
           </div>
         </div>

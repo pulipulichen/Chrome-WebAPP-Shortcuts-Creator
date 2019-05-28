@@ -21,6 +21,22 @@ let ShortcutManager = {
     let iconFilePath = options.icon
     options.icon = path.resolve(ElectronHelper.getBasePath(), 'tmp', iconFilePath).split("/").join("\\\\")
     options.desc = options.desc.split('\n').join(' ').trim()
+    
+    if (exec === null) {
+      exec = require('child_process').exec
+    }
+    
+    if (fs.existsSync(saveToPath)) {
+      if (process.platform === 'win32') {
+        //console.log(saveToPath)
+        let commend = `del "${saveToPath}"`
+        //console.log(commend)
+        exec(commend)
+      }
+      else {
+        fs.unlinkSync(saveToPath)
+      }
+    }
 
     ws.create(saveToPath, options, (err) => {
       if (err) {
@@ -29,6 +45,13 @@ let ShortcutManager = {
         console.error(options)
         throw Error(err)
       }
+      
+      exec(`"${saveToPath}"`)
+      shell.showItemInFolder(saveToPath);
+      //if (process.platform === 'win32') {
+        //let dirname = path.dirname(saveToPath)
+        //exec(`start "" "${dirname}"`)
+      //}
       //console.log(e)
     });
   }
