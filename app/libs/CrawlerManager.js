@@ -6,20 +6,20 @@ let https = require('follow-redirects').https
 
 let CrawlerManager = {
   loadFromURL: function (url, callback) {
-    let data = {
-      //title: 'a',
-      //description: 'b',
-      //icon: 'icon.ico'
-    }
+    let data = {}
 
     let urlObject = new URL(url);
 
+    //console.log(url)
     this._requestBody(url, (body) => {
+      //console.log(body)
+      
       let $ = cheerio.load(body)
       data.title = this._parseTitle($, urlObject.host)
       data.description = this._parseDescription($, urlObject.host)
-      
-      this._parseIcon(body, url, data.title, (iconPath) => {
+      //console.log(data)
+      this._parseIcon($, body, url, data.title, (iconPath) => {
+        //console.log(iconPath)
         data.icon = path.basename(iconPath)
         
         if (typeof (callback) === 'function') {
@@ -62,13 +62,23 @@ let CrawlerManager = {
     desc = PathHelper.safeFilter(desc)
     return desc
   },
-  _parseIcon: function (body, url, title, callback) {
+  _parseIcon: function ($, body, url, title, callback) {
     if (url.startsWith("https://www.youtube.com/") || url.startsWith("https://youtu.be/")) {
       let iconURL = this._parseIconYouTube(url)
       return this._parseIconPath(iconURL, title, callback)
     }
+    else if ($('link[rel="image_src"]').length > 0) {
+      let iconURL = $('link[rel="image_src"]').attr('href')
+      if (iconURL.startsWith('//')) {
+        let urlObject = new URL(url)
+        iconURL = urlObject.protocol + iconURL
+      }
+      console.log(iconURL)
+      return this._parseIconPath(iconURL, title, callback)
+    }
     else {
-      return this._parseFavicon(body, url, title, (iconURL) => {
+      return this._parseFavicon(body, url, (iconURL) => {
+        //console.log(iconURL)
         this._parseIconPath(iconURL, title, callback)
       })
     }
@@ -82,8 +92,12 @@ let CrawlerManager = {
       allowParseImage: true
     }
     
-    parseFavicon(body, options).then((icons) => {
+    //console.log(options)
+    parseFavicon(body, options).then((icons, error) => {
+      //console.log(icons)
+      //console.log(error)
       let iconURL = this._selectLargetIcon(icons, urlObject)
+      //console.log(iconURL)
       if (typeof(callback) === 'function') {
         callback(iconURL)
       }
@@ -135,14 +149,17 @@ let CrawlerManager = {
   },
   _downloadIconFromURL: function (url, title, callback) {
     let ext = url.slice(url.lastIndexOf('.') + 1)
+    if (ext.lastIndexOf('?') > -1) {
+      ext = ext.slice(0, ext.lastIndexOf('?'))
+    }
     
     let urlObjectIcon = new URL(url)
     let host = urlObjectIcon.host
     if (host.length > 20) {
-      host = host.slice(0, 20)
+      host = host.slice(0, 20).trim()
     }
     if (title.length > 20) {
-      title = title.slice(0, 20)
+      title = title.slice(0, 20).trim()
     }
     title = host  + '-' + title
     //let filePath = path.resolve('tmp', title + '.' + ext)

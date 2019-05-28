@@ -41,11 +41,14 @@ let app = new Vue({
     icon: 'icon.ico',
     iconBase64: null,
     $body: null,
-    persistAttrs: ['url', 'title', 'description', 'chromeFilePath', 'icon']
+    persistAttrs: ['url', 'title', 'description', 'chromeFilePath', 'icon'],
+    _enablePersist: false
   },
   watch: {
     icon: function (icon) {
+      //console.log(['watch', icon])
       IconManager.getIconBase64(icon, (base64) => {
+        //console.log(base64)
         this.iconBase64 = base64
       })
     }
@@ -111,7 +114,9 @@ let app = new Vue({
       this.persist()
     },
     persist: function () {
-      ElectronHelper.persist(this, this.persistAttrs)
+      if (this._enablePersist) {
+        ElectronHelper.persist(this, this.persistAttrs)
+      }
     },
     selectIconFile: function () {
       //let dir = path.resolve('../tmp', this.icon)
@@ -187,14 +192,17 @@ let app = new Vue({
         //icon: 'D:/Desktop/Box Sync/[SOFTWARE]/[SavedIcons]/[ico]/Apps-Google-Drive-Slides-icon.ico',
       }
       ShortcutManager.create(saveToPath, options)
+    },
+    test: function () {
+      setTimeout(() => {
+        //$('.create-shortcut').click()
+        $('.load-from-url').click()
+        //console.log('aaa')
+      }, 1000)
+
     }
   },
   
 })
 
-/*
-setTimeout(() => {
-  //$('.create-shortcut').click()
-  //$('.load-from-url').click()
-}, 1000)
-*/
+app.test()

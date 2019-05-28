@@ -12,7 +12,13 @@ ElectronHelper = {
     fs.readFile(path.join(this.getBasePath(), this._configFilePath), function (err, data) {
       if (err) throw err;
       
-      data = JSON.parse(data.toString())
+      data = data.toString().trim()
+      if (data.startsWith('{') && data.endsWith('}')) {
+        data = JSON.parse(data.toString())  
+      }
+      else {
+        data = {}
+      }
       attrs.forEach(attr => {
         if (typeof(data[attr]) !== 'undefined') {
           vue[attr] = data[attr]
