@@ -64,7 +64,7 @@
           <div class="ui right labeled input">
             <input id="url" type="url" v-model="url" @change="persist" />
             <button type="button"
-                  class="ui icon button label"
+                  class="ui icon button label load-from-url"
                   v-bind:class="{ disabled: isURLNotReady, positive: isNeedLoad }"
                   @click="loadFromURL">
               <i class="search icon"></i>
@@ -95,7 +95,7 @@
             <label for="url">
               Icon
             </label>
-            <img :src="imgSrcIconFilePath" class="icon" />
+            <img :src="iconBase64" class="icon" />
           </div>
           <div class="icon field">
             <label for="url">

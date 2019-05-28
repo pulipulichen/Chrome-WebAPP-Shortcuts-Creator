@@ -1,3 +1,5 @@
+/* global IconManager, ChromeHelper, URLHelper, CrawlerManager, ShortcutManager */
+
 const path = require ('path')
 const fs = require('fs');
 
@@ -39,6 +41,13 @@ var app = new Vue({
     iconBase64: null,
     $body: null,
     persistAttrs: ['url', 'title', 'description', 'chromeFilePath', 'icon']
+  },
+  watch: {
+    icon: function (icon) {
+      IconManager.getIconBase64(icon, (base64) => {
+        this.iconBase64 = base64
+      })
+    }
   },
   mounted() {
     ElectronHelper.mount(this, this.persistAttrs)
@@ -104,10 +113,11 @@ var app = new Vue({
       //ElectronHelper.persist(this, this.persistAttrs)
     },
     selectIconFile: function () {
-      //console.log('@TODO selectIconFile')
-      let dir = path.resolve('../tmp', this.icon)
+      //let dir = path.resolve('../tmp', this.icon)
+      let dir = ElectronHelper.getTmpDirPath('../tmp', this.icon)
       if (fs.existsSync(dir) === false) {
-        dir = path.resolve('./tmp', this.icon)
+        //dir = path.resolve('./tmp', this.icon)
+        dir = ElectronHelper.getTmpDirPath('./tmp', this.icon)
       }
       ipc.send('open-file-dialog-icon', dir)
     },
@@ -128,7 +138,7 @@ var app = new Vue({
       
       
       //console.log(tmpDir)
-      if (IconManager.isInTmpFolder(filePath)) {
+      if (IconManager.isInTmpFolder(filePath) === false) {
         IconManager.copyToTmpFolder(filePath, (targetPath) => {
           this._selectIconFileCallback(event, targetPath)
         })
@@ -137,30 +147,21 @@ var app = new Vue({
       
       //console.log(filePath)
       filePath = path.basename(filePath)
-      this._changeIcon(filePath)
+      this.icon = filePath
       this.persist()
-    },
-    _changeIcon: function (icon) {
-      this.icon = icon
-      IconManager.getIconBase64(icon, (base64) => {
-        this.iconBase64 = base64
-      })
     },
     loadFromURL: function () {
       let url = this.url
       //console.log(url)
+      this._showLoadingLayer()
       CrawlerManager.loadFromURL(url, (data) => {
         ['title', 'description', 'icon'].forEach(field => {
           if (typeof(data[field]) === 'string') {
-            if (field !== 'icon') {
-              this[field] = data[field]
-            }
-            else {
-              this._changeIcon(data[field])
-            }
+            this[field] = data[field]
           }
         })
         this.persist()
+        this._hideLoadingLayer()
       })
     },
     createShortcut: function () {
@@ -183,6 +184,7 @@ var app = new Vue({
   
 })
 
-$(() => {
+setTimeout(() => {
   //$('.create-shortcut').click()
-})
+  //$('.load-from-url').click()
+}, 1000)

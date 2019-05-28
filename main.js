@@ -14,6 +14,7 @@ let mode = 'production'
 if (process.argv.indexOf('--mode') - process.argv.indexOf('development') === -1) {
   mode = "development"
 }
+mode = "development"
 
 app.on('window-all-closed', () => {
   // darwin = MacOS

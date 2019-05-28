@@ -145,9 +145,27 @@ let CrawlerManager = {
       title = title.slice(0, 20)
     }
     title = host  + '-' + title
-    let filePath = path.resolve('tmp', title + '.' + ext)
-    let file = fs.createWriteStream(filePath)
+    //let filePath = path.resolve('tmp', title + '.' + ext)
+    let filePath = ElectronHelper.getTmpDirPath(title + '.' + ext)
+    let iconPath = ElectronHelper.getTmpDirPath(title + '.ico')
     
+    // -----------------------------------
+    if (fs.existsSync(iconPath)) {
+      if (typeof(callback) === 'function') {
+        callback(iconPath)
+      }
+      return
+    }
+    else if (fs.existsSync(filePath)) {
+      if (typeof(callback) === 'function') {
+        callback(filePath)
+      }
+      return
+    }
+    
+    // -----------------------------------
+    
+    let file = fs.createWriteStream(filePath)
     let protocolIcon = urlObjectIcon.protocol
 
     var getHandlerIcon;

@@ -1,3 +1,5 @@
+/* global fs */
+
 ElectronHelper = {
   init: function () {
   },
@@ -50,7 +52,32 @@ ElectronHelper = {
     }
     return this.basepath
   },
-  basepath: null
+  basepath: null,
+  resolve: function (filePath) {
+    let basepath = this.getBasePath()
+    return path.resolve(basepath, filePath)
+  },
+  _tmpDirChecked: false,
+  getTmpDirPath: function (filePath) {
+    let tmpDirPath
+    if (this._tmpDirChecked === false) {
+      tmpDirPath = this.resolve('tmp')
+      if (fs.existsSync(tmpDirPath) === false) {
+        fs.mkdirSync(tmpDirPath)
+      }
+      this._tmpDirChecked = true
+    }
+    
+    if (typeof(filePath) === 'string') {
+      filePath = 'tmp/' + filePath
+      tmpDirPath = this.resolve(filePath)
+    }
+    else {
+      tmpDirPath = this.resolve('tmp')
+    }
+    
+    return tmpDirPath
+  }
 }
 
 ElectronHelper.init()
