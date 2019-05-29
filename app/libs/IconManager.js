@@ -33,10 +33,6 @@ let IconManager = {
     //command = command.split("\\").join('/')
     console.log(command)
 
-    if (exec === null) {
-      exec = require('child_process').exec
-    }
-
     exec(command, (err, stdout, stderr) => {
       console.log(err)
       console.log(stdout)

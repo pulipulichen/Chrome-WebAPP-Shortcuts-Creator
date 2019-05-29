@@ -1,46 +1,9 @@
 /* global IconManager, ChromeHelper, URLHelper, CrawlerManager, ShortcutManager */
 
-const path = require ('path')
-const fs = require('fs');
-
-const remote = require('electron').remote;
-const electronApp = remote.app;
-const ipc = require('electron').ipcRenderer
-const settings = remote.require('electron-settings');
-const mode = settings.get('mode')
-const shell = remote.shell
-//const homedir = require('os').homedir()
-
-let ws = null // for module "windows-shortcut"
-let exec = null
-
-const getPath = require('platform-folders').default
-//console.log(getPath('desktop'));
-
-/*
-let basepath = './'
-if (typeof(process.env.PORTABLE_EXECUTABLE_DIR) === 'string') {
-  basepath = process.env.PORTABLE_EXECUTABLE_DIR
-}
-
-//console.log(ChromeHelper.detectFilePath())
-
-
-//console.log(basepath)
-//console.log(path.join(basepath, 'test.txt'))
-
-fs.writeFile(path.join(basepath, 'test.txt'), 'Hello content!', function (err) {
-  if (err) throw err;
-  console.log('Saved!');
-});
-*/
-
-//console.log(mode)
-
 let app = new Vue({
   el: '#app',
   data: {
-    url: 'http://blog.pulipuli.info',
+    url: '',
     title: '',
     description: '',
     chromeFilePath: ChromeHelper.detectFilePath(),
@@ -208,8 +171,9 @@ let app = new Vue({
       //let basepath = path.join(process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME'], 'Desktop')
       //let basepath = process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME']
       //console.log(['createShortcut', basepath])
-      let basepath = getPath('desktop')
-      let shortcutFilePath = path.resolve(basepath, title + '.lnk').split("/").join("\\\\")
+      //let basepath = ShortcutManager.getDefaultDir()
+      //let shortcutFilePath = path.resolve(basepath, title + '.lnk').split("/").join("\\\\")
+      let shortcutFilePath = ShortcutManager.getDefaultPath(title)
       //console.log(['createShortcut', shortcutFilePath])
       ipc.send('open-file-dialog-create', shortcutFilePath)
     },
@@ -230,7 +194,6 @@ let app = new Vue({
         //$('.load-from-url').click()
         //console.log('aaa')
       }, 1000)
-
     }
   },
   
