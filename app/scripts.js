@@ -10,10 +10,11 @@ let app = new Vue({
     icon: 'icon.ico',
     iconBase64: null,
     $body: null,
-    persistAttrs: ['url', 'title', 'description', 'chromeFilePath', 'icon'],
+    persistAttrs: ['url', 'title', 'description', 'chromeFilePath', 'icon', '_debugDemo'],
     _urlChanged: false,
     isNeedLoad: false,
-    _enablePersist: false
+    _enablePersist: false,
+    _debugDemo: false
   },
   watch: {
     icon: function (icon) {
@@ -26,7 +27,9 @@ let app = new Vue({
     }
   },
   mounted() {
-    ElectronHelper.mount(this, this.persistAttrs)
+    ElectronHelper.mount(this, this.persistAttrs, () => {
+      this._afterMounted()
+    })
   },
   computed: {
     isURLReady: function () {
@@ -80,6 +83,18 @@ let app = new Vue({
     })
   },
   methods: {
+    _afterMounted: function () {
+      
+      // ---------------------
+
+      if (mode === 'development' && this._debugDemo === false) {
+        this.test()
+      }
+      console.log(this._debugDemo)
+      if (this._debugDemo === true) {
+        this.demo()
+      }
+    },
     _showLoadingLayer: function () {
       this.$body.addClass('loading')
     },
@@ -95,7 +110,7 @@ let app = new Vue({
       this.persist()
     },
     persist: function () {
-      if (this._enablePersist) {
+      if (this._enablePersist && this._debugDemo === false) {
         ElectronHelper.persist(this, this.persistAttrs)
       }
     },
@@ -208,6 +223,18 @@ let app = new Vue({
         this._selectIconFileCallback(null, filePath)
       })
     },
+    demo: function () {
+      //console.log('ok?')
+      setTimeout(() => {
+        if (URLHelper.isURL(this.url) === false) {
+          this.url = 'http://blog.pulipuli.info'
+        }
+        this.title = ''
+
+        $('.create-shortcut').click()
+      }, 1000)
+      
+    },
     test: function () {
       setTimeout(() => {
         //$('.create-shortcut').click()
@@ -218,7 +245,3 @@ let app = new Vue({
   },
   
 })
-
-if (mode === 'development') {
-  app.test()
-}

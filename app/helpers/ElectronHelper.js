@@ -29,6 +29,7 @@ ElectronHelper = {
       }
       attrs.forEach(attr => {
         if (typeof(data[attr]) !== 'undefined') {
+          //console.log(attr)
           vue[attr] = data[attr]
         }
       })
