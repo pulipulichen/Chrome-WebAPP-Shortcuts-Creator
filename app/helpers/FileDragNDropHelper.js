@@ -1,4 +1,4 @@
-let DragNDropManager = {
+let FileDragNDropHelper = {
   init: function (callback) {
     let dragoverClassname = 'dragover'
     
@@ -64,4 +64,4 @@ let DragNDropManager = {
   }
 }
 
-window.DragNDropManager = DragNDropManager
+window.FileDragNDropHelper = FileDragNDropHelper

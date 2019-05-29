@@ -72,7 +72,7 @@ let app = new Vue({
       this.iconBase64 = `url(${base64})`
     })
     this._enablePersist = (mode === 'production')
-    DragNDropManager.init((e) => {
+    FileDragNDropHelper.init((e) => {
       this.onDrop(e)
     })
   },
