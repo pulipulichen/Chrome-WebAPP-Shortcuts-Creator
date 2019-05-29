@@ -41,7 +41,7 @@ function createWindow() {
     width: 400,
     height: height,
     maximizable: false,
-    icon: './icon.ico',
+    icon: './app/imges/icon.ico',
     webPreferences: {
       nodeIntegration: true
     }

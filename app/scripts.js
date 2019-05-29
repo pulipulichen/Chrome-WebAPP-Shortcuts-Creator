@@ -90,7 +90,7 @@ let app = new Vue({
       if (mode === 'development' && this._debugDemo === false) {
         this.test()
       }
-      console.log(this._debugDemo)
+      //console.log(this._debugDemo)
       if (this._debugDemo === true) {
         this.demo()
       }

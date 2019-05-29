@@ -14,4 +14,7 @@ let DateHelper = {
   }
 }
 
-window.DateHelper = DateHelper
+if (typeof(window) !== 'undefined') {
+  window.DateHelper = DateHelper
+}
+exports.default = DateHelper
