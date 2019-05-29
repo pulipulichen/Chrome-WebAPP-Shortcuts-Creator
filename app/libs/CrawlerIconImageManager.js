@@ -13,6 +13,11 @@ let CrawlerIconImageManager = {
       field: 'src'
     },
     {
+      selector: 'header image',
+      method: 'attr',
+      field: 'src'
+    },
+    {
       selector: 'body',
       method: 'attr',
       field: 'background'

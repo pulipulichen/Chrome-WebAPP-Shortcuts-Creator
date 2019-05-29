@@ -210,8 +210,8 @@ let app = new Vue({
     },
     test: function () {
       setTimeout(() => {
-        $('.create-shortcut').click()
-        //$('.load-from-url').click()
+        //$('.create-shortcut').click()
+        $('.load-from-url').click()
         //console.log('aaa')
       }, 1000)
     }

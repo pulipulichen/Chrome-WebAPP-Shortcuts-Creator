@@ -70,27 +70,52 @@ let CrawlerIconManager = {
     
     if (iconURL.startsWith('data:')) {
       this._downloadIconFromBase64(iconURL, url, title, (iconPath) => {
-        if (iconPath === undefined) {
-          iconPath = 'icon.ico'
-        }
-        
-        if (typeof(callback) === 'function') {
-          callback(iconPath)
-        }
+        this.afterDownload(iconPath, callback)
       })
     }
     else {
       iconURL = this._filterBloggerURL(iconURL)
-
+      console.log(iconURL)
       this._downloadIconFromURL(iconURL, title, (iconPath) => {
-        if (iconPath === undefined) {
-          iconPath = 'icon.ico'
-        }
-        
-        if (typeof(callback) === 'function') {
-          callback(iconPath)
-        }
+        this.afterDownload(iconPath, callback)
       })
+    }
+  },
+  afterDownload: function (iconPath, callback) {
+    // 檢查檔案大小有沒有異常
+    if (this._validFilesize(iconPath) === false) {
+      if (typeof(callback) === 'function') {
+        callback('icon.ico')
+      }
+      return
+    }
+    
+    if (process.platform === 'win32' 
+              && iconPath.endsWith('.ico') === false) {
+      IconManager.convertToIco(iconPath, (iconPath) => {
+        this.afterDownload(iconPath, callback)
+      })
+      return
+    }
+    
+    if (iconPath === undefined) {
+      iconPath = 'icon.ico'
+    }
+
+    if (typeof(callback) === 'function') {
+      callback(iconPath)
+    }
+  },
+  _validFilesize: function (iconPath) {
+    let filesize = fs.statSync(iconPath).size
+    if (filesize < 100) {
+      let errorMessage = 'Icon is too small (' + filesize + '):\n' + path.basename(iconPath)
+      alert(errorMessage)
+      console.error(errorMessage)
+      return false
+    }
+    else {
+      return true
     }
   },
   _filterBloggerURL: function (url) {
@@ -171,6 +196,12 @@ let CrawlerIconManager = {
     
     // -----------------------------------
     let file = fs.createWriteStream(filePath)
+    file.on("finish", function() {
+      if (typeof(callback) === 'function') {
+        callback(filePath)
+      }
+    })
+    
     let urlObjectIcon = new URL(url)
     let protocolIcon = urlObjectIcon.protocol
 
@@ -182,11 +213,16 @@ let CrawlerIconManager = {
         getHandlerIcon = https
     }
     
-    getHandlerIcon.get({
+    let options = {
       hostname: urlObjectIcon.host,
       path: urlObjectIcon.pathname,
       headers: { 'User-Agent': 'Mozilla/5.0' }
-    }, (response) => {
+    }
+    
+    console.log(protocolIcon)
+    console.log(options)
+    
+    getHandlerIcon.get(options, (response) => {
       const { statusCode } = response;
       if (statusCode !== 200) {
         let errorMessage = `Request Failed.\nStatus Code: ${statusCode}`
@@ -200,23 +236,6 @@ let CrawlerIconManager = {
       }
   
       response.pipe(file)
-      
-      if (process.platform === 'win32' 
-              && ext !== 'ico') {
-        IconManager.convertToIco(filePath, (iconPath) => {
-          //fs.unlink(filePath, () => {
-            //console.log(iconPath)
-            if (typeof(callback) === 'function') {
-              callback(iconPath)
-            }
-          //})
-        })
-      }
-      else {
-        if (typeof(callback) === 'function') {
-          callback(filePath)
-        }
-      }
     })
   },
   _downloadIconFromBase64: function (base64, url, title, callback) {
@@ -257,17 +276,8 @@ let CrawlerIconManager = {
         return
       }
       
-      if (process.platform === 'win32') {
-        IconManager.convertToIco(filePath, (iconPath) => {
-          if (typeof(callback) === 'function') {
-            callback(iconPath)
-          }
-        })
-      }
-      else {
-        if (typeof(callback) === 'function') {
-          callback(filePath)
-        }
+      if (typeof(callback) === 'function') {
+        callback(filePath)
       }
     })
   },
