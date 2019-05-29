@@ -73,6 +73,9 @@ let CrawlerManager = {
       }
     }
     desc = PathHelper.safeFilter(desc)
+    if (desc.length > 50) {
+      desc = desc.slice(0, 50).trim()
+    }
     return desc
   },
   _decodeHTML: function (body) {

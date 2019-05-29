@@ -29,6 +29,7 @@
     <script src="vendors/less/less.min.js" ></script>
     
     <!-- Helpers -->
+    <script src="helpers/DateHelper.js" ></script>
     <script src="helpers/URLHelper.js" ></script>
     <script src="helpers/ChromeHelper.js" ></script>
     <script src="helpers/ElectronHelper.js" ></script>
@@ -100,7 +101,7 @@
             Description
           </label>
           <div class="ui input">
-            <textarea id="description" type="text" v-model="description" maxlength="30" 
+            <textarea id="description" type="text" v-model="description" maxlength="50" 
                       onfocus="this.select()"
                       @change="persist"></textarea>
           </div>

@@ -50,6 +50,8 @@ let ShortcutManager = {
    * @returns {ShortcutManager}
    */
   createWin32: function (saveToPath, options) {
+    //saveToPath = iconv.encode(saveToPath, 'big5').toString()
+    
     options.target = this._filterPathWin32(options.target)
     //chromeFilePath = chromeFilePath.split("/").join("\\")
     let iconFilePath = options.icon
@@ -65,7 +67,13 @@ let ShortcutManager = {
 
     ws.create(saveToPath, options, (err) => {
       if (err) {
-        alert(err)
+        let simplePath = PathHelper.cleanFilename(saveToPath)
+        let basename = path.basename(simplePath).slice(0, -4)
+        if (window.confirm(`Error occured.\nDo you want to try to save shortcut with filename "${basename}"`)) {
+          this.createWin32(simplePath, options)
+          return
+        }
+        
         console.error(saveToPath)
         console.error(options)
         throw Error(err)

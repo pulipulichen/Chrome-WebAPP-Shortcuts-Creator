@@ -133,7 +133,39 @@ let IconManager = {
         callback(base64)
       }
     })
-  }
+  },
+  writeBase64ToTmpFolder: function (base64, callback) {
+    //let tmpDir = ElectronHelper.getTmpDirPath()
+    let filename = DateHelper.getCurrentTimeString()
+    let targetPath = ElectronHelper.getTmpDirPath(filename + '.png')
+    
+    // ---------------------------------
+    //console.log(targetPath)
+    //console.log(fs.existsSync(targetPath))
+    //return
+    
+    if (fs.existsSync(targetPath)) {
+      if (typeof(callback) === 'function') {
+        callback(targetPath)
+      }
+      return
+    }
+    
+    // ---------------------------------
+    let pos = base64.indexOf(';base64,')
+    if (pos > -1 && pos < 100) {
+      base64 = base64.slice(pos + 8)
+    }
+    
+    fs.writeFile(targetPath, base64, 'base64', (err) => {
+      if (err) {
+        throw err;
+      }
+      if (typeof(callback) === 'function') {
+        callback(targetPath)
+      }
+    });
+  },
 }
 
 window.IconManager = IconManager

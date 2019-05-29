@@ -72,8 +72,11 @@ let app = new Vue({
       this.iconBase64 = `url(${base64})`
     })
     this._enablePersist = (mode === 'production')
-    FileDragNDropHelper.init((e) => {
-      this.onDrop(e)
+    FileDragNDropHelper.init((files) => {
+      this.onFileDrop(files)
+    })
+    FilePasteHelper.init((fileBase64) => {
+      this.onFilePaste(fileBase64)
     })
   },
   methods: {
@@ -191,7 +194,7 @@ let app = new Vue({
       }
       ShortcutManager.create(saveToPath, options)
     },
-    onDrop: function (dropFiles) {
+    onFileDrop: function (dropFiles) {
       let dropFile
       if (dropFiles.length > 0) {
         dropFile = dropFiles[0].path
@@ -200,10 +203,15 @@ let app = new Vue({
       //console.log(file)
       this._selectIconFileCallback(null, dropFile)
     },
+    onFilePaste: function (fileBase64) {
+      IconManager.writeBase64ToTmpFolder(fileBase64, (filePath) => {
+        this._selectIconFileCallback(null, filePath)
+      })
+    },
     test: function () {
       setTimeout(() => {
-        //$('.create-shortcut').click()
-        $('.load-from-url').click()
+        $('.create-shortcut').click()
+        //$('.load-from-url').click()
         //console.log('aaa')
       }, 1000)
     }

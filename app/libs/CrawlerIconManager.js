@@ -8,6 +8,7 @@ let CrawlerIconManager = {
       }
       CrawlerIconThumbnailManager.match(url, $, (iconURL) => {
         if (iconURL !== undefined) {
+          //console.log(iconURL)
           return this.parseIconPath(iconURL, url, title, callback)
         }
         CrawlerIconFaviconManager.parseFavicon(body, url, (iconURL) => {
@@ -181,7 +182,23 @@ let CrawlerIconManager = {
         getHandlerIcon = https
     }
     
-    getHandlerIcon.get(url, (response) => {
+    getHandlerIcon.get({
+      hostname: urlObjectIcon.host,
+      path: urlObjectIcon.pathname,
+      headers: { 'User-Agent': 'Mozilla/5.0' }
+    }, (response) => {
+      const { statusCode } = response;
+      if (statusCode !== 200) {
+        let errorMessage = `Request Failed.\nStatus Code: ${statusCode}`
+        alert(errorMessage)
+        console.error(errorMessage)
+        throw Error(errorMessage)
+        if (typeof(callback) === 'function') {
+          callback()
+        }
+        return
+      }
+  
       response.pipe(file)
       
       if (process.platform === 'win32' 
