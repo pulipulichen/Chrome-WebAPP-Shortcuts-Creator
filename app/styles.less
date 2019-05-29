@@ -57,7 +57,7 @@ body.loading .loading-layer {
 }
 
 .drag-n-drop-layer {
-  //display: none;
+  display: none;
   position: fixed;
   width: 100vw;
   height: 100vh;
@@ -72,4 +72,8 @@ body.loading .loading-layer {
   border: 3px dashed white;
   cursor: grabbing;
   user-select: none;
+}
+
+body.dragover .drag-n-drop-layer {
+  display: block;
 }

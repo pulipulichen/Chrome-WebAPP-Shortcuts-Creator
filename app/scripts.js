@@ -72,6 +72,9 @@ let app = new Vue({
       this.iconBase64 = `url(${base64})`
     })
     this._enablePersist = (mode === 'production')
+    DragNDropManager.init((e) => {
+      this.onDrop(e)
+    })
   },
   methods: {
     _showLoadingLayer: function () {
@@ -187,6 +190,15 @@ let app = new Vue({
         //icon: 'D:/Desktop/Box Sync/[SOFTWARE]/[SavedIcons]/[ico]/Apps-Google-Drive-Slides-icon.ico',
       }
       ShortcutManager.create(saveToPath, options)
+    },
+    onDrop: function (dropFiles) {
+      let dropFile
+      if (dropFiles.length > 0) {
+        dropFile = dropFiles[0].path
+      }
+      
+      //console.log(file)
+      this._selectIconFileCallback(null, dropFile)
     },
     test: function () {
       setTimeout(() => {
