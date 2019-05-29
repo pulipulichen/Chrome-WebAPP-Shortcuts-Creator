@@ -71,7 +71,9 @@
             URL
           </label>
           <div class="ui right labeled input">
-            <input id="url" type="url" v-model="url" @change="onURLChange" />
+            <input id="url" type="url" v-model="url" 
+                   onfocus="this.select()"
+                   @change="onURLChange" />
             <button type="button"
                   class="ui icon button label load-from-url"
                   v-bind:class="{ disabled: isURLNotReady, positive: isNeedLoad }"
@@ -87,7 +89,9 @@
             Title
           </label>
           <div class="ui input">
-            <input id="input" type="text" v-model="title" maxlength="30" @change="persist" />
+            <input id="input" type="text" v-model="title" maxlength="30" 
+                   onfocus="this.select()"
+                   @change="persist" />
           </div>
         </div>
         
@@ -96,7 +100,9 @@
             Description
           </label>
           <div class="ui input">
-            <textarea id="description" type="text" v-model="description" maxlength="30" @change="persist"></textarea>
+            <textarea id="description" type="text" v-model="description" maxlength="30" 
+                      onfocus="this.select()"
+                      @change="persist"></textarea>
           </div>
         </div>
         
