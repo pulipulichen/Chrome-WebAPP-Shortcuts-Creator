@@ -46,7 +46,7 @@ div.icon-placeholder {
   height: 100vh;
   top: 0;
   left: 0;
-  background-color: rgba(0,0,0,0.87);
+  background-color: rgba(0,0,0,0.6);
   background-image: url(imgs/loading.svg);
   background-repeat: no-repeat;
   background-position: center center;
@@ -54,4 +54,22 @@ div.icon-placeholder {
 
 body.loading .loading-layer {
   display: block;
+}
+
+.drag-n-drop-layer {
+  //display: none;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background-color: rgba(0,0,0,0.6);
+  color: white;
+  font-size: 3rem;
+  line-height: 4rem;
+  text-align: center;
+  padding-top: calc(50vh - 4rem - 3px);
+  border: 3px dashed white;
+  cursor: grabbing;
+  user-select: none;
 }
