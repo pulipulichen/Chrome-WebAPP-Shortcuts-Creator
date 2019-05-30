@@ -44,6 +44,9 @@
       "icon": "app/imgs/icon.ico",
       "target": "portable"
     },
+    "linux": {
+      "icon": "app/imgs/icon.ico"
+    },
     "portable": {
       "artifactName": "chrome-webapp-shortcuts-creator.exe"
     }

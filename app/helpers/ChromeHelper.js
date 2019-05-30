@@ -6,6 +6,11 @@ let ChromeHelper = {
         'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe'
       ]
     }
+    else if (process.platform === 'linux') {
+      candidatePath = [
+        '/opt/google/chrome/google-chrome'
+      ]
+    }
     
     for (let i = 0; i < candidatePath.length; i++) {
       let path = candidatePath[i]

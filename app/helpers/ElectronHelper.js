@@ -10,15 +10,23 @@ ElectronHelper = {
     }
     
     let configFilePath = path.join(this.getBasePath(), this._configFilePath)
+    
     if (fs.existsSync(configFilePath) === false) {
       if (typeof(callback) === 'function') {
-        callback(data)
+        callback()
       }
       return
     }
     
     fs.readFile(configFilePath, function (err, data) {
       if (err) throw err;
+      
+      if (data === undefined) {
+        if (typeof(callback) === 'function') {
+          callback()
+        }
+        return
+      }
       
       data = data.toString().trim()
       if (data.startsWith('{') && data.endsWith('}')) {

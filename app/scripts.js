@@ -3,7 +3,7 @@
 let app = new Vue({
   el: '#app',
   data: {
-    url: '',
+    url: 'http://blog.pulipuli.info',
     title: '',
     description: '',
     chromeFilePath: ChromeHelper.detectFilePath(),
@@ -39,7 +39,9 @@ let app = new Vue({
       return (this.isURLReady === false)
     },
     isReady: function () {
-      return (this.isURLReady === true)
+      return (this.isURLReady === true 
+              && this.chromeFilePath !== "" 
+              && fs.existsSync(this.chromeFilePath))
     },
     isNotReady: function () {
       return (this.isReady === false)
@@ -238,8 +240,8 @@ let app = new Vue({
     test: function () {
       setTimeout(() => {
         //$('.create-shortcut').click()
-        $('.load-from-url').click()
-        //console.log('aaa')
+        //$('.load-from-url').click()
+        console.log('aaa')
       }, 1000)
     }
   },

@@ -75,7 +75,7 @@ let CrawlerIconManager = {
     }
     else {
       iconURL = this._filterBloggerURL(iconURL)
-      console.log(iconURL)
+      //console.log(iconURL)
       this._downloadIconFromURL(iconURL, title, (iconPath) => {
         this.afterDownload(iconPath, callback)
       })

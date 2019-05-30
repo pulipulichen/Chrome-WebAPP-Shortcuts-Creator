@@ -17,4 +17,6 @@ let DateHelper = {
 if (typeof(window) !== 'undefined') {
   window.DateHelper = DateHelper
 }
-exports.default = DateHelper
+if (typeof(exports) !== 'undefined') {
+  exports.default = DateHelper
+}

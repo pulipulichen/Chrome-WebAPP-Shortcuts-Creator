@@ -8,7 +8,7 @@ const ipc = require('electron').ipcRenderer
 const settings = remote.require('electron-settings');
 const mode = settings.get('mode')
 const shell = remote.shell
-//const homedir = require('os').homedir()
+const homedir = require('os').homedir()
 
 let ws = null // for module "windows-shortcut"
 if (process.platform === 'win32') {

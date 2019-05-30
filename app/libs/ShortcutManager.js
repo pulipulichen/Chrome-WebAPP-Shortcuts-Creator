@@ -4,13 +4,18 @@ let ShortcutManager = {
       title = title + '.desktop'
       
       let candidatePaths = [
-        '/usr/share/applications',
-        '~/.local/share/applications'
+        '~/.local/share/applications',
+        '/usr/share/applications'
       ]
       
       let output
       for (let i = 0; i < candidatePaths.length; i++) {
         let p = candidatePaths[i]
+        if (p.startsWith("~/")) {
+          p = homedir + p.slice(1)
+        }
+        //p = path.resolve(p)
+        console.log(p)
         if (fs.existsSync(p)) {
           output = p
           break
@@ -99,9 +104,11 @@ let ShortcutManager = {
    */
   createLinux: function (saveToPath, options) {
     let command = `${options.target} ${options.args}`
+    command = command.replace(' --ignore-certificate-errors', '')
     let name = path.basename(saveToPath)
+    name = name.slice(0, name.lastIndexOf('.desktop'))
     let desc = options.desc
-    let icon = options.icon
+    let icon = ElectronHelper.getTmpDirPath(options.icon)
     
     let template = `#!/usr/bin/env xdg-open
 [Desktop Entry]
@@ -120,6 +127,11 @@ Icon=${icon}`
         alert(err)
         throw Error(err)
       }
+      
+      exec(`chmod +x ${saveToPath}`)
+      exec(`${saveToPath}`)
+      
+      shell.openItem(saveToPath)
     })
     
     return this
