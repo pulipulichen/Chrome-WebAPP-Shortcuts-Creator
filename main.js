@@ -7,6 +7,40 @@ const settings = require('electron-settings');
 
 const path = require('path')
 const url = require('url')
+const fs = require('fs')
+
+// -----------
+let sandboxPath = '/opt/chrome-webapp-shortcuts-creator/chrome-sandbox'
+
+console.log([process.platform === 'linux' && fs.existsSync(sandboxPath)])
+if (process.platform === 'linux' && fs.existsSync(sandboxPath)) {
+  
+  let stat = fs.statSync(sandboxPath)
+  console.log(stat)
+  if (stat.uid !== 0 || stat.mode !== 35309) {
+    let terminalBinsCandicates = [
+      //'/usr/bin/xfce4-terminal',
+      '/usr/bin/xterm',
+      '/usr/bin/gnome-terminal',
+      '/usr/bin/konsole',
+      '/usr/bin/terminal'
+    ]
+
+    let terminalPath
+    for (let i = 0; i < terminalBinsCandicates.length; i++) {
+      let p = terminalBinsCandicates[i]
+      if (fs.existsSync(p)) {
+        terminalPath = p
+        break
+      }
+    }
+
+    let command = 'echo "We need to change permission of ' + sandboxPath + '" &&'
+      + ' sudo chown root ' + sandboxPath
+      + ' sudo chmod 4755 ' + sandboxPath
+  }
+}
+// -----------
 
 app.on('ready', createWindow)
 
@@ -14,8 +48,8 @@ let mode = 'production'
 if (process.argv.indexOf('--mode') - process.argv.indexOf('development') === -1) {
   mode = "development"
 }
-console.log(mode)
-//mode = "development"
+//console.log(mode)
+mode = "development"
 //mode = 'production'
 
 app.on('window-all-closed', () => {

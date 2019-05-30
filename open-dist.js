@@ -46,11 +46,13 @@ let readLog = () => {
 let writeLog = () => {
   let line = timeString + '\t' + size + '\t' + sizeInterval + '\n'
 
-  fs.open(logPath, 'a', 666, function( e, id ) {
+  fs.open(logPath, 'a', 777, function( e, id ) {
     fs.write( id, line, null, 'utf8', function(){
      fs.close(id, function(){
       //console.log('file is updated');
-      
+      if (process.platform === 'linux') {
+        fs.chmodSync(logPath, 0o777)
+      }
       console.log(line)
      });
     });
@@ -65,5 +67,50 @@ if (process.platform === 'win32') {
   exec(distPath, () => {})
 }
 else if (process.platform === 'linux') {
-  exec(`sudo dpkg -i ${distPath}`)
+  let terminalBinsCandicates = [
+    //'/usr/bin/xfce4-terminal',
+    '/usr/bin/xterm',
+    '/usr/bin/gnome-terminal',
+    '/usr/bin/konsole',
+    '/usr/bin/terminal'
+  ]
+  
+  let terminalPath
+  for (let i = 0; i < terminalBinsCandicates.length; i++) {
+    let p = terminalBinsCandicates[i]
+    if (fs.existsSync(p)) {
+      terminalPath = p
+      break
+    }
+  }
+  
+  if (terminalPath !== undefined) {
+    let command = `${terminalPath} -e sudo dpkg -i ./${distPath} -y`
+    exec(command, (error, stdout, stderr) => {
+      
+      if (error) {
+        console.log(error)
+      }
+      if (stdout) {
+        console.log(stdout)
+      }
+      if (stderr) {
+        console.log(stderr)
+      }
+      
+      exec('/opt/chrome-webapp-shortcuts-creator/chrome-webapp-shortcuts-creator', (error, stdout, stderr) => {
+        if (error) {
+          console.log(error)
+        }
+        if (stdout) {
+          console.log(stdout)
+        }
+        if (stderr) {
+          console.log(stderr)
+        }
+      })
+    })
+  }
+  
+    
 }

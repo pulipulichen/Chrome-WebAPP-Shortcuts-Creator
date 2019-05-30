@@ -35,7 +35,7 @@
   "homepage": "https://github.com/pulipulichen/Chrome-WebAPP-Shortcuts-Creator#readme",
   "build": {
     "appId": "chrome.webapp.shortcuts.creator",
-    "compression": "maximum",
+    "compression": "store",
     "mac": {
       "category": "chrome.webapp.shortcuts.creator"
     },
@@ -46,8 +46,7 @@
     "linux": {
       "icon": "app/imgs/icon256.png",
       "category": "Network",
-      "target": "deb",
-      "fpm": ["--after-install=build/linux-after-install.sh"]
+      "target": "deb"
     },
     "portable": {
       "artifactName": "chrome-webapp-shortcuts-creator.exe"

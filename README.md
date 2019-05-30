@@ -21,4 +21,10 @@ sudo chown root chrome-sandbox
 chmod 4755 chrome-sandbox
 ````
 
+````
+cd /opt/chrome-webapp-shortcuts-creator/chrome-sandbox
+sudo chown root /opt/chrome-webapp-shortcuts-creator/chrome-sandbox
+chmod 4755 /opt/chrome-webapp-shortcuts-creator/chrome-sandbox
+````
+
 https://electronjs.org/docs/api/sandbox-option
