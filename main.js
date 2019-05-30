@@ -14,6 +14,7 @@ let mode = 'production'
 if (process.argv.indexOf('--mode') - process.argv.indexOf('development') === -1) {
   mode = "development"
 }
+console.log(mode)
 //mode = "development"
 //mode = 'production'
 
@@ -37,21 +38,31 @@ function createWindow() {
     height = 520
   }
   
+  if (process.platform === 'linux') {
+    height = height - 30
+  }
+  
   let optionBrowserWindow = {
     width: 400,
     height: height,
     maximizable: false,
-    icon: './app/imges/icon.ico',
+    icon: './app/imgs/icon.png',
     webPreferences: {
       nodeIntegration: true
     }
+  }
+  
+  if (process.platform === 'win') {
+    optionBrowserWindow.icon = optionBrowserWindow.icon.slice(0, optionBrowserWindow.icon.lastIndexOf('.')) 
+            + '.ico'
   }
   
   
   win = new BrowserWindow(optionBrowserWindow)
   
   if (mode === 'production') {
-    win.setMenu(null);
+    win.setMenu(null)
+    win.setMenuBarVisibility(false)
   }
   
   win.loadURL(url.format({

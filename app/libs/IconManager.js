@@ -117,9 +117,12 @@ let IconManager = {
     
     let iconPath = ElectronHelper.getTmpDirPath(icon)
     
-    if (fs.existsSync(iconPath) === false || icon === undefined) {
-      //iconPath = ElectronHelper.resolveAppPath('imgs/icon.ico')
+    if (fs.existsSync(iconPath) === false) {
       console.log(`Icon is not found: ${iconPath}`)
+      $.get('imgs/icon.ico.base64.txt', callback)
+      return
+    }
+    else if (icon === undefined || icon.trim() === '') {
       $.get('imgs/icon.ico.base64.txt', callback)
       return
     }
