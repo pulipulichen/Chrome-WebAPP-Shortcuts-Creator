@@ -8,7 +8,13 @@ const getLastLine = require('./libs/fileTools.js').getLastLine
 
 // ------------------------------
 // 記錄檔案大小 
-let distPath = path.join('dist', 'chrome-webapp-shortcuts-creator.exe')
+let distPath
+if (process.platform === 'win32') {
+  distPath = path.join('dist', 'chrome-webapp-shortcuts-creator.exe')
+}
+else if (process.platform === 'linux') {
+  distPath = path.join('dist', 'chrome-webapp-shortcuts-creator_1.0.0_amd64.deb')
+}
 let logPath = 'dist/log.txt'
 let size = fs.statSync(distPath).size
 let timeString = DateHelper.getCurrentTimeString()
@@ -16,7 +22,12 @@ let sizeInterval = 0
 
 // 先讀取最後一行
 let readLog = () => {
-getLastLine(logPath, 1)
+  if (fs.existsSync(logPath) === false) {
+    writeLog()
+    return
+  }
+  
+  getLastLine(logPath, 1)
         .then((lastLine) => {
           console.log(lastLine)
           if (lastLine.lastIndexOf('\t') > 0) {
@@ -52,4 +63,7 @@ if (process.platform === 'win32') {
   
   //console.log(distPath)
   exec(distPath, () => {})
+}
+else if (process.platform === 'linux') {
+  exec(`sudo dpkg -i ${distPath}`)
 }

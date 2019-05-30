@@ -1,7 +1,8 @@
 {
   "name": "chrome-webapp-shortcuts-creator",
+  "author": "Pulipuli Chen <blog@pulipuli.info>",
   "version": "1.0.0",
-  "description": "- 要讓人自由決定選擇icon，還是從網路上下載favicon\r - 要提供能夠改變favicon的JavaScript，favicon用base64編碼取代",
+  "description": "Create shortcuts with Google Chrome App mode",
   "main": "main.js",
   "scripts": {
     "0.run-development": "electron . --mode development",
@@ -28,7 +29,6 @@
     "type": "git",
     "url": "git+https://pulipuli.chen@gmail.com@github.com/pulipulichen/Chrome-WebAPP-Shortcuts-Creator.git"
   },
-  "author": "Pulipuli Chen",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/pulipulichen/Chrome-WebAPP-Shortcuts-Creator/issues"
@@ -45,7 +45,9 @@
       "target": "portable"
     },
     "linux": {
-      "icon": "app/imgs/icon.ico"
+      "icon": "app/imgs/icon256.png",
+      "category": "Network",
+      "target": "deb"
     },
     "portable": {
       "artifactName": "chrome-webapp-shortcuts-creator.exe"
