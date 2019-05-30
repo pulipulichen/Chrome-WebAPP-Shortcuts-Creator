@@ -20,3 +20,5 @@ cd /usr/lib/node_modules/electron/dist/
 sudo chown root chrome-sandbox
 chmod 4755 chrome-sandbox
 ````
+
+https://electronjs.org/docs/api/sandbox-option
