@@ -10,11 +10,12 @@ let app = new Vue({
     icon: 'icon.ico',
     iconBase64: null,
     $body: null,
-    persistAttrs: ['url', 'title', 'description', 'chromeFilePath', 'icon', '_debugDemo'],
+    persistAttrs: ['url', 'title', 'description', 'chromeFilePath', 'icon', '_debugDemo', '_debugConsole'],
     _urlChanged: false,
     isNeedLoad: false,
     _enablePersist: false,
-    _debugDemo: false
+    _debugDemo: false,
+    _debugConsole: false
   },
   watch: {
     icon: function (icon) {
@@ -95,6 +96,9 @@ let app = new Vue({
       //console.log(this._debugDemo)
       if (this._debugDemo === true) {
         this.demo()
+      }
+      if (this._debugConsole === true) {
+        remote.getCurrentWindow().toggleDevTools();
       }
     },
     _showLoadingLayer: function () {

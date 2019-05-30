@@ -47,7 +47,8 @@
     "linux": {
       "icon": "app/imgs/icon256.png",
       "category": "Network",
-      "target": "deb"
+      "target": "deb",
+      "fpm": ["--after-install=build/linux-after-install.sh"]
     },
     "portable": {
       "artifactName": "chrome-webapp-shortcuts-creator.exe"

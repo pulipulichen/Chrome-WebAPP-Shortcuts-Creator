@@ -48,7 +48,8 @@ function createWindow() {
     maximizable: false,
     icon: './app/imgs/icon.png',
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      sandbox: false
     }
   }
   

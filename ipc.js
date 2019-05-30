@@ -77,7 +77,7 @@ ipc.on('open-file-dialog-create', function (event, filePath) {
     }
     options.defaultPath = filePath
   }
-  console.log(options)
+  //console.log(options)
   
   dialog.showSaveDialog(win, options, function (file) {
     if (file) {
