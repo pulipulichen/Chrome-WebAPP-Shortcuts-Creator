@@ -15,7 +15,7 @@ let ShortcutManager = {
           p = homedir + p.slice(1)
         }
         //p = path.resolve(p)
-        console.log(p)
+        //console.log(p)
         if (fs.existsSync(p)) {
           output = p
           break
@@ -62,6 +62,7 @@ let ShortcutManager = {
     let iconFilePath = options.icon
     options.icon = path.resolve(ElectronHelper.getBasePath(), 'tmp', iconFilePath).split("/").join("\\\\")
     options.desc = options.desc.split('\n').join(' ').trim()
+    options.description = options.desc
     
     if (fs.existsSync(saveToPath)) {
       //console.log(saveToPath)
@@ -70,6 +71,7 @@ let ShortcutManager = {
       exec(commend)
     }
 
+    /*
     ws.create(saveToPath, options, (err) => {
       if (err) {
         let simplePath = PathHelper.cleanFilename(saveToPath)
@@ -88,6 +90,25 @@ let ShortcutManager = {
       let dirname = path.dirname(saveToPath)
       exec(`start "" "${dirname}"`)
     });
+    */
+    let result = shell.writeShortcutLink(saveToPath, 'create', options)
+    
+    if (result === false) {
+      let simplePath = PathHelper.cleanFilename(saveToPath)
+      let basename = path.basename(simplePath).slice(0, -4)
+      if (window.confirm(`Error occured.\nDo you want to try to save shortcut with filename "${basename}"`)) {
+        this.createWin32(simplePath, options)
+        return
+      }
+
+      console.error(saveToPath)
+      console.error(options)
+      throw Error('shell.writeShortcutLink failed: ' + saveToPath)
+    }
+
+    exec(`"${saveToPath}"`)
+    let dirname = path.dirname(saveToPath)
+    exec(`start "" "${dirname}"`)
     
     return this
   },
@@ -131,7 +152,7 @@ Icon=${icon}`
       exec(`chmod +x ${saveToPath}`)
       exec(`${saveToPath}`)
       
-      shell.openItem(saveToPath)
+      shell.showItemInFolder(saveToPath)
     })
     
     return this
