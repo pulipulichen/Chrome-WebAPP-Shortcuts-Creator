@@ -111,6 +111,4 @@ else if (process.platform === 'linux') {
       })
     })
   }
-  
-    
 }
