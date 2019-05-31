@@ -74,7 +74,7 @@ let runElectron = {
     }
 
     let command = `electron . --mode ${mode}`
-    console.log(command)
+    //console.log(command)
 
     this.exec(command)
   },
