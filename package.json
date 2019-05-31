@@ -46,7 +46,10 @@
     "linux": {
       "icon": "app/imgs/icon256.png",
       "category": "Network",
-      "target": "deb"
+      "target": "deb",
+      "desktop": {
+        "Icon": "/opt/chrome-webapp-shortcuts-creator/app/imgs/icon256.png"
+      }
     },
     "portable": {
       "artifactName": "chrome-webapp-shortcuts-creator.exe"
@@ -67,5 +70,9 @@
     "main.js",
     "ipc.js",
     "app/*"
+  ],
+  "extraResources": [
+    "build-scripts/linux-after-install.sh",
+    "app/imgs/icon256.png"
   ]
 }

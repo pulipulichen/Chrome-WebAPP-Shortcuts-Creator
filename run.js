@@ -16,12 +16,12 @@ let runElectron = {
   checkSandboxPermission: function (callback) {
     if (process.platform === 'linux') {
       let chromeSandbox = path.resolve('./node_modules/electron/dist/chrome-sandbox')
-      console.log(chromeSandbox)
+      //console.log(chromeSandbox)
       let stat = fs.statSync(chromeSandbox)
 
       let owner = stat.uid
       let mode = stat.mode
-      console.log([owner, mode])
+      //console.log([owner, mode])
 
       if (owner !== 0 || mode !== 35309) {
         this.changeSandboxPermission(chromeSandbox, callback)
@@ -60,7 +60,7 @@ let runElectron = {
             + ' sudo chown root ' + chromeSandbox + ' '
             + ' && sudo chmod 4755 ' + chromeSandbox + '"'
 
-    console.log(command)
+    //console.log(command)
     this.exec(command, callback)
   },
   run: function () {

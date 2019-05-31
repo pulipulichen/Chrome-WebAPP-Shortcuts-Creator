@@ -4,7 +4,7 @@ const path = require('path')
 const DateHelper = require('./app/helpers/DateHelper.js').default
 const fs = require('fs')
 const os = require('os')
-const getLastLine = require('./build/fileTools.js').getLastLine
+const getLastLine = require('./build-scripts/fileTools.js').getLastLine
 
 // ------------------------------
 // 記錄檔案大小 
