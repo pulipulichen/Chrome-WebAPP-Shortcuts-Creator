@@ -1,15 +1,11 @@
-const {
-  app,
-  BrowserWindow,
-} = require('electron')
-
-const settings = require('electron-settings');
 
 const path = require('path')
 const url = require('url')
 const fs = require('fs')
 
 // -----------
+/*
+console.log('guya')
 let sandboxPath = '/opt/chrome-webapp-shortcuts-creator/chrome-sandbox'
 
 console.log([process.platform === 'linux' && fs.existsSync(sandboxPath)])
@@ -40,7 +36,17 @@ if (process.platform === 'linux' && fs.existsSync(sandboxPath)) {
       + ' sudo chmod 4755 ' + sandboxPath
   }
 }
+*/
 // -----------
+
+const {
+  app,
+  BrowserWindow,
+} = require('electron')
+
+const settings = require('electron-settings');
+
+// ------------
 
 app.on('ready', createWindow)
 
