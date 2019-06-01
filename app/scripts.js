@@ -166,6 +166,7 @@ let app = new Vue({
         this._urlChanged = true
         this.isNeedLoad = true
         $(this.$refs.loadFromURL).focus()
+        console.log(this.autoRetrieve)
         if (this.autoRetrieve === true) {
           this.loadFromURL()
         }

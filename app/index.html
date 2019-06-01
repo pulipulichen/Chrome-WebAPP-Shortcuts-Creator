@@ -86,7 +86,9 @@
           <div class="field">
             <button type="button" 
                     class="ui fluid button"
-                    v-on:click="loadFromURL">
+                    v-on:click="loadFromURL"
+                    v-bind:class="{ disabled: isURLNotReady, positive: isNeedLoad }"
+                    ref="loadFromURL">
               Retrieve
             </button>
           </div>

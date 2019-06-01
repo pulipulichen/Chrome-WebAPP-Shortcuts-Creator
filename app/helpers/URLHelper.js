@@ -6,6 +6,9 @@ let URLHelper = {
           '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
           '(\\#[-a-z\\d_]*)?$', 'i'), // fragment locator
   isURL: function (url) {
+    if (url.indexOf('#') > -1) {
+      url = url.slice(0, url.indexOf('#'))
+    } 
     return !!this._pattern.test(url);
   },
   getAllUrlParams: function (url) {

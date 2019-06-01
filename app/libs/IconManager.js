@@ -31,12 +31,18 @@ let IconManager = {
     //command = iconv.encode(command, 'Big5').toString()
     //let command = [path.join(path), path.join(targetIconPath)]
     //command = command.split("\\").join('/')
-    console.log(command)
+    //console.log(command)
 
     exec(command, (err, stdout, stderr) => {
-      console.log(err)
-      console.log(stdout)
-      console.log(stderr)
+      if (err !== null) {
+        console.log(err)
+      }
+      if (stdout !== '') {
+        console.log(stdout)
+      }
+      if (stderr !== '') {
+        console.warn(stderr)
+      }
       
       if (typeof(callback) === 'function') {
         setTimeout(() => {

@@ -219,8 +219,8 @@ let CrawlerIconManager = {
       headers: { 'User-Agent': 'Mozilla/5.0' }
     }
     
-    console.log(protocolIcon)
-    console.log(options)
+    //console.log(protocolIcon)
+    //console.log(options)
     
     getHandlerIcon.get(options, (response) => {
       const { statusCode } = response;

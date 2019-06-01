@@ -55,7 +55,7 @@ if (process.argv.indexOf('--mode') - process.argv.indexOf('development') === -1)
   mode = "development"
 }
 //console.log(mode)
-mode = "development"
+//mode = "development"
 //mode = 'production'
 
 app.on('window-all-closed', () => {
@@ -73,7 +73,7 @@ app.on('activate', () => {
 
 function createWindow() {
   // Create the browser window.
-  let height = 530
+  let height = 550
   if (mode === 'development') {
     height = height + 40
   }
