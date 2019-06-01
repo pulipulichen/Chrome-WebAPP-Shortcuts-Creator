@@ -62,7 +62,7 @@
             <input type="text" v-model="chromeFilePath" class="disabled" disabled="disabled" />
             <button type="button"
               class="ui icon button label">
-              <i class="folder open icon"></i>
+              <i class="search icon"></i>
             </button>
           </div>
         </div>
@@ -83,6 +83,28 @@
               <i class="search icon"></i>
             </button>
           </div>
+        </div>
+        
+        <div class="two fields">
+          <div class="field">
+            <label for="url">
+              Retrieve Metadata
+            </label>
+            <button type="button" 
+                    class="ui fluid button"
+                    @click="loadFromURL">
+              Retrieve
+            </button>
+          </div>
+          <div class="field">
+            <input type="checkbox" v-model="autoRetrieve" />
+            <label>Automatic</label>
+          </div>
+          <label>
+            
+          </label>
+          
+          
         </div>
         
         <div class="field">

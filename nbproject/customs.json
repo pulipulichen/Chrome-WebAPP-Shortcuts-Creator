@@ -1,0 +1,20 @@
+{
+  "elements": {},
+  "attributes": {
+    "v-if": {},
+    "@submit.prevent": {
+      "context": "form"
+    },
+    "ref": {},
+    "@click": {
+      "context": "div"
+    },
+    "@keyup.enter": {},
+    ":style": {},
+    "scoped": {
+      "context": "style"
+    },
+    "v-for": {},
+    "v-model": {}
+  }
+}
