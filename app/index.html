@@ -52,8 +52,7 @@
     <div class="ui" id="app"
          ref="ui">
       <form class="ui container form">
-        <div class="field"
-             @click="selectChromeFilePath">
+        <div class="field" v-on:click="selectChromeFilePath">
           <label for="chromeFilePath">
             Google Chrome File Path
           </label>
@@ -71,41 +70,34 @@
           <label for="url">
             URL
           </label>
-          <div class="ui right labeled input">
+          <div class="ui input">
             <input id="url" type="url" v-model="url" 
                    onfocus="this.select()"
-                   @change="onURLChange" />
-            <button type="button"
-                  class="ui icon button label load-from-url"
-                  v-bind:class="{ disabled: isURLNotReady, positive: isNeedLoad }"
-                  @click="loadFromURL"
-                  ref="loadFromURL">
-              <i class="search icon"></i>
-            </button>
+                   v-on:change="onURLChange" />
           </div>
         </div>
         
-        <div class="two fields">
+        <div class="field">
+          <label>
+            Retrieve Metadata
+          </label>
+          
+          <div class="two unstackable fields">
           <div class="field">
-            <label for="url">
-              Retrieve Metadata
-            </label>
             <button type="button" 
                     class="ui fluid button"
-                    @click="loadFromURL">
+                    v-on:click="loadFromURL">
               Retrieve
             </button>
           </div>
-          <div class="field">
+          <div class="field ui checkbox" ref="checkbox">
             <input type="checkbox" v-model="autoRetrieve" />
             <label>Automatic</label>
           </div>
-          <label>
-            
-          </label>
-          
+        </div>
           
         </div>
+        
         
         <div class="field">
           <label for="title">
@@ -114,7 +106,7 @@
           <div class="ui input">
             <input id="input" type="text" v-model="title" maxlength="30" 
                    onfocus="this.select()"
-                   @change="persist" />
+                   v-on:change="persist" />
           </div>
         </div>
         
@@ -125,7 +117,7 @@
           <div class="ui input">
             <textarea id="description" type="text" v-model="description" maxlength="50" 
                       onfocus="this.select()"
-                      @change="persist"></textarea>
+                      v-on:change="persist"></textarea>
           </div>
         </div>
         
@@ -134,7 +126,7 @@
             <label for="url">
               Icon
             </label>
-            <div class="icon-placeholder" :style="{ backgroundImage: iconBase64 }"></div>
+            <div class="icon-placeholder" v-bind:style="{ backgroundImage: iconBase64 }"></div>
           </div>
           <div class="icon field">
             <label for="url">
@@ -142,7 +134,7 @@
             </label>
             <button type="button" 
                     class="ui fluid button"
-                    @click="selectIconFile">
+                    v-on:click="selectIconFile">
               CHANGE
             </button>
           </div>
@@ -153,7 +145,7 @@
           <button type="button" 
                   class="ui fluid button create-shortcut"
                   v-bind:class="{ positive: isReady, disabled: isNotReady }"
-                  @click="createShortcut"
+                  v-on:click="createShortcut"
                   ref="createShortcut">
             CREATE SHORTCUT
           </button>

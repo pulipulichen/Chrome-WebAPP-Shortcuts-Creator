@@ -4,13 +4,14 @@ let app = new Vue({
   el: '#app',
   data: {
     url: 'http://blog.pulipuli.info',
+    autoRetrieve: true,
     title: '',
     description: '',
     chromeFilePath: ChromeHelper.detectFilePath(),
     icon: 'icon.ico',
     iconBase64: null,
     $body: null,
-    persistAttrs: ['url', 'title', 'description', 'chromeFilePath', 'icon', '_debugDemo', '_debugConsole'],
+    persistAttrs: ['url', 'autoRetrieve', 'title', 'description', 'chromeFilePath', 'icon', '_debugDemo', '_debugConsole'],
     _urlChanged: false,
     isNeedLoad: false,
     _enablePersist: false,
@@ -100,6 +101,8 @@ let app = new Vue({
       if (this._debugConsole === true) {
         remote.getCurrentWindow().toggleDevTools();
       }
+      
+      $(this.$refs.checkbox).checkbox()
     },
     _showLoadingLayer: function () {
       this.$body.addClass('loading')
@@ -163,6 +166,9 @@ let app = new Vue({
         this._urlChanged = true
         this.isNeedLoad = true
         $(this.$refs.loadFromURL).focus()
+        if (this.autoRetrieve === true) {
+          this.loadFromURL()
+        }
         this.persist()
       }
     },

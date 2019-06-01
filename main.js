@@ -73,9 +73,9 @@ app.on('activate', () => {
 
 function createWindow() {
   // Create the browser window.
-  let height = 500
+  let height = 530
   if (mode === 'development') {
-    height = 520
+    height = height + 40
   }
   
   if (process.platform === 'linux') {
@@ -88,8 +88,7 @@ function createWindow() {
     maximizable: false,
     icon: './app/imgs/icon.png',
     webPreferences: {
-      nodeIntegration: true,
-      sandbox: false
+      nodeIntegration: true
     }
   }
   

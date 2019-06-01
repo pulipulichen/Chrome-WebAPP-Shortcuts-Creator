@@ -6,14 +6,15 @@
       "context": "form"
     },
     "ref": {},
-    "@click": {
-      "context": "div"
-    },
+    "v-bind:style": {},
     "@keyup.enter": {},
     ":style": {},
+    "@click": {
+    },
     "scoped": {
       "context": "style"
     },
+    "v-on:click": {},
     "v-for": {},
     "v-model": {}
   }
