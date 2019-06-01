@@ -71,7 +71,6 @@ let ShortcutManager = {
       exec(commend)
     }
 
-    /*
     ws.create(saveToPath, options, (err) => {
       if (err) {
         let simplePath = PathHelper.cleanFilename(saveToPath)
@@ -90,7 +89,8 @@ let ShortcutManager = {
       let dirname = path.dirname(saveToPath)
       exec(`start "" "${dirname}"`)
     });
-    */
+   
+    /*
     let result = shell.writeShortcutLink(saveToPath, 'create', options)
     
     if (result === false) {
@@ -111,6 +111,7 @@ let ShortcutManager = {
     exec(`start "" "${dirname}"`)
     
     return this
+    */
   },
   /**
    * https://linuxconfig.org/how-to-create-desktop-shortcut-launcher-on-ubuntu-18-04-bionic-beaver-linux
