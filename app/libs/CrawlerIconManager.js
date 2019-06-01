@@ -107,7 +107,14 @@ let CrawlerIconManager = {
     }
   },
   _validFilesize: function (iconPath) {
-    let filesize = fs.statSync(iconPath).size
+    if (iconPath === undefined) {
+      return false
+    }
+    
+    let filesize = 0
+    if (iconPath !== undefined) {
+      filesize = fs.statSync(iconPath).size
+    }
     if (filesize < 100) {
       let errorMessage = 'Icon is too small (' + filesize + '):\n' + path.basename(iconPath)
       alert(errorMessage)
@@ -157,6 +164,10 @@ let CrawlerIconManager = {
       title = title.slice(0, 20).trim()
     }
     title = host  + '-' + title
+    
+    title = title.split('/').join('')
+    title = title.split('\\').join('')
+    
     //let filePath = path.resolve('tmp', title + '.' + ext)
     return ElectronHelper.getTmpDirPath(title)
   },
@@ -219,16 +230,20 @@ let CrawlerIconManager = {
       headers: { 'User-Agent': 'Mozilla/5.0' }
     }
     
+    if (options.path.startsWith('//')) {
+      options.path = options.path.slice(1)
+    }
+    
     //console.log(protocolIcon)
     //console.log(options)
     
     getHandlerIcon.get(options, (response) => {
       const { statusCode } = response;
       if (statusCode !== 200) {
-        let errorMessage = `Request Failed.\nStatus Code: ${statusCode}`
-        alert(errorMessage)
+        let errorMessage = `Request Failed.\nStatus Code: ${statusCode}\n` + JSON.stringify(options)
+        //alert(errorMessage)
         console.error(errorMessage)
-        throw Error(errorMessage)
+        //throw Error(errorMessage)
         if (typeof(callback) === 'function') {
           callback()
         }

@@ -133,6 +133,22 @@ let app = new Vue({
       ipc.send('open-file-dialog-icon', dir)
     },
     _selectIconFileCallback: function (event, filePath) {
+      if (filePath === undefined) {
+        return
+      }
+      
+      if ((filePath.startsWith('http://') || filePath.startsWith('https://'))) {
+        console.log(filePath)
+        if ((filePath.endsWith('.png') || filePath.endsWith('.ico') || filePath.endsWith('.gif') || filePath.endsWith('.jpeg') || filePath.endsWith('.jpg'))) {
+          // 需要下載檔案
+          //console.log(this.title)
+          CrawlerIconManager._downloadIconFromURL(filePath, this.title, (iconPath) => {
+            this._selectIconFileCallback(event, iconPath)
+          })
+        }
+        return
+      }
+      
       //console.log(path)
       if (process.platform === 'win32' 
               && filePath.endsWith('.ico') === false) {
@@ -166,7 +182,7 @@ let app = new Vue({
         this._urlChanged = true
         this.isNeedLoad = true
         $(this.$refs.loadFromURL).focus()
-        console.log(this.autoRetrieve)
+        //console.log(this.autoRetrieve)
         if (this.autoRetrieve === true) {
           this.loadFromURL()
         }
@@ -223,8 +239,8 @@ let app = new Vue({
       ShortcutManager.create(saveToPath, options)
     },
     onFileDrop: function (dropFiles) {
-      let dropFile
-      if (dropFiles.length > 0) {
+      let dropFile = dropFiles
+      if (Array.isArray(dropFiles) && dropFiles.length > 0) {
         dropFile = dropFiles[0].path
       }
       

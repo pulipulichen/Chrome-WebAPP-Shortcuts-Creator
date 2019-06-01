@@ -54,11 +54,20 @@ let FileDragNDropHelper = {
   },
   getFilesFromEvent: function (event) {
     let files
+    //console.log(event)
     if (typeof(event) === 'object' 
             && typeof(event.originalEvent) === 'object'
             && typeof(event.originalEvent.dataTransfer) === 'object'
             && typeof(event.originalEvent.dataTransfer.files) !== 'undefined') {
       files = event.originalEvent.dataTransfer.files
+    }
+    if (files.length === 0 
+            && typeof(event) === 'object' 
+            && typeof(event.originalEvent) === 'object'
+            && typeof(event.originalEvent.dataTransfer) === 'object'
+            && typeof(event.originalEvent.dataTransfer.getData) !== 'undefined') {
+      files = event.originalEvent.dataTransfer.getData('Text')
+      console.log(files)
     }
     return files
   }

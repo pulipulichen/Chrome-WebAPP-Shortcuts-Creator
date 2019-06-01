@@ -112,9 +112,9 @@ function createWindow() {
   }))
   
   settings.set('mode', mode);
-  if (mode === 'development') {
-    win.webContents.openDevTools()
-  }
+  //if (mode === 'development') {
+    //win.webContents.openDevTools()
+  //}
   //win.webContents.executeJavaScript('window.MODE="' + mode + '"');
   
   
