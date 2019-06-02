@@ -37,7 +37,7 @@
   "homepage": "https://github.com/pulipulichen/Chrome-WebAPP-Shortcuts-Creator#readme",
   "build": {
     "appId": "chrome.webapp.shortcuts.creator",
-    "compression": "store",
+    "compression": "maximum",
     "mac": {
       "category": "chrome.webapp.shortcuts.creator"
     },
