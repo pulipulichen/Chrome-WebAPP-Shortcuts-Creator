@@ -73,9 +73,9 @@ app.on('activate', () => {
 
 function createWindow() {
   // Create the browser window.
-  let height = 550
+  let height = 570
   if (mode === 'development') {
-    height = height + 40
+    height = height + 50
   }
   
   if (process.platform === 'linux') {
@@ -112,15 +112,10 @@ function createWindow() {
   }))
   
   settings.set('mode', mode);
-  //if (mode === 'development') {
-    //win.webContents.openDevTools()
-  //}
-  //win.webContents.executeJavaScript('window.MODE="' + mode + '"');
+  if (mode === 'development') {
+    win.webContents.openDevTools()
+  }
   
-  
-  // Open DevTools.
-  // win.webContents.openDevTools()
-
   // When Window Close.
   win.on('closed', () => {
     win = null
@@ -128,4 +123,4 @@ function createWindow() {
 
 }
 
-require('./ipc')
+//require('./ipc')

@@ -103,6 +103,7 @@ let app = new Vue({
       }
       
       $(this.$refs.checkbox).checkbox()
+      this.checkIsNeedLoad()
     },
     _showLoadingLayer: function () {
       this.$body.addClass('loading')
@@ -177,11 +178,19 @@ let app = new Vue({
       this.icon = filePath
       this.persist()
     },
-    onURLChange: function () {
+    checkIsNeedLoad: function () {
       if (URLHelper.isURL(this.url)) {
-        this._urlChanged = true
         this.isNeedLoad = true
         $(this.$refs.loadFromURL).focus()
+      }
+      else {
+        this.isNeedLoad = false
+      }
+    },
+    onURLChange: function () {
+      this.checkIsNeedLoad()
+      if (URLHelper.isURL(this.url)) {
+        this._urlChanged = true
         //console.log(this.autoRetrieve)
         if (this.autoRetrieve === true) {
           this.loadFromURL()

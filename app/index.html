@@ -76,28 +76,28 @@
                    v-on:change="onURLChange" />
           </div>
         </div>
-        
+
         <div class="field">
           <label>
             Retrieve Metadata
           </label>
-          
+
           <div class="two unstackable fields">
-          <div class="field">
-            <button type="button" 
-                    class="ui fluid button"
-                    v-on:click="loadFromURL"
-                    v-bind:class="{ disabled: isURLNotReady, positive: isNeedLoad }"
-                    ref="loadFromURL">
-              Retrieve
-            </button>
+            <div class="field">
+              <button type="button" 
+                      class="ui labeled icon fluid button"
+                      v-on:click="loadFromURL"
+                      v-bind:class="{ disabled: isURLNotReady, positive: isNeedLoad }"
+                      ref="loadFromURL">
+                <i class="search icon"></i>
+                Retrieve
+              </button>
+            </div>
+            <div class="field ui checkbox" ref="checkbox">
+              <input type="checkbox" v-model="autoRetrieve" />
+              <label>Automatic</label>
+            </div>
           </div>
-          <div class="field ui checkbox" ref="checkbox">
-            <input type="checkbox" v-model="autoRetrieve" />
-            <label>Automatic</label>
-          </div>
-        </div>
-          
         </div>
         
         
