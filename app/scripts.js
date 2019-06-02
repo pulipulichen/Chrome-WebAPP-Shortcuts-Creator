@@ -99,7 +99,7 @@ let app = new Vue({
         this.demo()
       }
       if (this._debugConsole === true) {
-        remote.getCurrentWindow().toggleDevTools();
+        remote.getCurrentWindow().openDevTools();
       }
       
       $(this.$refs.checkbox).checkbox()

@@ -75,7 +75,7 @@ function createWindow() {
   // Create the browser window.
   let height = 570
   if (mode === 'development') {
-    height = height + 50
+    height = height + 30
   }
   
   if (process.platform === 'linux') {
@@ -123,4 +123,4 @@ function createWindow() {
 
 }
 
-//require('./ipc')
+require('./ipc')
