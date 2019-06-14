@@ -4,13 +4,14 @@ let app = new Vue({
   el: '#app',
   data: {
     url: 'http://blog.pulipuli.info',
+    autoRetrieve: true,
     title: '',
     description: '',
     chromeFilePath: ChromeHelper.detectFilePath(),
     icon: 'icon.ico',
     iconBase64: null,
     $body: null,
-    persistAttrs: ['url', 'title', 'description', 'chromeFilePath', 'icon', '_debugDemo', '_debugConsole'],
+    persistAttrs: ['url', 'autoRetrieve', 'title', 'description', 'chromeFilePath', 'icon', '_debugDemo', '_debugConsole'],
     _urlChanged: false,
     isNeedLoad: false,
     _enablePersist: false,
@@ -98,8 +99,11 @@ let app = new Vue({
         this.demo()
       }
       if (this._debugConsole === true) {
-        remote.getCurrentWindow().toggleDevTools();
+        remote.getCurrentWindow().openDevTools();
       }
+      
+      $(this.$refs.checkbox).checkbox()
+      this.checkIsNeedLoad()
     },
     _showLoadingLayer: function () {
       this.$body.addClass('loading')
@@ -130,6 +134,22 @@ let app = new Vue({
       ipc.send('open-file-dialog-icon', dir)
     },
     _selectIconFileCallback: function (event, filePath) {
+      if (filePath === undefined) {
+        return
+      }
+      
+      if ((filePath.startsWith('http://') || filePath.startsWith('https://'))) {
+        console.log(filePath)
+        if ((filePath.endsWith('.png') || filePath.endsWith('.ico') || filePath.endsWith('.gif') || filePath.endsWith('.jpeg') || filePath.endsWith('.jpg'))) {
+          // 需要下載檔案
+          //console.log(this.title)
+          CrawlerIconManager._downloadIconFromURL(filePath, this.title, (iconPath) => {
+            this._selectIconFileCallback(event, iconPath)
+          })
+        }
+        return
+      }
+      
       //console.log(path)
       if (process.platform === 'win32' 
               && filePath.endsWith('.ico') === false) {
@@ -158,11 +178,23 @@ let app = new Vue({
       this.icon = filePath
       this.persist()
     },
-    onURLChange: function () {
+    checkIsNeedLoad: function () {
       if (URLHelper.isURL(this.url)) {
-        this._urlChanged = true
         this.isNeedLoad = true
         $(this.$refs.loadFromURL).focus()
+      }
+      else {
+        this.isNeedLoad = false
+      }
+    },
+    onURLChange: function () {
+      this.checkIsNeedLoad()
+      if (URLHelper.isURL(this.url)) {
+        this._urlChanged = true
+        //console.log(this.autoRetrieve)
+        if (this.autoRetrieve === true) {
+          this.loadFromURL()
+        }
         this.persist()
       }
     },
@@ -216,8 +248,8 @@ let app = new Vue({
       ShortcutManager.create(saveToPath, options)
     },
     onFileDrop: function (dropFiles) {
-      let dropFile
-      if (dropFiles.length > 0) {
+      let dropFile = dropFiles
+      if (Array.isArray(dropFiles) && dropFiles.length > 0) {
         dropFile = dropFiles[0].path
       }
       

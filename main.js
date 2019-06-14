@@ -73,9 +73,9 @@ app.on('activate', () => {
 
 function createWindow() {
   // Create the browser window.
-  let height = 500
+  let height = 570
   if (mode === 'development') {
-    height = 520
+    height = height + 30
   }
   
   if (process.platform === 'linux') {
@@ -88,8 +88,7 @@ function createWindow() {
     maximizable: false,
     icon: './app/imgs/icon.png',
     webPreferences: {
-      nodeIntegration: true,
-      sandbox: false
+      nodeIntegration: true
     }
   }
   
@@ -116,12 +115,7 @@ function createWindow() {
   if (mode === 'development') {
     win.webContents.openDevTools()
   }
-  //win.webContents.executeJavaScript('window.MODE="' + mode + '"');
   
-  
-  // Open DevTools.
-  // win.webContents.openDevTools()
-
   // When Window Close.
   win.on('closed', () => {
     win = null
