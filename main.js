@@ -55,7 +55,7 @@ if (process.argv.indexOf('--mode') - process.argv.indexOf('development') === -1)
   mode = "development"
 }
 //console.log(mode)
-mode = "development"
+//mode = "development"
 //mode = 'production'
 
 app.on('window-all-closed', () => {
