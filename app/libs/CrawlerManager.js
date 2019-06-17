@@ -15,6 +15,7 @@ let CrawlerManager = {
 
     //console.log(url)
     this._requestBody(url, (body) => {
+      //console.log(body)
       let bodyStr = body.toString()
       if (bodyStr !== body) {
         body = bodyStr
@@ -45,16 +46,19 @@ let CrawlerManager = {
 
   },
   _requestBody: function (url, callback) {
-    request({ 
-      url: url, 
-      encoding: null 
-   }, function (error, response, body) {
+    request({
+      url: url,
+      encoding: null,
+      headers: { 'User-Agent': 'Mozilla/5.0' }
+    }, function (error, response, body) {
       if (!error && response.statusCode === 200) {
         if (typeof (callback) === 'function') {
           callback(body)
         }
       } else {
         alert(error)
+        console.error(['statusCode', response.statusCode])
+        //console.log(body.toString())
         $('body').removeClass('loading')
         throw Error(error)
       }
