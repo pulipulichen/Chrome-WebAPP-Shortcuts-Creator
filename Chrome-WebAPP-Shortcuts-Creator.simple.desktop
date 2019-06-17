@@ -2,11 +2,11 @@
 Name=Chrome-WebAPP-Shortcuts-Creator
 GenericName=Chrome-WebAPP-Shortcuts-Creator
 Comment=Chrome-WebAPP-Shortcuts-Creator
-Exec=/home/pudding/NetBeansProjects/[nodejs]/Chrome-WebAPP-Shortcuts-Creator/run.sh
+Exec=/home/user/Desktop/Chrome-WebAPP-Shortcuts-Creator/run.sh
 Terminal=false
 Type=Application
 StartupNotify=true
-Icon=/home/pudding/NetBeansProjects/[nodejs]/Chrome-WebAPP-Shortcuts-Creator/app/imgs/icon.png
+Icon=/home/user/Desktop/Chrome-WebAPP-Shortcuts-Creator/app/imgs/icon.png
 Categories=GNOME;GTK;Office
 
 
