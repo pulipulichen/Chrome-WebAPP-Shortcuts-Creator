@@ -15,7 +15,12 @@ let CrawlerManager = {
 
     //console.log(url)
     this._requestBody(url, (body) => {
+      let bodyStr = body.toString()
+      if (bodyStr !== body) {
+        body = bodyStr
+      }
       body = this._decodeHTML(body)
+      //console.log(body)
       
       let $ = cheerio.load(body)
       data.title = this._parseTitle($, urlObject.host)
@@ -24,13 +29,11 @@ let CrawlerManager = {
       CrawlerIconManager.parseIcon($, body, url, data.title, (iconPath) => {
         //console.log(iconPath)
         if (typeof(iconPath) === 'string') {
-          
+          data.icon = path.basename(iconPath)
         }
         else {
           data.icon = 'icon.ico'
         }
-        
-        data.icon = path.basename(iconPath)
         
         if (typeof (callback) === 'function') {
           callback(data)
@@ -52,6 +55,7 @@ let CrawlerManager = {
         }
       } else {
         alert(error)
+        $('body').removeClass('loading')
         throw Error(error)
       }
     })
@@ -80,7 +84,7 @@ let CrawlerManager = {
   },
   _decodeHTML: function (body) {
     if (body.indexOf('content="text/html; charset=big5"') > -1) {
-      body = iconv.decode(body, 'BIG5')
+      body = iconv.decode(body, 'BIG5').toString()
     }
     //console.log(body)
     return body
