@@ -1,6 +1,6 @@
 PathHelper = {
   hyperCharacters: [':', '/', '|', '▬'],
-  removeCharacters: ["ღ", '✿', '◕', '➨', '♥', '♫', '△', '❤', '🔔', '▼'],
+  removeCharacters: ["ღ", '✿', '◕', '➨', '♥', '♫', '△', '❤', '🔔', '▼', '☞'],
   safeFilterTitle: function (title) {
     title = this.safeFilter(title)
     
