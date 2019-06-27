@@ -21,6 +21,7 @@
     "platform-folders": "^0.4.0",
     "request": "^2.87.0",
     "terminal-exec": "^0.0.2",
+    "universalify": "^0.1.2",
     "windows-shortcuts": "^0.1.6"
   },
   "devDependencies": {
