@@ -31,9 +31,27 @@ let CrawlerIconURLManager = {
         return url.startsWith("https://docs.google.com/document/")
       },
       process: function (url, $, callback) {
-        //let result = CrawlerIconBase64Predefined['googleDoc']
-        //console.log(result)
         let result = 'predefined-icons/google-docs.png'
+        callback(result)
+        return result
+      }
+    },
+    {
+      match: function (url) {
+        return url.startsWith("https://docs.google.com/spreadsheets/")
+      },
+      process: function (url, $, callback) {
+        let result = 'predefined-icons/google-sheets.png'
+        callback(result)
+        return result
+      }
+    },
+    {
+      match: function (url) {
+        return url.startsWith("https://docs.google.com/presentation")
+      },
+      process: function (url, $, callback) {
+        let result = 'predefined-icons/google-slides.png'
         callback(result)
         return result
       }
