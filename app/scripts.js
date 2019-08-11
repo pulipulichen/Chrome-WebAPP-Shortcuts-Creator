@@ -14,7 +14,7 @@ let appConfig = {
     persistAttrs: ['url', 'autoRetrieve', 'title', 'description', 'chromeFilePath', 'icon', '_debugDemo', '_debugConsole'],
     _urlChanged: false,
     isNeedLoad: false,
-    _enablePersist: false,
+    _enablePersist: true,
     _debugDemo: false,
     _debugConsole: false
   },

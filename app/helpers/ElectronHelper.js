@@ -2,6 +2,7 @@
 
 ElectronHelper = {
   init: function () {
+    process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
   },
   _configFilePath: 'config.json',
   mount: function (vue, attrs, callback) {

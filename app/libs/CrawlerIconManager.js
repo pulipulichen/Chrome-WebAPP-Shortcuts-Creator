@@ -81,6 +81,12 @@ let CrawlerIconManager = {
         this.afterDownload(iconPath, callback)
       })
     }
+    else if (iconURL.startsWith('https://drive.google.com/thumbnail?')) {
+      //console.log(iconURL)
+      this._downloadIconFromGoogleDrive(iconURL, title, (iconPath) => {
+        this.afterDownload(iconPath, callback)
+      })
+    }
     else {
       iconURL = this._filterBloggerURL(iconURL)
       //console.log(iconURL)
@@ -175,6 +181,11 @@ let CrawlerIconManager = {
     
     title = title.split('/').join('')
     title = title.split('\\').join('')
+    title = title.split(':').join('_')
+    
+    if (title.endsWith('.')) {
+      title = title.slice(0, -1)
+    }
     
     //let filePath = path.resolve('tmp', title + '.' + ext)
     return ElectronHelper.getTmpDirPath(title)
@@ -224,7 +235,7 @@ let CrawlerIconManager = {
     let urlObjectIcon = new URL(url)
     let protocolIcon = urlObjectIcon.protocol
 
-    var getHandlerIcon;
+    let getHandlerIcon
     if (protocolIcon === "http:") {
         getHandlerIcon = http
     }
@@ -242,9 +253,6 @@ let CrawlerIconManager = {
       options.path = options.path.slice(1)
     }
     
-    //console.log(protocolIcon)
-    //console.log(options)
-    
     getHandlerIcon.get(options, (response) => {
       const { statusCode } = response;
       if (statusCode !== 200) {
@@ -260,6 +268,99 @@ let CrawlerIconManager = {
   
       response.pipe(file)
     })
+  },
+  _downloadIconFromGoogleDrive: function (url, title, callback) {
+    let ext = 'png'
+    
+    let targetBasepath = this._downloadTargetBasepath(url, title)
+    let filePath = targetBasepath + '.' + ext
+    let iconPath = targetBasepath + '.ico'
+    
+    //console.log([filePath, iconPath])
+    
+    // -----------------------------------
+    if (fs.existsSync(iconPath)) {
+      if (typeof(callback) === 'function') {
+        callback(iconPath)
+      }
+      return
+    }
+    else if (process.platform !== 'win32' 
+            && fs.existsSync(filePath)) {
+      if (typeof(callback) === 'function') {
+        callback(filePath)
+      }
+      return
+    }
+    
+    
+    // ------------------------------------------------
+    
+    const options = {
+      url: url,
+      dest: filePath                // Save to /path/to/dest/image.jpg
+    }
+    
+    download.image(options)
+      .then(({ filename, image }) => {
+        //console.log('Saved to', filePath)  // Saved to /path/to/dest/image.jpg
+        if (typeof(callback) === 'function') {
+          callback(filePath)
+        }
+      })
+      .catch((err) => {
+        alert(err)
+        console.error(err)
+      })
+    return
+    /*
+    // -----------------------------------
+    let file = fs.createWriteStream(filePath)
+    file.on("finish", function() {
+      if (typeof(callback) === 'function') {
+        callback(filePath)
+      }
+    })
+    
+
+    let urlObjectIcon = new URL(url)
+    //let getHandlerIcon = require('follow-redirects').https
+    let getHandlerIcon = https
+    let options = {
+      hostname: urlObjectIcon.host,
+      path: urlObjectIcon.pathname + urlObjectIcon.search,
+      headers: { 'User-Agent': 'Mozilla/5.0' },
+      //encoding: null
+      //followAllRedirects: true
+    }
+    //options.headers = { 'User-Agent': 'Mozilla/5.0' }
+    
+    
+    //console.log(protocolIcon)
+    console.log(options)
+    
+    getHandlerIcon.get(options, (response) => {
+      const { statusCode } = response;
+      if (statusCode !== 200) {
+        let errorMessage = `Request Failed.\nStatus Code: ${statusCode}\n` + JSON.stringify(options)
+        //alert(errorMessage)
+        console.error(errorMessage) // 這個不是測試，請不要隨意註解
+        //throw Error(errorMessage)
+        if (typeof(callback) === 'function') {
+          callback()
+        }
+        return
+      }
+      
+      console.log(response)
+      if (url.startsWith('https://lh3.googleusercontent.com/') === false) {
+        this._downloadIconFromGoogleDrive(response.responseUrl, title, callback)
+      }
+      else {
+        response.pipe(file)
+      }
+    })
+     */
   },
   _downloadIconFromBase64: function (base64, url, title, callback) {
     if (typeof(base64) !== 'string' || base64.startsWith('data:') === false) {

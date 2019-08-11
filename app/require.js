@@ -20,6 +20,8 @@ const getPath = require('platform-folders').default
 
 const settings = remote.require('electron-settings');
 const mode = settings.get('mode')
+
+const download = require('image-downloader')
 //console.log(mode)
 
 /*

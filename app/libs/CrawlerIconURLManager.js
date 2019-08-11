@@ -26,6 +26,7 @@ let CrawlerIconURLManager = {
         return result
       }
     },
+    /*
     {
       match: function (url) {
         return url.startsWith("https://docs.google.com/document/")
@@ -56,6 +57,23 @@ let CrawlerIconURLManager = {
         return result
       }
     }
+    */
+    {
+      match: function (url) {
+        return (url.startsWith("https://docs.google.com/document/")
+                || url.startsWith("https://docs.google.com/spreadsheets/")
+                || url.startsWith("https://docs.google.com/presentation/"))
+      },
+      process: function (url, $, callback) {
+        // https://docs.google.com/presentation/d/1qs1YC8M1PkN74abxkF5Gaplk8tGitzXiXGT6ufVL0fI/edit?usp=sharing
+        let fileId = url.slice(url.indexOf('/d/') + 3)
+        fileId = fileId.slice(0, fileId.indexOf('/'))
+        
+        let result = `https://drive.google.com/thumbnail?authuser=0&sz=w256-h256&id=${fileId}`
+        callback(result)
+        return result
+      }
+    },
   ],
   match: function (url, $, callback) {
     for (let i = 0; i < this.conf.length; i++) {
