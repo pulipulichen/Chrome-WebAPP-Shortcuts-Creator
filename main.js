@@ -3,7 +3,7 @@ const path = require('path')
 const url = require('url')
 const fs = require('fs')
 
-// -----------
+// ------------
 /*
 console.log('guya')
 let sandboxPath = '/opt/chrome-webapp-shortcuts-creator/chrome-sandbox'
