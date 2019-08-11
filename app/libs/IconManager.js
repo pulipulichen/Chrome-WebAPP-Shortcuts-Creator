@@ -126,11 +126,11 @@ let IconManager = {
     if (fs.existsSync(iconPath) === false) {
       console.log(`Icon is not found: ${iconPath}`)
       $.get('imgs/icon.ico.base64.txt', callback)
-      return
+      return this
     }
     else if (icon === undefined || icon.trim() === '') {
       $.get('imgs/icon.ico.base64.txt', callback)
-      return
+      return this
     }
     
     //console.log(iconPath)
@@ -157,7 +157,7 @@ let IconManager = {
       if (typeof(callback) === 'function') {
         callback(targetPath)
       }
-      return
+      return this
     }
     
     // ---------------------------------

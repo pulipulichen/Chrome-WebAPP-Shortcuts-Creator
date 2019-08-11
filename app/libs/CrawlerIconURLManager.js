@@ -1,5 +1,7 @@
 /* global URLHelper */
 
+
+
 /**
  * 這是第一層要檢查的規則庫
  * @type type
@@ -20,6 +22,16 @@ let CrawlerIconURLManager = {
       },
       process: function (url, $, callback) {
         let result = CrawlerIconURLManager.parsePlurk($)
+        callback(result)
+        return result
+      }
+    },
+    {
+      match: function (url) {
+        return url.startsWith("https://docs.google.com/document/")
+      },
+      process: function (url, $, callback) {
+        let result = CrawlerIconBase64Predefined['googleDoc']
         callback(result)
         return result
       }

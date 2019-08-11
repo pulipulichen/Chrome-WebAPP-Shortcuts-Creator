@@ -7,6 +7,8 @@
   "scripts": {
     "0.run-development": "node run.js --mode development",
     "1.run-production": "node run.js --mode production",
+    "e0.run-development": "electron bin/electron/index-electron.js --mode development",
+    "e1.run-production": "electron bin/electron/index-electron.js --mode production",
     "pack": "electron-builder --dir",
     "8.dist": "electron-builder && node open-dist.js",
     "9.open-dist": "node open-dist.js"
@@ -25,7 +27,7 @@
     "windows-shortcuts": "^0.1.6"
   },
   "devDependencies": {
-    "electron": "^5.0.2"
+    "electron": "^6.0.1"
   },
   "repository": {
     "type": "git",
