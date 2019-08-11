@@ -14,7 +14,7 @@
     "9.open-dist": "node open-dist.js"
   },
   "dependencies": {
-    "cheerio": "^1.0.0-rc.2",
+    "cheerio": "0.19",
     "electron-settings": "^3.2.0",
     "follow-redirects": "^1.5.0",
     "iconv-lite": "^0.4.23",
