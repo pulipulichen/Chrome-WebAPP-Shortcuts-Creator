@@ -4,6 +4,7 @@ let CrawlerIconManager = {
   parseIcon: function ($, body, url, title, callback) {
     CrawlerIconURLManager.match(url, $, (iconURL) => {
       if (iconURL !== undefined) {
+        //console.log(iconURL)
         return this.parseIconPath(iconURL, url, title, callback)
       }
       CrawlerIconThumbnailManager.match(url, $, (iconURL) => {
@@ -69,7 +70,14 @@ let CrawlerIconManager = {
     }
     
     if (iconURL.startsWith('data:')) {
+      //console.log(iconURL)
       this._downloadIconFromBase64(iconURL, url, title, (iconPath) => {
+        this.afterDownload(iconPath, callback)
+      })
+    }
+    else if (iconURL.startsWith('predefined-icons/')) {
+      //console.log(iconURL)
+      this._copyIconFromPredefinedIcons(iconURL, url, title, (iconPath) => {
         this.afterDownload(iconPath, callback)
       })
     }
@@ -242,7 +250,7 @@ let CrawlerIconManager = {
       if (statusCode !== 200) {
         let errorMessage = `Request Failed.\nStatus Code: ${statusCode}\n` + JSON.stringify(options)
         //alert(errorMessage)
-        console.error(errorMessage)
+        console.error(errorMessage) // 這個不是測試，請不要隨意註解
         //throw Error(errorMessage)
         if (typeof(callback) === 'function') {
           callback()
@@ -262,9 +270,14 @@ let CrawlerIconManager = {
     }
     
     let ext = base64.slice(base64.indexOf('/') + 1, base64.indexOf(';base64,')).trim()
+    if (ext === 'x-icon') {
+      ext = 'ico'
+    }
     let targetBasepath = this._downloadTargetBasepath(url, title)
     let filePath = targetBasepath + '.' + ext
     let iconPath = targetBasepath + '.ico'
+    
+    //console.log([filePath, iconPath])
     
     // --------------------------------
     
@@ -284,6 +297,8 @@ let CrawlerIconManager = {
     
     // --------------------------------
     
+    //console.log(base64)
+    
     fs.writeFile(filePath, base64, 'base64', (err) => {
       if (err) {
         alert(err)
@@ -292,10 +307,39 @@ let CrawlerIconManager = {
       }
       
       if (typeof(callback) === 'function') {
+        //console.log('寫完了', filePath)
         callback(filePath)
       }
     })
   },
+  _copyIconFromPredefinedIcons: function (predefinedIconPath, url, title, callback) {
+    
+    let targetBasepath = this._downloadTargetBasepath(url, title)
+    let ext = predefinedIconPath.slice(predefinedIconPath.lastIndexOf('.') + 1)
+    let filePath = targetBasepath + '.' + ext
+    let iconPath = targetBasepath + '.ico'
+    
+    predefinedIconPath = path.join('app/imgs/', predefinedIconPath)
+    //console.log(predefinedIconPath)
+    //if (fs.existsSync(predefinedIconPath) === true) {
+    if (true) {
+      fs.copyFile(predefinedIconPath, filePath, (err) => {
+        if (err) {
+          alert(err)
+          throw err
+        }
+        if (typeof(callback) === 'function') {
+          callback(filePath)
+        }
+      }) 
+    }
+    else {
+      alert('Icon file "' + predefinedIconPath + '" is not found.') 
+      if (typeof(callback) === 'function') {
+        callback()
+      }
+    }
+  }
 }
 
 window.CrawlerIconManager = CrawlerIconManager

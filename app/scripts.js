@@ -1,6 +1,6 @@
 /* global IconManager, ChromeHelper, URLHelper, CrawlerManager, ShortcutManager */
 
-let app = new Vue({
+let appConfig = {
   el: '#app',
   data: {
     url: 'http://blog.pulipuli.info',
@@ -282,4 +282,6 @@ let app = new Vue({
     }
   },
   
-})
+}
+
+let app = new Vue(appConfig)

@@ -31,7 +31,9 @@ let CrawlerIconURLManager = {
         return url.startsWith("https://docs.google.com/document/")
       },
       process: function (url, $, callback) {
-        let result = CrawlerIconBase64Predefined['googleDoc']
+        //let result = CrawlerIconBase64Predefined['googleDoc']
+        //console.log(result)
+        let result = 'predefined-icons/google-docs.png'
         callback(result)
         return result
       }

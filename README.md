@@ -28,3 +28,8 @@ chmod 4755 /opt/chrome-webapp-shortcuts-creator/chrome-sandbox
 ````
 
 https://electronjs.org/docs/api/sandbox-option
+
+----
+
+# config.json
+"_debugDemo": true
