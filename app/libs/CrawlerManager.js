@@ -21,7 +21,7 @@ let CrawlerManager = {
         body = bodyStr
       }
       body = this._decodeHTML(body)
-      //console.log(body)
+      console.log(body)
       
       let $ = cheerio.load(body)
       data.title = this._parseTitle($, urlObject.host)
@@ -48,7 +48,7 @@ let CrawlerManager = {
   _requestBody: function (url, callback) {
     request({
       url: url,
-      encoding: null,
+      encoding: 'binary',
       headers: { 'User-Agent': 'Mozilla/5.0' }
     }, function (error, response, body) {
       if (!error && response.statusCode === 200) {
@@ -87,11 +87,15 @@ let CrawlerManager = {
     return desc
   },
   _decodeHTML: function (body) {
-    if (body.indexOf('content="text/html; charset=big5"') > -1) {
+    if (body.indexOf('content="text/html; charset=big5"') > -1
+            || (body.indexOf('CONTENT="text/html; charset=big5"') > -1)) {
+      //console.log(body)
+      //console.log(iconv.decode(body, 'Big5').toString())
+      //console.log(iconv.decode(body, 'UTF8').toString())
       body = iconv.decode(body, 'BIG5').toString()
     }
     //console.log(body)
-    return body
+    return body.trim()
   }
 }
 

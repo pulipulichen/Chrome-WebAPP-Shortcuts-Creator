@@ -19,6 +19,16 @@ let appConfig = {
     _debugConsole: false
   },
   watch: {
+    url: function (newUrl) {
+      // "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --ignore-certificate-errors --app=https://webatm.post.gov.tw/postatm/index.jsp?_portal=login
+      //console.log(newUrl)
+      if (newUrl.indexOf(' --app=') > 10) {
+        newUrl = newUrl.slice(newUrl.lastIndexOf(' --app=') + 7)
+        this.url = newUrl
+      }
+      //return 'http://blog.pulipuli.info'
+      
+    },
     icon: function (icon) {
       //console.log(['watch', icon])
       IconManager.getIconBase64(icon, (base64) => {
