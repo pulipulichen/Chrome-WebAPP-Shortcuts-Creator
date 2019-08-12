@@ -11,7 +11,7 @@ const homedir = require('os').homedir()
 
 let ws = null // for module "windows-shortcut"
 if (process.platform === 'win32') {
-  ws = require('windows-shortcuts')
+  ws = require('@pulipuli.chen/windows-shortcuts')
 }
 let exec = require('child_process').exec
 

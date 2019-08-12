@@ -94,6 +94,16 @@ let CrawlerIconURLManager = {
         return result
       }
     },
+    {
+      match: function (url) {
+        return (url.startsWith("https://contacts.google.com/"))
+      },
+      process: function (url, $, callback) {
+        let result = `predefined-icons/google-contacts.png`
+        callback(result)
+        return result
+      }
+    },
   ],
   match: function (url, $, callback) {
     for (let i = 0; i < this.conf.length; i++) {

@@ -16,7 +16,8 @@ let appConfig = {
     isNeedLoad: false,
     _enablePersist: true,
     _debugDemo: false,
-    _debugConsole: false
+    _debugConsole: false,
+    _urlWatchLock: undefined
   },
   watch: {
     url: function (newUrl) {
@@ -26,6 +27,19 @@ let appConfig = {
         newUrl = newUrl.slice(newUrl.lastIndexOf(' --app=') + 7)
         this.url = newUrl
       }
+      
+      //console.log(this._urlWatchLock)
+      
+      if (this._urlWatchLock === undefined && encodeURI(newUrl) !== newUrl) {
+        this._urlWatchLock = true
+        setTimeout(() => {
+          this.url = encodeURI(newUrl)
+          setTimeout(() => {
+            this._urlWatchLock = undefined
+          }, 100)
+        }, 100)
+      }
+      
       //return 'http://blog.pulipuli.info'
       
     },
@@ -255,6 +269,8 @@ let appConfig = {
         desc: this.description
         //icon: 'D:/Desktop/Box Sync/[SOFTWARE]/[SavedIcons]/[ico]/Apps-Google-Drive-Slides-icon.ico',
       }
+      
+      //console.log(options)
       ShortcutManager.create(saveToPath, options)
     },
     onFileDrop: function (dropFiles) {
