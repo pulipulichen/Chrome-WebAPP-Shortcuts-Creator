@@ -187,6 +187,10 @@ let CrawlerIconManager = {
       title = title.slice(0, -1)
     }
     
+    if (title.startsWith('www.')) {
+      title = title.slice(4)
+    }
+    
     //let filePath = path.resolve('tmp', title + '.' + ext)
     return ElectronHelper.getTmpDirPath(title)
   },

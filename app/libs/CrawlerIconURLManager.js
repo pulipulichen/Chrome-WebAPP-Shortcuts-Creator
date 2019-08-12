@@ -74,6 +74,26 @@ let CrawlerIconURLManager = {
         return result
       }
     },
+    {
+      match: function (url) {
+        return (url.startsWith("https://www.wunderlist.com/"))
+      },
+      process: function (url, $, callback) {
+        let result = `predefined-icons/wunderlist.png`
+        callback(result)
+        return result
+      }
+    },
+    {
+      match: function (url) {
+        return (url.startsWith("https://calendar.google.com/"))
+      },
+      process: function (url, $, callback) {
+        let result = `predefined-icons/google-calendar.png`
+        callback(result)
+        return result
+      }
+    },
   ],
   match: function (url, $, callback) {
     for (let i = 0; i < this.conf.length; i++) {
