@@ -8,6 +8,9 @@ PathHelper = {
       title = title.slice(0, 30)
     }
     
+    title = title.split('\t').join(' ')
+    title = title.split('\n').join(' ')
+    
     return title.trim()
   },
   safeFilter: function (title) {

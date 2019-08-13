@@ -10,7 +10,9 @@ let CrawlerIconURLManager = {
   conf: [
     {
       match: function (url) {
-        return url.startsWith("https://www.youtube.com/") || url.startsWith("https://youtu.be/")
+        // https://youtu.be/ocR3ZFMv-Ko
+        // https://www.youtube.com/watch?v=ocR3ZFMv-Ko
+        return (url.startsWith("https://www.youtube.com/") && url.indexOf('/watch?v=') > 1 ) || url.startsWith("https://youtu.be/")
       },
       process: function (url, $, callback) {
         return CrawlerIconURLManager.parseIconYouTube(url, callback)
