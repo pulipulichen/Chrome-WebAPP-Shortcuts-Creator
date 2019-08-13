@@ -33,7 +33,9 @@ let appConfig = {
       if (this._urlWatchLock === undefined && encodeURI(newUrl) !== newUrl) {
         this._urlWatchLock = true
         setTimeout(() => {
-          this.url = encodeURI(newUrl)
+          newUrl = encodeURI(newUrl)
+          newUrl = newUrl.split('%25').join('%')
+          this.url = newUrl
           setTimeout(() => {
             this._urlWatchLock = undefined
           }, 100)

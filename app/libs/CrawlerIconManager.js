@@ -180,6 +180,7 @@ let CrawlerIconManager = {
       title = title.slice(0, 20).trim()
     }
     title = host  + '-' + title
+    title = title.split(',').join('')
     
     title = title.split('/').join('')
     title = title.split('\\').join('')

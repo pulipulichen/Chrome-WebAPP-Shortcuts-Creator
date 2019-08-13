@@ -86,7 +86,7 @@ function createWindow() {
     width: 400,
     height: height,
     maximizable: false,
-    icon: './app/imgs/icon.png',
+    icon: './app/imgs/Apps-Google-Chrome-App-List-icon.ico',
     webPreferences: {
       nodeIntegration: true
     }
