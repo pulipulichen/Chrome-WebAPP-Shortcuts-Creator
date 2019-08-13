@@ -1,7 +1,11 @@
 let ShortcutManager = {
-  getDefaultPath: function (title) {
+  getDefaultPath: function (title, lastDir) {
     if (process.platform === 'linux') {
       title = title + '.desktop'
+      
+      if (typeof(lastDir) === 'string') {
+        return path.join(lastDir, title)
+      }
       
       let candidatePaths = [
         '~/.local/share/applications',
@@ -28,6 +32,11 @@ let ShortcutManager = {
       if (process.platform === 'win32') {
         title = title + '.lnk'
       }
+      
+      if (typeof(lastDir) === 'string') {
+        return path.join(lastDir, title)
+      }
+      
       return path.join(getPath('desktop'), title)
     }
   },

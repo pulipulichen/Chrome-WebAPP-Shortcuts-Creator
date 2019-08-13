@@ -11,13 +11,14 @@ let appConfig = {
     icon: 'icon.ico',
     iconBase64: null,
     $body: null,
-    persistAttrs: ['url', 'autoRetrieve', 'title', 'description', 'chromeFilePath', 'icon', '_debugDemo', '_debugConsole'],
+    persistAttrs: ['url', 'autoRetrieve', 'title', 'description', 'chromeFilePath', 'icon', '_debugDemo', '_debugConsole', '_lastShortcutSaveDir'],
     _urlChanged: false,
     isNeedLoad: false,
     _enablePersist: true,
     _debugDemo: false,
     _debugConsole: false,
-    _urlWatchLock: undefined
+    _urlWatchLock: undefined,
+    _lastShortcutSaveDir: null
   },
   watch: {
     url: function (newUrl) {
@@ -146,7 +147,8 @@ let appConfig = {
       this.persist()
     },
     persist: function () {
-      if (this._enablePersist && this._debugDemo === false) {
+      console.log([this._enablePersist, this._debugDemo])
+      if (this._enablePersist && (this._debugDemo === false || this._debugDemo === undefined)) {
         ElectronHelper.persist(this, this.persistAttrs)
       }
     },
@@ -258,7 +260,7 @@ let appConfig = {
       //console.log(['createShortcut', basepath])
       //let basepath = ShortcutManager.getDefaultDir()
       //let shortcutFilePath = path.resolve(basepath, title + '.lnk').split("/").join("\\\\")
-      let shortcutFilePath = ShortcutManager.getDefaultPath(title)
+      let shortcutFilePath = ShortcutManager.getDefaultPath(title, this._lastShortcutSaveDir)
       //console.log(['createShortcut', shortcutFilePath])
       ipc.send('open-file-dialog-create', shortcutFilePath)
     },
@@ -273,6 +275,10 @@ let appConfig = {
       }
       
       //console.log(options)
+      this._lastShortcutSaveDir = path.dirname(saveToPath)
+      console.log(this._lastShortcutSaveDir)
+      this.persist()
+      
       ShortcutManager.create(saveToPath, options)
     },
     onFileDrop: function (dropFiles) {

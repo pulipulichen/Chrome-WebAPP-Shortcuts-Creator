@@ -59,6 +59,7 @@ ElectronHelper = {
     })
     
     let dataString = JSON.stringify(data, null, "\t")
+    console.log(dataString)
     fs.writeFile(path.join(this.getBasePath(), this._configFilePath), dataString, function (err) {
       if (err) throw err;
       if (typeof(callback) === 'function') {

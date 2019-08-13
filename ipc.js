@@ -69,7 +69,6 @@ ipc.on('open-file-dialog-create', function (event, filePath) {
       { name: 'Shortcut', extensions: ['lnk'] }
     ]
   }
-  
   if (filePath !== '') {
     if (process.platform === 'win32') {
       filePath = filePath.split('/').join('\\')
