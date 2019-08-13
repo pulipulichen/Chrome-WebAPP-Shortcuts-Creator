@@ -37,6 +37,8 @@ let CrawlerIconManager = {
       return iconURL
     }
     
+    //console.log(iconURL)
+    
     if (URLHelper.isURL(iconURL) === false) {
       if (iconURL.startsWith('//')) {
         iconURL = urlObject.protocol + iconURL
@@ -192,6 +194,7 @@ let CrawlerIconManager = {
     }
     
     //let filePath = path.resolve('tmp', title + '.' + ext)
+    console.log(title)
     return ElectronHelper.getTmpDirPath(title)
   },
   _downloadIconFromURL: function (url, title, callback) {
@@ -199,7 +202,11 @@ let CrawlerIconManager = {
     if (ext.lastIndexOf('?') > -1) {
       ext = ext.slice(0, ext.lastIndexOf('?'))
     }
+    if (ext.length > 3) {
+      ext = 'png'
+    }
     
+    //console.trace(url)
     if (URLHelper.isURL(url) === false) {
       let errorMessage = 'URL is not correct: ' + url
       alert(errorMessage)
@@ -211,7 +218,7 @@ let CrawlerIconManager = {
     let filePath = targetBasepath + '.' + ext
     let iconPath = targetBasepath + '.ico'
     
-    //console.log([filePath, iconPath])
+    console.log([filePath, iconPath])
     
     // -----------------------------------
     if (fs.existsSync(iconPath)) {
