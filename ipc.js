@@ -28,7 +28,7 @@ ipc.on('open-file-dialog-chrome', function (event, dir) {
   //console.log(options)
   
   dialog.showOpenDialog(win, options, function (files) {
-    if (files) {
+    if (files && files[0] !== null) {
       event.sender.send('selected-file-chrome', files[0])
     }
   })
@@ -40,7 +40,7 @@ ipc.on('open-file-dialog-icon', function (event, dir) {
     properties: ['openFile']
   }
   
-  if (dir !== '') {
+  if (dir !== '' && files[0] !== null) {
     if (process.platform === 'win32') {
       dir = dir.split('/').join('\\')
     }
@@ -56,7 +56,7 @@ ipc.on('open-file-dialog-icon', function (event, dir) {
   //console.log(options)
   
   dialog.showOpenDialog(win, options, function (files) {
-    if (files) {
+    if (files && files[0] !== null) {
       event.sender.send('selected-file-icon', files[0])
     }
   })

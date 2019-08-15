@@ -22,6 +22,9 @@ const settings = remote.require('electron-settings');
 const mode = settings.get('mode')
 
 const download = require('image-downloader')
+
+const { clipboard } = require('electron')
+
 //console.log(mode)
 
 /*

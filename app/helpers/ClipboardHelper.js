@@ -54,7 +54,8 @@ let ClipboardHelper = {
         });
       }
     });
-  }
+  },
+  
 }
 
 window.ClipboardHelper = ClipboardHelper

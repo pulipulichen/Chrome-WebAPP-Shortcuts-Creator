@@ -195,7 +195,7 @@ let CrawlerIconManager = {
     }
     
     //let filePath = path.resolve('tmp', title + '.' + ext)
-    console.log(title)
+    //console.log(title)
     return ElectronHelper.getTmpDirPath(title)
   },
   _downloadIconFromURL: function (url, title, callback) {
@@ -219,7 +219,7 @@ let CrawlerIconManager = {
     let filePath = targetBasepath + '.' + ext
     let iconPath = targetBasepath + '.ico'
     
-    console.log([filePath, iconPath])
+    //console.log([filePath, iconPath])
     
     // -----------------------------------
     if (fs.existsSync(iconPath)) {

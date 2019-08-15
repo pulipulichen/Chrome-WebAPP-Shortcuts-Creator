@@ -1,4 +1,4 @@
-/* global IconManager, ChromeHelper, URLHelper, CrawlerManager, ShortcutManager */
+/* global IconManager, ChromeHelper, URLHelper, CrawlerManager, ShortcutManager, ClipboardHelper, ipc, FileDragNDropHelper, FilePasteHelper, mode, fs, path, remote, CrawlerIconManager */
 
 let appConfig = {
   el: '#app',
@@ -90,12 +90,14 @@ let appConfig = {
   },
   created: function () {
     ipc.on('selected-file-chrome', (event, path) => {
+      //console.log(['[', path, ']'])
       this._selectChromeFilePathCallback(event, path)
     });
     ipc.on('selected-file-icon', (event, path) => {
       this._selectIconFileCallback(event, path)
     });
     ipc.on('selected-file-create', (event, path) => {
+      //console.log(['[', path, ']'])
       this._createShortcutCallback(event, path)
     });
     
@@ -126,11 +128,13 @@ let appConfig = {
         this.demo()
       }
       if (this._debugConsole === true) {
-        remote.getCurrentWindow().openDevTools();
+        ElectronHelper.openDevTools()
       }
       
       $(this.$refs.checkbox).checkbox()
       this.checkIsNeedLoad()
+      
+      this.loadURLFromClipboard()
     },
     _showLoadingLayer: function () {
       this.$body.addClass('loading')
@@ -142,12 +146,15 @@ let appConfig = {
       ipc.send('open-file-dialog-chrome', this.chromeFilePath)
     },
     _selectChromeFilePathCallback: function (event, filePath) {
+      if (typeof(filePath) !== 'string') {
+        return this
+      }
       //alert(path)
       this.chromeFilePath = filePath
       this.persist()
     },
     persist: function () {
-      console.log([this._enablePersist, this._debugDemo])
+      //console.log([this._enablePersist, this._debugDemo])
       if (this._enablePersist && (this._debugDemo === false || this._debugDemo === undefined)) {
         ElectronHelper.persist(this, this.persistAttrs)
       }
@@ -162,8 +169,8 @@ let appConfig = {
       ipc.send('open-file-dialog-icon', dir)
     },
     _selectIconFileCallback: function (event, filePath) {
-      if (filePath === undefined) {
-        return
+      if (typeof(filePath) !== 'string') {
+        return this
       }
       
       if ((filePath.startsWith('http://') || filePath.startsWith('https://'))) {
@@ -175,7 +182,7 @@ let appConfig = {
             this._selectIconFileCallback(event, iconPath)
           })
         }
-        return
+        return this
       }
       
       //console.log(path)
@@ -186,7 +193,7 @@ let appConfig = {
           this._hideLoadingLayer()
           this._selectIconFileCallback(event, targetIconPath)
         })
-        return
+        return this
       }
       
       // 如果不在tmp資料夾中，則把它搬到tmp中
@@ -198,7 +205,7 @@ let appConfig = {
         IconManager.copyToTmpFolder(filePath, (targetPath) => {
           this._selectIconFileCallback(event, targetPath)
         })
-        return
+        return this
       }
       
       //console.log(filePath)
@@ -313,8 +320,15 @@ let appConfig = {
         //$('.load-from-url').click()
         console.log('aaa')
       }, 1000)
+    },
+    loadURLFromClipboard: function () {
+      let data = ElectronHelper.getClipboardText()
+      if (URLHelper.isURL(data)) {
+        this.url = data
+        this.loadFromURL()
+      }
     }
-  },
+  }
   
 }
 

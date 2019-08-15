@@ -115,6 +115,13 @@ ElectronHelper = {
     else {
       return this.resolve('app/' + filePath)
     }
+  },
+  getClipboardText: function () {
+    return clipboard.readText('clipboard')
+  },
+  openDevTools: function () {
+    remote.getCurrentWindow().openDevTools();
+    return this
   }
 }
 
