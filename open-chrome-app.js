@@ -30,15 +30,31 @@ let URLHelper = {
   }
 }
 
+// For test
+//data = "https://github.com/pulipulichen/Chrome-WebAPP-Shortcuts-Creator/issues/30"
+
 if (URLHelper.isURL(data) === false) {
   process.exit()
 }
 
 // ------------------
 // 讀取Chrome的位置
-let config = fs.existsSync('./config.json')
+let config = fs.readFileSync('./config.json').toString()
+config = JSON.parse(config)
+let chromeFilePath = config.chromeFilePath
 
-console.log('AAA')
+//console.log(chromeFilePath)
+
+// ------------------
+// 組成指令
+// "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --ignore-certificate-errors --app=https://www.facebook.com/pulipuli.chen
+//let cmd = `"${chromeFilePath}" --ignore-certificate-errors --app=${data}`
+
+//console.log(cmd)
+const spawn  = require('child_process').spawn  
+spawn(chromeFilePath
+  , ['--ignore-certificate-errors', `--app=${data}`]
+  , {detached: true})
 
 // ------------------
 // 結束離開
