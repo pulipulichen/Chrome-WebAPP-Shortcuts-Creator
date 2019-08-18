@@ -40,7 +40,7 @@ ipc.on('open-file-dialog-icon', function (event, dir) {
     properties: ['openFile']
   }
   
-  if (dir !== '' && files[0] !== null) {
+  if (dir !== '') {
     if (process.platform === 'win32') {
       dir = dir.split('/').join('\\')
     }
