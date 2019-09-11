@@ -7,6 +7,7 @@ let appConfig = {
     autoRetrieve: true,
     title: '',
     description: '',
+    isError: false,
     chromeFilePath: ChromeHelper.detectFilePath(),
     icon: 'icon.ico',
     iconBase64: null,
@@ -237,6 +238,7 @@ let appConfig = {
       this.title = ''
       this.description = ''
       this.icon = 'icon.ico'
+      this.isError = false
       return this
     },
     loadFromURL: function (callback) {
@@ -287,6 +289,7 @@ let appConfig = {
           }
           this.title = title
           this.description = url
+          this.isError = true
           $(window).blur().focus()
           //console.log($(this.$refs.InputTitle).length)
         }
@@ -370,6 +373,9 @@ let appConfig = {
         this.url = data
         this.loadFromURL()
       }
+    },
+    openIssue: function () {
+      ElectronHelper.openURL('https://github.com/pulipulichen/Chrome-WebAPP-Shortcuts-Creator/issues')
     }
   }
   

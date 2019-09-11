@@ -85,7 +85,7 @@
             Retrieve Metadata
           </label>
 
-          <div class="two unstackable fields">
+          <div class="three unstackable fields">
             <div class="retrieve-metadata-left field">
               <button type="button" 
                       class="ui labeled icon fluid button"
@@ -96,9 +96,17 @@
                 Retrieve
               </button>
             </div>
-            <div class="retrieve-metadata-right field ui checkbox" ref="checkbox">
+            <div class="retrieve-metadata-middle field ui checkbox" ref="checkbox">
               <input type="checkbox" v-model="autoRetrieve" />
               <label>Automatic</label>
+            </div>
+            <div class="field retrieve-metadata-right">
+              <button type="button"
+                      v-on:click="openIssue()"
+                      class="ui icon button"
+                      v-bind:class="{'red': isError}">
+                <i class="exclamation triangle icon"></i>
+              </button>
             </div>
           </div>
         </div>

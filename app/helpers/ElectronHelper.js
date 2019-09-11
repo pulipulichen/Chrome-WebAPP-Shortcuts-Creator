@@ -122,6 +122,10 @@ ElectronHelper = {
   openDevTools: function () {
     remote.getCurrentWindow().openDevTools();
     return this
+  },
+  openURL: function (url) {
+    let electron = require('electron')
+    electron.remote.shell.openExternal(url);
   }
 }
 
