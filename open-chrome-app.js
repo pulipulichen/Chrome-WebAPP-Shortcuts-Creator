@@ -43,6 +43,10 @@ let config = fs.readFileSync('./config.json').toString()
 config = JSON.parse(config)
 let chromeFilePath = config.chromeFilePath
 
+if (fs.existsSync(chromeFilePath) === false) {
+  process.exit()
+}
+
 //console.log(chromeFilePath)
 
 // ------------------

@@ -9,6 +9,9 @@ let FileDragNDropHelper = {
     //let timer = null
     
     doc.on('dragenter', (e) => {
+      if (this.enable === false) {
+        return this;
+      }
       e.preventDefault()
       e.stopPropagation()
       body.addClass(dragoverClassname)
@@ -16,11 +19,17 @@ let FileDragNDropHelper = {
     })
     
     doc.on('dragover', (e) => {
+      if (this.enable === false) {
+        return this;
+      }
       e.preventDefault()
       e.stopPropagation()
     })
     
     doc.on('drop', (e) => {
+      if (this.enable === false) {
+        return this;
+      }
       //body.addClass(dragoverClassname)
       //console.log('body dragenter')
       e.preventDefault()
@@ -44,6 +53,10 @@ let FileDragNDropHelper = {
     })
     */
     doc.on('dragleave', (e) => {
+      if (this.enable === false) {
+        return this;
+      }
+      
       //console.log(e)
       //console.log([e.clientX, e.clientY])
       if (e.clientX === 0 || e.clientY === 0) {
@@ -51,6 +64,14 @@ let FileDragNDropHelper = {
         //console.log('body dragleave')
       }
     })
+  },
+  enable: true,
+  setEnable: function (isEnable) {
+    //console.log(isEnable)
+    if (typeof(isEnable) === 'boolean') {
+      this.enable = isEnable
+    }
+    return this
   },
   getFilesFromEvent: function (event) {
     let files

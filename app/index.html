@@ -74,6 +74,8 @@
           <div class="ui input">
             <input id="url" type="url" v-model="url" 
                    onfocus="this.select()"
+                   v-on:focus="FileDragNDropHelper.setEnable(false)"
+                   v-on:blur="FileDragNDropHelper.setEnable(true)"
                    v-on:change="onURLChange" />
           </div>
         </div>
@@ -109,6 +111,9 @@
           <div class="ui input">
             <input id="input" type="text" v-model="title" maxlength="30" 
                    onfocus="this.select()"
+                   ref="InputTitle"
+                   v-on:focus="FileDragNDropHelper.setEnable(false)"
+                   v-on:blur="FileDragNDropHelper.setEnable(true)"
                    v-on:change="persist" />
           </div>
         </div>
@@ -120,6 +125,8 @@
           <div class="ui input">
             <textarea id="description" type="text" v-model="description" maxlength="50" 
                       onfocus="this.select()"
+                      v-on:focus="FileDragNDropHelper.setEnable(false)"
+                      v-on:blur="FileDragNDropHelper.setEnable(true)"
                       v-on:change="persist"></textarea>
           </div>
         </div>

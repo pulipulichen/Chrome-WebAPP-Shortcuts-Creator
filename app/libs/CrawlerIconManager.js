@@ -323,8 +323,11 @@ let CrawlerIconManager = {
       .catch((err) => {
         alert(err)
         console.error(err)
+        if (typeof(callback) === 'function') {
+          callback()
+        }
       })
-    return
+    return this
     /*
     // -----------------------------------
     let file = fs.createWriteStream(filePath)
