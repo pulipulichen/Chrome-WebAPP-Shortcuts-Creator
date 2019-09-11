@@ -14,7 +14,7 @@ ElectronHelper = {
     
     if (fs.existsSync(configFilePath) === false) {
       if (typeof(callback) === 'function') {
-        callback()
+        callback({})
       }
       return
     }

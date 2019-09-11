@@ -13,6 +13,7 @@
     "9.open-dist": "node open-dist.js"
   },
   "dependencies": {
+    "@pulipuli.chen/windows-shortcuts": "^0.1.6",
     "cheerio": "0.19",
     "electron-settings": "^3.2.0",
     "follow-redirects": "^1.7.0",
@@ -20,11 +21,10 @@
     "image-downloader": "^3.5.0",
     "jquery": "^3.3.0",
     "parse-favicon": "^2.0.0",
-    "platform-folders": "^0.4.0",
+    "platform-folders": "0.4.1",
     "request": "^2.87.0",
     "terminal-exec": "^0.0.2",
-    "universalify": "^0.1.2",
-    "@pulipuli.chen/windows-shortcuts": "^0.1.6"
+    "universalify": "^0.1.2"
   },
   "devDependencies": {
     "electron": "^6.0.1"
