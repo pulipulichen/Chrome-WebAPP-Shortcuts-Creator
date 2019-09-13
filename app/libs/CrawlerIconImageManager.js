@@ -48,7 +48,7 @@ let CrawlerIconImageManager = {
     if (typeof(callback) === 'function') {
       callback()
     }
-    return
+    return this
   },
 }
 

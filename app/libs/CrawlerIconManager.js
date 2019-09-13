@@ -1,4 +1,4 @@
-/* global cheerio */
+/* global cheerio, CrawlerIconURLManager, CrawlerIconThumbnailManager, CrawlerIconFaviconManager, CrawlerIconImageManager, URLHelper, IconManager, fs, encodeURI, http, https, download, path */
 
 let CrawlerIconManager = {
   parseIcon: function ($, body, url, title, callback) {
@@ -31,7 +31,7 @@ let CrawlerIconManager = {
   
   filterBaseURL: function (iconURL, urlObject) {
     if (typeof(iconURL) !== 'string') {
-      return
+      return false
     }
     else if (iconURL.startsWith('data:')) {
       return iconURL
@@ -68,7 +68,7 @@ let CrawlerIconManager = {
       if (typeof(callback) === 'function') {
         callback('icon.ico')
       }
-      return
+      return false
     }
     
     if (iconURL.startsWith('data:')) {
@@ -103,7 +103,7 @@ let CrawlerIconManager = {
       if (typeof(callback) === 'function') {
         callback('icon.ico')
       }
-      return
+      return false
     }
     
     if (process.platform === 'win32' 
@@ -111,7 +111,7 @@ let CrawlerIconManager = {
       IconManager.convertToIco(iconPath, (iconPath) => {
         this.afterDownload(iconPath, callback)
       })
-      return
+      return this
     }
     
     if (iconPath === undefined) {
@@ -212,7 +212,7 @@ let CrawlerIconManager = {
       let errorMessage = 'URL is not correct: ' + url
       alert(errorMessage)
       throw Error(errorMessage)
-      return
+      return false
     }
     
     let targetBasepath = this._downloadTargetBasepath(url, title)
@@ -226,14 +226,14 @@ let CrawlerIconManager = {
       if (typeof(callback) === 'function') {
         callback(iconPath)
       }
-      return
+      return this
     }
     else if (process.platform !== 'win32' 
             && fs.existsSync(filePath)) {
       if (typeof(callback) === 'function') {
         callback(filePath)
       }
-      return
+      return this
     }
     
     // -----------------------------------
@@ -275,7 +275,7 @@ let CrawlerIconManager = {
         if (typeof(callback) === 'function') {
           callback()
         }
-        return
+        return this
       }
   
       response.pipe(file)
@@ -295,14 +295,14 @@ let CrawlerIconManager = {
       if (typeof(callback) === 'function') {
         callback(iconPath)
       }
-      return
+      return this
     }
     else if (process.platform !== 'win32' 
             && fs.existsSync(filePath)) {
       if (typeof(callback) === 'function') {
         callback(filePath)
       }
-      return
+      return this
     }
     
     
@@ -382,7 +382,7 @@ let CrawlerIconManager = {
       if (typeof(callback) === 'function') {
         callback()
       }
-      return
+      return false
     }
     
     let ext = base64.slice(base64.indexOf('/') + 1, base64.indexOf(';base64,')).trim()
@@ -401,14 +401,14 @@ let CrawlerIconManager = {
       if (typeof(callback) === 'function') {
         callback(iconPath)
       }
-      return
+      return this
     }
     else if (process.platform !== 'win32' 
             && fs.existsSync(filePath)) {
       if (typeof(callback) === 'function') {
         callback(filePath)
       }
-      return
+      return this
     }
     
     // --------------------------------
@@ -419,7 +419,7 @@ let CrawlerIconManager = {
       if (err) {
         alert(err)
         throw Error(err)
-        return
+        return false
       }
       
       if (typeof(callback) === 'function') {

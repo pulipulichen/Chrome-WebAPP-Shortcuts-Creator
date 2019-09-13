@@ -16,7 +16,7 @@ let IconManager = {
       if (typeof(callback) === 'function') {
         callback(targetIconPath)
       }
-      return
+      return this
     }
     
     //inputFile = '.\\' + path.relative("./", inputFile)
