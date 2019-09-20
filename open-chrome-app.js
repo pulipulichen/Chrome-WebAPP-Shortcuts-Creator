@@ -54,6 +54,10 @@ if (fs.existsSync(chromeFilePath) === false) {
   process.exit()
 }
 
+if (fs.existsSync(chromeFilePath) === false) {
+  process.exit()
+}
+
 //console.log(chromeFilePath)
 
 // ------------------
