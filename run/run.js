@@ -17,6 +17,13 @@ let runElectron = {
     if (process.platform === 'linux') {
       let chromeSandbox = path.resolve('./node_modules/electron/dist/chrome-sandbox')
       //console.log(chromeSandbox)
+      if (fs.existsSync(chromeSandbox) === false) {
+        if (typeof (callback) === 'function') {
+          callback()
+        }
+        return
+      }
+      
       let stat = fs.statSync(chromeSandbox)
 
       let owner = stat.uid

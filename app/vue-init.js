@@ -7,18 +7,19 @@ let appConfig = {
     autoRetrieve: true,
     title: '',
     description: '',
+    isError: false,
     chromeFilePath: ChromeHelper.detectFilePath(),
     icon: 'icon.ico',
     iconBase64: null,
     $body: null,
-    persistAttrs: ['url', 'autoRetrieve', 'title', 'description', 'chromeFilePath', 'icon', '_debugDemo', '_debugConsole', '_lastShortcutSaveDir'],
+    persistAttrs: ['url', 'autoRetrieve', 'title', 'description', 'chromeFilePath', 'icon', '_debugDemo', '_debugConsole', 'lastShortcutSaveDir'],
     _urlChanged: false,
     isNeedLoad: false,
-    _enablePersist: true,
+    _enablePersist: false,
     _debugDemo: false,
     _debugConsole: false,
     _urlWatchLock: undefined,
-    _lastShortcutSaveDir: null
+    lastShortcutSaveDir: null
   },
   watch: {
     url: function (newUrl) {
@@ -233,20 +234,65 @@ let appConfig = {
         this.persist()
       }
     },
+    reset: function () {
+      this.title = ''
+      this.description = ''
+      this.icon = 'icon.ico'
+      this.isError = false
+      return this
+    },
     loadFromURL: function (callback) {
       this._urlChanged = false
       let url = this.url
       //console.log(url)
       this._showLoadingLayer()
+      this.reset()
       CrawlerManager.loadFromURL(url, (data) => {
-        ['title', 'description', 'icon'].forEach(field => {
-          if (typeof(data[field]) === 'string') {
-            this[field] = data[field]
-          }
-        })
-        this.persist()
+        let isChanged = false
+        //console.log(data)
+        if (typeof(data) === 'object') {
+          ['title', 'description', 'icon'].forEach(field => {
+            if (typeof(data[field]) === 'string') {
+              this[field] = data[field]
+              isChanged = true
+            }
+          })
+          //console.log(data)
+        }
         this._hideLoadingLayer()
-        $(this.$refs.createShortcut).focus()
+        
+        if (isChanged === true) {
+          this.persist()
+          $(this.$refs.createShortcut).focus()
+        }
+        else {
+          let title = url
+          /*
+          if (title.lastIndexOf('/') > -1) {
+            title = title.slice(title.lastIndexOf('/') + 1)
+          }
+          if (title.indexOf('?') > -1) {
+            title = title.slice(0, title.indexOf('?'))
+          }
+          if (title.indexOf('#') > -1) {
+            title = title.slice(0, title.indexOf('#'))
+          }
+           */
+          if (title.startsWith('http://')) {
+            title = title.slice(7)
+          }
+          if (title.startsWith('https://')) {
+            title = title.slice(8)
+          }
+          if (title.indexOf('/') > -1) {
+            title = title.slice(0, title.indexOf('/'))
+          }
+          this.title = title
+          this.description = url
+          this.isError = true
+          $(window).blur().focus()
+          //console.log($(this.$refs.InputTitle).length)
+        }
         
         if (typeof(callback) === 'function') {
           callback()
@@ -267,7 +313,7 @@ let appConfig = {
       //console.log(['createShortcut', basepath])
       //let basepath = ShortcutManager.getDefaultDir()
       //let shortcutFilePath = path.resolve(basepath, title + '.lnk').split("/").join("\\\\")
-      let shortcutFilePath = ShortcutManager.getDefaultPath(title, this._lastShortcutSaveDir)
+      let shortcutFilePath = ShortcutManager.getDefaultPath(title, this.lastShortcutSaveDir)
       //console.log(['createShortcut', shortcutFilePath])
       ipc.send('open-file-dialog-create', shortcutFilePath)
     },
@@ -282,8 +328,8 @@ let appConfig = {
       }
       
       //console.log(options)
-      this._lastShortcutSaveDir = path.dirname(saveToPath)
-      console.log(this._lastShortcutSaveDir)
+      this.lastShortcutSaveDir = path.dirname(saveToPath)
+      console.log(this.lastShortcutSaveDir)
       this.persist()
       
       ShortcutManager.create(saveToPath, options)
@@ -327,6 +373,9 @@ let appConfig = {
         this.url = data
         this.loadFromURL()
       }
+    },
+    openIssue: function () {
+      ElectronHelper.openURL('https://github.com/pulipulichen/Chrome-WebAPP-Shortcuts-Creator/issues')
     }
   }
   

@@ -22,7 +22,7 @@
     "image-downloader": "^3.5.0",
     "jquery": "^3.3.0",
     "parse-favicon": "^2.0.0",
-    "platform-folders": "0.4.1",
+    "platform-folders": "^0.4.1",
     "request": "^2.87.0",
     "terminal-exec": "^0.0.2",
     "universalify": "^0.1.2"

@@ -74,6 +74,8 @@
           <div class="ui input">
             <input id="url" type="url" v-model="url" 
                    onfocus="this.select()"
+                   v-on:focus="FileDragNDropHelper.setEnable(false)"
+                   v-on:blur="FileDragNDropHelper.setEnable(true)"
                    v-on:change="onURLChange" />
           </div>
         </div>
@@ -83,7 +85,7 @@
             Retrieve Metadata
           </label>
 
-          <div class="two unstackable fields">
+          <div class="three unstackable fields">
             <div class="retrieve-metadata-left field">
               <button type="button" 
                       class="ui labeled icon fluid button"
@@ -94,9 +96,17 @@
                 Retrieve
               </button>
             </div>
-            <div class="retrieve-metadata-right field ui checkbox" ref="checkbox">
+            <div class="retrieve-metadata-middle field ui checkbox" ref="checkbox">
               <input type="checkbox" v-model="autoRetrieve" />
               <label>Automatic</label>
+            </div>
+            <div class="field retrieve-metadata-right">
+              <button type="button"
+                      v-on:click="openIssue()"
+                      class="ui icon button"
+                      v-bind:class="{'red': isError}">
+                <i class="exclamation triangle icon"></i>
+              </button>
             </div>
           </div>
         </div>
@@ -109,6 +119,9 @@
           <div class="ui input">
             <input id="input" type="text" v-model="title" maxlength="30" 
                    onfocus="this.select()"
+                   ref="InputTitle"
+                   v-on:focus="FileDragNDropHelper.setEnable(false)"
+                   v-on:blur="FileDragNDropHelper.setEnable(true)"
                    v-on:change="persist" />
           </div>
         </div>
@@ -120,6 +133,8 @@
           <div class="ui input">
             <textarea id="description" type="text" v-model="description" maxlength="50" 
                       onfocus="this.select()"
+                      v-on:focus="FileDragNDropHelper.setEnable(false)"
+                      v-on:blur="FileDragNDropHelper.setEnable(true)"
                       v-on:change="persist"></textarea>
           </div>
         </div>

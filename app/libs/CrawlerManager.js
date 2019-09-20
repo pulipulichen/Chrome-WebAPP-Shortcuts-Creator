@@ -3,19 +3,36 @@
 let request = require('request')
 let cheerio = require('cheerio')
 let parseFavicon = require('parse-favicon').parseFavicon
-let http = require('follow-redirects').http
-let https = require('follow-redirects').https
+//let http = require('follow-redirects').http
+//let https = require('follow-redirects').https
+const https = require('https')
 let iconv = require('iconv-lite')
 
 let CrawlerManager = {
   loadFromURL: function (url, callback) {
     let data = {}
 
-    let urlObject = new URL(url);
+    let urlObject
+    try {
+      urlObject = new URL(url)
+    } catch (e) {
+      console.error(e)
+      if (typeof(callback) === 'function') {
+        callback()
+      }
+      return false
+    }
 
     //console.log(url)
     this._requestBody(url, (body) => {
       //console.log(body)
+      if (body === undefined) {
+        if (typeof(callback) === 'function') {
+          callback()
+        }
+        return false
+      }
+      
       let bodyStr = body.toString()
       if (bodyStr !== body) {
         body = bodyStr
@@ -66,10 +83,17 @@ let CrawlerManager = {
         }
       } else {
         alert(error)
-        console.error(['statusCode', response.statusCode])
+        console.log(error)
+        if (typeof(response) === 'object' 
+                && typeof(response.statusCode) !== 'undefined') {
+          console.log(['statusCode', response.statusCode])
+        }
         //console.log(body.toString())
-        $('body').removeClass('loading')
-        throw Error(error)
+        //$('body').removeClass('loading')
+        //console.error(error)
+        if (typeof (callback) === 'function') {
+          callback()
+        }
       }
     })
   },

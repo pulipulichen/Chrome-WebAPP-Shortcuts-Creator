@@ -24,7 +24,7 @@ let CrawlerIconFaviconManager = {
         if (typeof (callback) === 'function') {
           callback()
         }
-        return
+        return false
       }
 
       iconURL = CrawlerIconManager.filterBaseURL(iconURL, urlObject)
@@ -42,8 +42,8 @@ let CrawlerIconFaviconManager = {
     for (var i = 0; i < icons.length; i++) {
       let size = icons[i].size
       if (size === null) {
-        console.log('Icon error')
-        console.log(icons[i])
+        //console.log('Icon error')
+        //console.log(icons[i])
 
         //let errorMessage = 'Icon size error'
         //alert(errorMessage)
@@ -61,17 +61,23 @@ let CrawlerIconFaviconManager = {
       }
     }
 
-    if (largestPath === undefined && icons.length > 0) {
+    if (largestPath === undefined 
+            && icons.length > 0
+            && icons[0].size !== null) {
       largestPath = icons[0].url
     }
 
+    //console.log(largestPath)
+
     //console.log(31);
-    if (largestPath.startsWith("//")) {
-      largestPath = urlObject.protocol + largestPath;
-    } else if (largestPath.startsWith("/")) {
-      largestPath = urlObject.protocol + "//" + urlObject.host + largestPath;
-    } else if (largestPath.startsWith("http") === false) {
-      largestPath = urlObject.protocol + "//" + urlObject.host + urlObject.pathdir + largestPath;
+    if (typeof(largestPath) === 'string') {
+      if (largestPath.startsWith("//")) {
+        largestPath = urlObject.protocol + largestPath;
+      } else if (largestPath.startsWith("/")) {
+        largestPath = urlObject.protocol + "//" + urlObject.host + largestPath;
+      } else if (largestPath.startsWith("http") === false) {
+        largestPath = urlObject.protocol + "//" + urlObject.host + urlObject.pathdir + largestPath;
+      }
     }
 
     return largestPath

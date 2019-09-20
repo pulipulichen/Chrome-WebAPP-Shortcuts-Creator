@@ -1,3 +1,5 @@
+/* global CrawlerIconManager */
+
 let CrawlerIconThumbnailManager = {
   _iconSelectors: [
     {
@@ -27,7 +29,7 @@ let CrawlerIconThumbnailManager = {
     if (typeof(callback) === 'function') {
       callback()
     }
-    return
+    return this
   }
 }
 
