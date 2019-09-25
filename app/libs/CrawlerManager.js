@@ -3,9 +3,9 @@
 let request = require('request')
 let cheerio = require('cheerio')
 let parseFavicon = require('parse-favicon').parseFavicon
-//let http = require('follow-redirects').http
+let http = require('follow-redirects').http
 //let https = require('follow-redirects').https
-const https = require('https')
+let https = require('https')
 let iconv = require('iconv-lite')
 
 let CrawlerManager = {
