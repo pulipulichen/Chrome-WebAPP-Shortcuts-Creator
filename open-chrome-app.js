@@ -39,9 +39,20 @@ if (URLHelper.isURL(data) === false) {
 
 // ------------------
 // 讀取Chrome的位置
+if (fs.existsSync('./config.json') === false) {
+  process.exit()
+}
+
 let config = fs.readFileSync('./config.json').toString()
 config = JSON.parse(config)
 let chromeFilePath = config.chromeFilePath
+if (typeof(chromeFilePath) !== 'string') {
+  process.exit()
+}
+
+if (fs.existsSync(chromeFilePath) === false) {
+  process.exit()
+}
 
 if (fs.existsSync(chromeFilePath) === false) {
   process.exit()
