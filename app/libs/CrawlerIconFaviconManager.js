@@ -1,5 +1,5 @@
 let CrawlerIconFaviconManager = {
-  parseFavicon: function (body, url, callback) {
+  parseFavicon: async function (body, url, callback) {
     let urlObject = new URL(url);
 
     let options = {
@@ -9,7 +9,9 @@ let CrawlerIconFaviconManager = {
     }
 
     //console.log(options)
-    parseFavicon(body, options).then((icons, error) => {
+    try {
+      let icons = await parseFavicon(body, options)
+      
       //console.log(icons)
       //console.log(error)
       let iconURL
@@ -33,7 +35,13 @@ let CrawlerIconFaviconManager = {
       if (typeof (callback) === 'function') {
         callback(iconURL)
       }
-    })
+    }
+    catch (e) {
+      if (typeof (callback) === 'function') {
+        callback()
+      }
+      return false
+    }
   },
   _selectLargetIcon: function (icons, urlObject) {
     var largestSize = 0;

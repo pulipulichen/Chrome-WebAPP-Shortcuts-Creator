@@ -7,7 +7,17 @@ let IconManager = {
     let filename = path.basename(inputFile)
     filename = filename.slice(0, filename.lastIndexOf('.')) + '.ico'
     //let targetIconPath = path.resolve(tmpDir, filename)
+    
+
+    let url = document.getElementById('url').value
+    if (url.indexOf('//') > -1) {
+      url = url.split('/').slice(2).join('/')
+      url = encodeURIComponent(url).slice(0, 50)      
+      filename = url + '_' + filename
+    }
+    
     let targetIconPath = ElectronHelper.getTmpDirPath(filename)
+    
 
     // ---------------------------------
 
