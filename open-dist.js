@@ -24,7 +24,7 @@ let sizeInterval = 0
 let readLog = () => {
   if (fs.existsSync(logPath) === false) {
     writeLog()
-    return
+    return false
   }
   
   getLastLine(logPath, 1)

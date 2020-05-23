@@ -129,7 +129,19 @@ let CrawlerIconManager = {
     
     let filesize = 0
     if (iconPath !== undefined) {
-      filesize = fs.statSync(iconPath).size
+      let dir = path.basename(iconPath)
+      if (fs.existsSync(dir) === false) {
+        fs.mkdirSync(dir)
+      }
+      
+      if (fs.existsSync(iconPath)) {
+        try {
+          filesize = fs.statSync(iconPath).size
+        }
+        catch (e) {
+          console.error(e)
+        }
+      }
     }
     if (filesize < 100) {
       let errorMessage = 'Icon is too small (' + filesize + '):\n' + path.basename(iconPath)

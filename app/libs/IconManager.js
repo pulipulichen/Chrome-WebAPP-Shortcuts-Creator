@@ -87,6 +87,7 @@ let IconManager = {
       return 
     }
     */
+    convertExe = '"' + convertExe + '"'
     return convertExe
   },
   isInTmpFolder: function (filePath) {
