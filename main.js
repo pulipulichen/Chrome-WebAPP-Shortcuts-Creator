@@ -75,7 +75,7 @@ app.on('activate', () => {
 
 function createWindow() {
   // Create the browser window.
-  let height = 600
+  let height = 620
   if (mode === 'development') {
     height = height + 30
   }

@@ -259,6 +259,13 @@ let appConfig = {
     },
     loadFromURL: function (callback) {
       this._urlChanged = false
+      
+      // 先檢查url是不是等於...
+      // "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --ignore-certificate-errors --app=https://hangouts.google.com/
+      if (this.url.indexOf(` --app=`) > -1) {
+        this.url = this.url.slice(this.url.indexOf(` --app=`) + 7)
+      }
+      
       let url = this.url
       //console.log(url)
       this._showLoadingLayer()

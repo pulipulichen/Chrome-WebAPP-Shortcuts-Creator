@@ -144,7 +144,9 @@
             <label for="url">
               Icon
             </label>
-            <div class="icon-placeholder" v-bind:style="{ backgroundImage: iconBase64 }"></div>
+            <div class="icon-placeholder" 
+                 v-bind:style="{ backgroundImage: iconBase64 }"
+                 v-on:click="selectIconFile"></div>
           </div>
           <div class="icon field">
             <label for="url">
