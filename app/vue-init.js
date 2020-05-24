@@ -12,14 +12,26 @@ let appConfig = {
     icon: 'icon.ico',
     iconBase64: null,
     $body: null,
-    persistAttrs: ['url', 'autoRetrieve', 'title', 'description', 'chromeFilePath', 'icon', '_debugDemo', '_debugConsole', 'lastShortcutSaveDir'],
+    persistAttrs: [
+      'url', 
+      'autoRetrieve', 
+      'title', 
+      'description', 
+      'chromeFilePath', 
+      'icon', 
+      '_debugDemo', 
+      '_debugConsole', 
+      'lastShortcutSaveDir',
+      'autoOpenOutput',
+    ],
     _urlChanged: false,
     isNeedLoad: false,
     _enablePersist: false,
     _debugDemo: false,
     _debugConsole: false,
     _urlWatchLock: undefined,
-    lastShortcutSaveDir: null
+    lastShortcutSaveDir: null,
+    autoOpenOutput: true
   },
   watch: {
     url: function (newUrl) {
@@ -168,6 +180,10 @@ let appConfig = {
         dir = ElectronHelper.getTmpDirPath('./tmp', this.icon)
       }
       ipc.send('open-file-dialog-icon', dir)
+    },
+    openFindIcon: function () {
+      //ipc.send('open-find-icon', this.chromeFilePath)
+      exec(`"${this.chromeFilePath}" --app=https://findicons.com/`)
     },
     _selectIconFileCallback: function (event, filePath) {
       if (typeof(filePath) !== 'string') {
@@ -323,24 +339,26 @@ let appConfig = {
         args: '--ignore-certificate-errors --app=' + this.url,
         //args: '--app=' + this.url,
         icon: this.icon,
-        desc: this.description
+        desc: this.description,
+        isAutoOpen: this.autoOpenOutput
         //icon: 'D:/Desktop/Box Sync/[SOFTWARE]/[SavedIcons]/[ico]/Apps-Google-Drive-Slides-icon.ico',
       }
       
       //console.log(options)
       this.lastShortcutSaveDir = path.dirname(saveToPath)
-      console.log(this.lastShortcutSaveDir)
+      //console.log(this.lastShortcutSaveDir)
       this.persist()
       
       ShortcutManager.create(saveToPath, options)
     },
     onFileDrop: function (dropFiles) {
       let dropFile = dropFiles
-      if (Array.isArray(dropFiles) && dropFiles.length > 0) {
+      //if (Array.isArray(dropFiles) && dropFiles.length > 0) {
+      if (dropFiles[0] && dropFiles[0].path) {
         dropFile = dropFiles[0].path
       }
       
-      //console.log(file)
+      //console.log(dropFiles[0].path)
       this._selectIconFileCallback(null, dropFile)
     },
     onFilePaste: function (fileBase64) {

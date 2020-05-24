@@ -1,3 +1,5 @@
+/* global path, fs, ws */
+
 let ShortcutManager = {
   getDefaultPath: function (title, lastDir) {
     if (process.platform === 'linux') {
@@ -86,7 +88,7 @@ let ShortcutManager = {
         let basename = path.basename(simplePath).slice(0, -4)
         if (window.confirm(`Error occured.\nDo you want to try to save shortcut with filename "${basename}"`)) {
           this.createWin32(simplePath, options)
-          return
+          return false
         }
         
         console.error(saveToPath)
@@ -94,9 +96,11 @@ let ShortcutManager = {
         throw Error(err)
       }
       
-      exec(`"${saveToPath}"`)
-      let dirname = path.dirname(saveToPath)
-      exec(`start "" "${dirname}"`)
+      if (options.isAutoOpen === true) {
+        exec(`"${saveToPath}"`)
+        let dirname = path.dirname(saveToPath)
+        exec(`start "" "${dirname}"`)
+      }
     });
    
     /*
@@ -159,10 +163,12 @@ Icon=${icon}`
         throw Error(err)
       }
       
-      exec(`chmod +x ${saveToPath}`)
-      exec(`${saveToPath}`)
-      
-      shell.showItemInFolder(saveToPath)
+      if (options.isAutoOpen) {
+        exec(`chmod +x ${saveToPath}`)
+        exec(`${saveToPath}`)
+
+        shell.showItemInFolder(saveToPath)
+      }
     })
     
     return this

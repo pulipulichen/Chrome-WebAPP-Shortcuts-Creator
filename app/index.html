@@ -156,8 +156,24 @@
               CHANGE
             </button>
           </div>
+          <div class="field">
+            <label for="url">
+              &nbsp;
+            </label>
+            <button type="button" 
+                    class="ui button"
+                    v-on:click="openFindIcon">
+              Find Icon
+            </button>
+          </div>
         </div>
-          
+        
+        <div class="inline field">
+            <div class="retrieve-metadata-middle field ui checkbox" ref="checkbox">
+              <input type="checkbox" v-model="autoOpenOutput" />
+              <label>AUTO OEPN</label>
+            </div>
+        </div>
         
         <div class="field" >
           <button type="button" 
@@ -168,6 +184,7 @@
             CREATE SHORTCUT
           </button>
         </div>
+        
       </form>
     </div>
     <script src="vue-init.js"></script>

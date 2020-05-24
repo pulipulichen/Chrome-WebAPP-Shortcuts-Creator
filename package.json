@@ -50,15 +50,15 @@
       "category": "chrome.webapp.shortcuts.creator"
     },
     "win": {
-      "icon": "app/imgs/icon.ico",
+      "icon": "app/imgs/Apps-Google-Chrome-App-List-icon256x256.ico",
       "target": "portable"
     },
     "linux": {
-      "icon": "app/imgs/icon256.png",
+      "icon": "app/imgs/Apps-Google-Chrome-App-List-icon256.png",
       "category": "Network",
       "target": "deb",
       "desktop": {
-        "Icon": "/opt/chrome-webapp-shortcuts-creator/app/imgs/icon256.png"
+        "Icon": "/opt/chrome-webapp-shortcuts-creator/app/imgs/Apps-Google-Chrome-App-List-icon256.png"
       }
     },
     "portable": {

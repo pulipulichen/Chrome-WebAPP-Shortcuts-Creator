@@ -1,4 +1,6 @@
 
+/* global __dirname */
+
 const path = require('path')
 const url = require('url')
 const fs = require('fs')
@@ -73,7 +75,7 @@ app.on('activate', () => {
 
 function createWindow() {
   // Create the browser window.
-  let height = 570
+  let height = 600
   if (mode === 'development') {
     height = height + 30
   }
