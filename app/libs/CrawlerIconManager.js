@@ -129,10 +129,10 @@ let CrawlerIconManager = {
     
     let filesize = 0
     if (iconPath !== undefined) {
-      let dir = path.basename(iconPath)
-      if (fs.existsSync(dir) === false) {
-        fs.mkdirSync(dir)
-      }
+      //let dir = path.basename(iconPath)
+      //if (fs.existsSync(dir) === false) {
+      //  fs.mkdirSync(dir)
+      //}
       
       if (fs.existsSync(iconPath)) {
         try {
