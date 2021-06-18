@@ -145,9 +145,10 @@ let CrawlerIconManager = {
     }
     if (filesize < 100) {
       let errorMessage = 'Icon is too small (' + filesize + '):\n' + path.basename(iconPath)
-      alert(errorMessage)
+      //alert(errorMessage)
       console.error(errorMessage)
-      return false
+      //return false
+      return true
     }
     else {
       return true
